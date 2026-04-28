@@ -1,0 +1,56 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	width: 100%;
+}
+
+.registerLink,
+.loginLink {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	border-radius: 100px;
+	padding: 10px 24px;
+	font-family: 'Lato', sans-serif;
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 1.6;
+	color: #000000;
+	text-decoration: none;
+	white-space: nowrap;
+	margin-bottom: 4px;
+	cursor: pointer;
+	transition: filter 0.15s ease, transform 0.1s ease;
+}
+
+.registerLink {
+	background-color: #ffdae0;
+	box-shadow: 0 4px 0 0 #ffcbd3;
+}
+
+.registerLink:hover {
+	filter: brightness(0.96);
+	text-decoration: none;
+}
+
+.registerLink:active {
+	transform: translateY(2px);
+	box-shadow: 0 2px 0 0 #ffcbd3;
+}
+
+.loginLink {
+	background-color: rgba(0, 0, 0, 0.05);
+	box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.15);
+}
+
+.loginLink:hover {
+	filter: brightness(0.96);
+	text-decoration: none;
+}
+
+.loginLink:active {
+	transform: translateY(2px);
+	box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.15);
+}

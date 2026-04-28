@@ -1,6 +1,7 @@
 import { Lato, Comfortaa } from "next/font/google";
 import "./globals.css";
 import "modern-normalize";
+import { AuthProvider } from "./providers/AuthProvider";
 
 const lato = Lato({
 	subsets: ["latin"],
@@ -17,17 +18,14 @@ const comfortaa = Comfortaa({
 });
 
 export default function RootLayout({
-  children,
-	modal
+  children
 }: Readonly<{
-  children: React.ReactNode,
-	modal: React.ReactNode
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en">
       <body className={`${lato.variable} ${comfortaa.variable}`}>
-				{children}
-				{modal}
+				<AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
