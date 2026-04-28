@@ -1,9 +1,16 @@
 'use client';
 
-const SideBar = () => {
+import css from "./SideBar.module.css";
+
+interface Props {
+	setBarInactive: () => void;
+	isOpen: boolean;
+}
+
+const SideBar = ({ setBarInactive, isOpen }: Props) => {
 	return (
-		<div>
-			
+		<div className={`${css.sidebar} ${isOpen ? css.open : ''}`}>
+			<button onClick={setBarInactive}>button</button>
 		</div>
 	)
 }

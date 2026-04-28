@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from "react";
 import Link from "next/link";
-import SideBar from "../SideBar/SideBar";
 import css from "./Header.module.css"
 
-const Header = () => {
-	const [isActiveBar, setActiveBar] = useState(true);
+interface Props {
+	setBarActive: () => void;
+}
+
+const Header = ({ setBarActive }: Props) => {
 
 	return (
 		<>
@@ -19,14 +20,12 @@ const Header = () => {
 					</Link>
 				</nav>
 
-				<button className={css.burger_button} onClick={() => setActiveBar(true)}>
+				<button className={css.burger_button} onClick={setBarActive}>
 					<svg className={css.burger_icon}>
 						<use href="/sprite.svg#menu"></use>
 					</svg>
 				</button>
 			</header>
-
-			{ isActiveBar ? <SideBar /> : null}
 		</>
 	)
 }
