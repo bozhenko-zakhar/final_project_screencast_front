@@ -1,11 +1,7 @@
 // "use client"
 
-import css from "./loading.module.css"
-
 const Loading = () => {
-	return (
-		<p className={css.text}>Loading, please wait...</p>
-	)
+  return <p>Loading, please wait...</p>;
 };
 
 export default Loading;

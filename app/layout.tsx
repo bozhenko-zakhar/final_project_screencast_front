@@ -1,6 +1,19 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { DashBoardPage } from "@/components/DashBoardPage/DashBoardPage";
+
+import { Comfortaa, Lato } from "next/font/google";
+
+const comfortaa = Comfortaa({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+const lato = Lato({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,8 +36,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${lato.className} ${comfortaa.className}` }>
+      <body>
+        {children}
+        <DashBoardPage />
+      </body>
     </html>
   );
 }
