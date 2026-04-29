@@ -1,0 +1,165 @@
+:root {
+  --headerlines-font: "Comfortaa", sans-serif;
+  --color-bg: #fefbf4;
+
+  --radius-lg: 32px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  color: #000000;
+  margin: 0;
+}
+
+.dashboardContainer {
+  width: 100%;
+  max-width: 704px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.daysCountContainer {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.weeks {
+  width: 100%;
+  max-width: 159.5px;
+  max-height: 105px;
+  background-color: var(--color-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  overflow-wrap: break-word;
+}
+
+.days {
+  font-family: var(--headerlines-font);
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+
+/* Baby today section */
+
+.babyTodayContainer {
+  width: 100%;
+  max-width: 335px;
+  margin-top: 16px;
+}
+
+.babyTodayWrap {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  display: flex;
+}
+
+.babyContainerHeaderline {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 140%;
+  letter-spacing: 0.01em;
+  font-family: var(--headerlines-font);
+  margin-bottom: 16px;
+}
+
+.aboutBabyContainer {
+  width: 100%;
+  background-color: var(--color-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+}
+
+.babyDescriptionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.babyContainerImg {
+  width: 100%;
+  max-width: 257px;
+  align-self: flex-start;
+  border-radius: 24px;
+  border: 1px rgba(0, 0, 0, 0.15) solid;
+  display: block;
+}
+
+.babyDescription {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.titlesOfBabyToday {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 150%;
+}
+
+.babyFactsText {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+}
+
+.babyDescriptionText {
+  font-weight: 400;
+  margin-left: 6px;
+}
+
+.description {
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  margin-top: 24px;
+}
+
+/* advices for moms */
+
+.advicesForMom {
+  background-color: var(--color-bg);
+  border-radius: var(--radius-lg);
+  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.advicesForMomWrap {
+  padding: var(--spacing-lg);
+}
+
+@media (min-width: 768px) {
+  .weeks {
+    max-width: 336px;
+  }
+
+  /* Baby today section */
+
+  .babyTodayContainer {
+    max-width: 704px;
+  }
+
+  .babyDescriptionContainer {
+    flex-direction: row;
+  }
+}
