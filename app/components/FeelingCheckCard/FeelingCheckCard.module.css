@@ -1,0 +1,61 @@
+.feeling {
+    display: flex;
+    flex-direction: column;
+    /* gap: 12px; */
+}
+
+/* "Як ви себе почуваєте?" */
+.title {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* "Рекомендація на сьогодні:" */
+.subtitle {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0px;
+    line-height: 1.5;
+}
+
+/* текст рекомендації */
+.text {
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0px;
+    line-height: 1.5;
+}
+
+/* рожева кнопка "Зробити запис у щоденник" */
+.button {
+    margin-top: 16px;
+    align-self: flex-start;
+
+    padding: 10px 24px;
+    border-radius: 999px;
+    border: none;
+
+    background: #ffdae0;
+    border-bottom: 4px solid #ffcbd3;
+    line-height: 1.6;
+    color: #000;
+
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+@media screen and (min-width: 1024px){
+    .button {
+        font-size: 16px;
+    }
+    .title {
+        font-size: 24px;
+    }
+        .subtitle {
+            font-size: 16px;
+        }
+        .text {
+            font-size: 16px;
+        }
+
+}
