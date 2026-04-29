@@ -17,11 +17,15 @@ export default function LehlehkaLayout({
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	return (
-		<div className={css.container}>
-			<Header setBarActive={() => setIsMobileMenuOpen(true)}/>
-			<SideBar isOpen={isMobileMenuOpen} setBarInactive={() => setIsMobileMenuOpen(false)}/>
-			<Breadcrumbs />
-			{children}
+		<div className={css.shell}>
+			<SideBar isOpen={isMobileMenuOpen} setBarInactive={() => setIsMobileMenuOpen(false)} />
+			<div className={css.content}>
+				<div className={css.container}>
+					<Header setBarActive={() => setIsMobileMenuOpen(true)} />
+					<Breadcrumbs />
+					<main>{children}</main>
+				</div>
+			</div>
 		</div>
 	);
 }
