@@ -1,0 +1,9 @@
+.main {
+    width: 335px;
+    margin: 0 auto;
+    padding-top: 24px;
+    padding-bottom: 40px;
+
+    display: flex;
+    flex-direction: column;
+}
