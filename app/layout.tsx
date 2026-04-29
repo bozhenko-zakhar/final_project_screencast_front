@@ -1,6 +1,6 @@
 import { Lato, Comfortaa } from "next/font/google";
 import "./globals.css";
-import "modern-normalize";
+import "modern-normalize/modern-normalize.css";
 
 const lato = Lato({
 	subsets: ["latin"],
