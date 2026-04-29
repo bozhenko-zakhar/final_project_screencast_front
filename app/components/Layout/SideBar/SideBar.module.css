@@ -1,0 +1,141 @@
+.backdrop {
+	position: fixed;
+	inset: 0;
+	background-color: rgba(0, 0, 0, 0.3);
+	z-index: 99;
+}
+
+.sidebar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 280px;
+	background-color: #ffffff;
+	border-right: 1px solid rgba(0, 0, 0, 0.15);
+	display: flex;
+	flex-direction: column;
+	z-index: 100;
+	transform: translateX(-100%);
+	transition: transform 0.3s ease;
+}
+
+.sidebar.open {
+	transform: translateX(0);
+}
+
+.top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 16px;
+	flex-shrink: 0;
+}
+
+.logoLink {
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+}
+
+.logo {
+	width: 105px;
+	height: 45px;
+	display: block;
+}
+
+.close {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 22px;
+	color: #000000;
+	padding: 4px 8px;
+	line-height: 1;
+	border-radius: 4px;
+	transition: background-color 0.15s ease;
+}
+
+.close:hover {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+.nav {
+	flex: 1 0 0;
+	overflow-y: auto;
+	padding: 8px 16px;
+	min-height: 0;
+}
+
+.list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.link {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 8px;
+	border-radius: 8px;
+	text-decoration: none;
+	color: #000000;
+	font-family: 'Lato', sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+	width: 100%;
+	transition: background-color 0.15s ease;
+}
+
+.link:hover {
+	background-color: rgba(255, 180, 190, 0.12);
+}
+.link.active {
+	background-color: #fff4f6;
+}
+
+.bottom {
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	padding: 0 16px 24px;
+	border-top: 1px solid rgba(0, 0, 0, 0.15);
+	padding-top: 16px;
+
+}
+
+.registerButton {
+	width: 100%;
+	background-color: #ffdae0;
+	border: none;
+	border-bottom: 4px solid #ffcbd3;
+	border-radius: 100px;
+	padding: 10px 24px;
+	font-family: 'Lato', sans-serif;
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 1.6;
+	color: #000000;
+	cursor: pointer;
+	text-align: center;
+}
+
+@media only screen and (min-width: 1440px) {
+	.sidebar {
+		position: sticky;
+		top: 0;
+		left: 0;
+		transform: none;
+		height: 100vh;
+		width: 300px;
+		border-right: 1px solid #e5e7eb;
+	}
+
+	.close {
+		display: none;
+	}
+}

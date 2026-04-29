@@ -1,0 +1,83 @@
+/* === БАЗА: mobile (375px) === */
+.dashboard {
+    width: 100%;
+    max-width: 375px;
+    /* ширина mobile-фрейму */
+    margin: 0 auto;
+    padding: 64px 32px 0;
+
+    display: flex;
+    flex-direction: column;
+    /* одна колонка */
+    gap: 16px;
+}
+
+.leftColumn,
+.rightColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* === Tablet ≥ 768px === */
+@media screen and (min-width: 768px) {
+    .dashboard {
+        max-width: 768px;
+        /* ширина tablet-фрейму */
+    }
+
+    .leftColumn,
+    .rightColumn {
+        gap: 16px;
+        /* можна трохи збільшити відступи */
+    }
+}
+
+/* === Desktop ≥ 1024px (фрейм 1128px) === */
+@media screen and (min-width: 1024px) {
+    .dashboard {
+        max-width: 1128px;
+        padding: 64px 32px 0;
+        /* ширина desktop-фрейму */
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 32px;
+        align-items: flex-start;
+    }
+
+    .leftColumn,
+    .rightColumn {
+        gap: 32px;
+    }
+}
+
+/* Базова картка для всіх блоків Dashboard */
+.card {
+    background-color: #FFF4F6;
+    /* підставиш точний з макету */
+    border-radius: 32px;
+    padding: 24px 24px;
+}
+
+/* Desktop: фіксована висота + внутрішній скрол */
+@media screen and (min-width: 1024px) {
+    .cardFixedHeight {
+        height: 499px;
+        /* поставиш точні значення з макету */
+        overflow-y: auto;
+    }
+        .greetingHeight {
+            height: 45px;
+        }
+    
+        .tasksHeight {
+            height: 499px;
+            overflow-y: auto;
+        }
+    
+        .feelingHeight {
+            height: 210px;
+            overflow-y: auto;
+        }
+    
+}

@@ -1,0 +1,33 @@
+.shell {
+	min-height: 100vh;
+}
+
+.content {
+	width: 100%;
+}
+
+.container {
+	min-width: 320px;
+	max-width: 375px;
+	margin: 0 auto;
+	padding: 0 20px 24px;
+}
+
+@media only screen and (min-width: 768px) {
+	.container {
+		max-width: 768px;
+		padding: 0 32px 28px;
+	}
+}
+
+@media only screen and (min-width: 1440px) {
+	.shell {
+		display: grid;
+		grid-template-columns: 300px 1fr;
+	}
+
+	.container {
+		max-width: 1140px;
+		padding: 0 40px 32px;
+	}
+}

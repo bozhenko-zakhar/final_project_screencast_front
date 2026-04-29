@@ -1,0 +1,36 @@
+.nav {
+	margin: 10px 0 16px;
+}
+
+.list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.item {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.link {
+	color: #4b5563;
+	text-decoration: none;
+}
+
+.link:hover {
+	text-decoration: underline;
+}
+
+.current {
+	color: #111827;
+	font-weight: 700;
+}
+
+.separator {
+	color: #9ca3af;
+}
