@@ -1,0 +1,15 @@
+.container {
+	min-height: 100vh;
+	display: grid;
+	place-content: center;
+	padding: 24px;
+}
+
+.title {
+	margin: 0 0 8px;
+}
+
+.text {
+	margin: 0;
+	color: #4b5563;
+}
