@@ -146,9 +146,16 @@ export default function ProfileEditForm({ user }: Props) {
                     value={genderOptions.find(
                       (option) => option.value === field.value,
                     )}
-                    onChange={(option: SingleValue<GenderOption>) =>
-                      form.setFieldValue("gender", option?.value || "")
-                    }
+                    onChange={(option: SingleValue<GenderOption>) => {
+                      const gender = option?.value || "";
+
+                      form.setFieldValue("gender", gender);
+
+                      document.body.dataset.theme =
+                        gender === "girl" || gender === "boy" ?
+                          gender
+                        : "neutral";
+                    }}
                     onBlur={() => form.setFieldTouched("gender", true)}
                     placeholder="Оберіть стать"
                     isSearchable={false}
@@ -202,7 +209,14 @@ export default function ProfileEditForm({ user }: Props) {
             <button
               className={css.cancelButton}
               type="button"
-              onClick={() => resetForm()}
+              onClick={() => {
+                resetForm();
+
+                const gender = user?.gender;
+
+                document.body.dataset.theme =
+                  gender === "girl" || gender === "boy" ? gender : "neutral";
+              }}
               disabled={!dirty || isPending}
             >
               Відмінити зміни

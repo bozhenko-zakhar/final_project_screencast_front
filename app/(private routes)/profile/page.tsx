@@ -38,7 +38,7 @@ const ProfilePage = async () => {
     id: "1",
     username: "Test User",
     email: "test@test.com",
-    gender: "boy",
+    gender: null,
     dueDate: "2026-06-01",
     avatar: "",
     createdAt: "",

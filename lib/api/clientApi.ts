@@ -16,3 +16,8 @@ export const updateUser = async (payload: UpdateUserPayload): Promise<User> => {
 export const sendVerifyEmail = async (email: string): Promise<void> => {
   await NextClient.post("/auth/send-verify-email", { email });
 };
+
+export const getMe = async (): Promise<User> => {
+  const { data } = await NextClient.get<User>("/users/me");
+  return data;
+};

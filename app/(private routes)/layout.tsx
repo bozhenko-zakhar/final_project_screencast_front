@@ -1,10 +1,15 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useQuery,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Breadcrumbs from "../components/Layout/Breadcrumbs/Breadcrumbs";
 import Header from "../components/Layout/Header/Header";
+import { getMe } from "@/lib/api/clientApi";
 
 import css from "./layout.module.css";
 import SideBar from "../components/Layout/SideBar/SideBar";
@@ -15,20 +20,38 @@ type Props = {
 
 const queryClient = new QueryClient();
 
-export default function LehlehkaLayout({ children }: Props) {
+function PrivateLayoutContent({ children }: Props) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: getMe,
+  });
+
+  useEffect(() => {
+    const gender = user?.gender;
+
+    document.body.dataset.theme =
+      gender === "girl" || gender === "boy" ? gender : "neutral";
+  }, [user?.gender]);
+
+  return (
+    <div className={css.container}>
+      <Header setBarActive={() => setIsMobileMenuOpen(true)} />
+      <SideBar
+        isOpen={isMobileMenuOpen}
+        setBarInactive={() => setIsMobileMenuOpen(false)}
+      />
+      <Breadcrumbs />
+      {children}
+    </div>
+  );
+}
+
+export default function LehlehkaLayout({ children }: Props) {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className={css.container}>
-        <Header setBarActive={() => setIsMobileMenuOpen(true)} />
-        <SideBar
-          isOpen={isMobileMenuOpen}
-          setBarInactive={() => setIsMobileMenuOpen(false)}
-        />
-        <Breadcrumbs />
-        {children}
-      </div>
+      <PrivateLayoutContent>{children}</PrivateLayoutContent>
     </QueryClientProvider>
   );
 }
