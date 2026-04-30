@@ -11,3 +11,8 @@ export const updateUser = async (payload: UpdateUserPayload): Promise<User> => {
   const { data } = await NextClient.patch<User>("/users", payload);
   return data;
 };
+
+// =================ДОДАТКОВЕ-1===============================
+export const sendVerifyEmail = async (email: string): Promise<void> => {
+  await NextClient.post("/auth/send-verify-email", { email });
+};

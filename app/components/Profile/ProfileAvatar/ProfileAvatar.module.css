@@ -51,9 +51,24 @@
     background-color: var(--opacity-neutral-darkest-5);
     font-weight: 500;
     font-size: 14px;
-    line-height: 1.6;
     color: var(--color-scheme-text);
-
     cursor: pointer;
     transition: background-color 0.2s ease;
+}
+
+.button:hover,
+.button:focus {
+    background-color: var(--color-scheme-foreground);
+
+}
+
+.button:active {
+    background-color: var(--color-scheme-accent);
+}
+
+.button:disabled {
+    background-color: var(--opacity-neutral-darkest-5);
+    opacity: 0.3;
+    border-bottom: 4px solid var(--opacity-neutral-darkest-15);
+
 }
