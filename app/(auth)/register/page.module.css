@@ -1,0 +1,24 @@
+.imageBox {
+  display: none;
+}
+.formBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+@media (min-width: 1440px) {
+  .box {
+    display: flex;
+  }
+  .formBox {
+    width: 50%;
+    height: 900px;
+  }
+  .imageBox {
+    position: relative;
+    display: block;
+    width: 50%;
+    height: 900px;
+  }
+}
