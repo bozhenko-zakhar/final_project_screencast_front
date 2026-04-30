@@ -6,30 +6,35 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUser } from "@/lib/api/clientApi";
 import type { User, UpdateUserPayload, FormValues } from "@/app/types/user";
 import css from "./ProfileEditForm.module.css";
+import { useRouter } from "next/navigation";
 
 interface Props {
   user: User;
 }
 
 const validationSchema = Yup.object({
-  name: Yup.string().required("Введіть імʼя"),
+  username: Yup.string().required("Введіть імʼя"),
   email: Yup.string().email("Некоректний email").required("Введіть email"),
+  gender: Yup.string().oneOf(["", "boy", "girl"]),
+  dueDate: Yup.string().nullable(),
 });
 
 export default function ProfileEditForm({ user }: Props) {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateUser,
     onSuccess: (updatedUser) => {
       queryClient.setQueryData(["user"], updatedUser);
+      router.refresh();
     },
   });
 
   return (
     <Formik<FormValues>
       initialValues={{
-        name: user.name,
+        username: user.username,
         email: user.email,
         gender: user.gender || "",
         dueDate: user.dueDate ? user.dueDate.split("T")[0] : "",
@@ -38,7 +43,7 @@ export default function ProfileEditForm({ user }: Props) {
       enableReinitialize
       onSubmit={(values, { resetForm }) => {
         const payload: UpdateUserPayload = {
-          name: values.name,
+          username: values.username,
           email: values.email,
           gender: values.gender || null,
           dueDate: values.dueDate || null,
@@ -46,15 +51,19 @@ export default function ProfileEditForm({ user }: Props) {
 
         mutate(payload, {
           onSuccess: (updatedUser) => {
+            queryClient.setQueryData(["user"], updatedUser);
+
             resetForm({
               values: {
-                name: updatedUser.name,
+                username: updatedUser.username,
                 email: updatedUser.email,
                 gender: updatedUser.gender || "",
                 dueDate:
                   updatedUser.dueDate ? updatedUser.dueDate.split("T")[0] : "",
               },
             });
+
+            router.refresh();
           },
         });
       }}
@@ -63,8 +72,8 @@ export default function ProfileEditForm({ user }: Props) {
         <Form className={css.form}>
           <label className={css.label}>
             Імʼя
-            <Field className={css.input} type="text" name="name" />
-            <ErrorMessage name="name" component="p" className={css.error} />
+            <Field className={css.input} type="text" name="username" />
+            <ErrorMessage name="username" component="p" className={css.error} />
           </label>
 
           <label className={css.label}>

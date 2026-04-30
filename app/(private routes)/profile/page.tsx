@@ -36,11 +36,11 @@ import ProfileEditForm from "@/app/components/Profile/ProfileEditForm/ProfileEdi
 const ProfilePage = async () => {
   const user: User = {
     id: "1",
-    name: "Test User",
+    username: "Test User",
     email: "test@test.com",
     gender: "boy",
     dueDate: "2026-06-01",
-    avatarUrl: "",
+    avatar: "",
     createdAt: "",
     updatedAt: "",
   };

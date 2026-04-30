@@ -1,10 +1,11 @@
-// "use client"
+"use client"
 
-import css from "./loading.module.css"
+// import css from "./loading.module.css"
 
 const Loading = () => {
 	return (
-		<p className={css.text}>Loading, please wait...</p>
+		<p>Loading, please wait...</p>
+		// <p className={css.text}>Loading, please wait...</p>
 	)
 };
 

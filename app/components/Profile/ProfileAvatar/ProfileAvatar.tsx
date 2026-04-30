@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useRef } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 import { updateUserAvatar } from "@/lib/api/clientApi";
 import type { User } from "@/app/types/user";
 import css from "./ProfileAvatar.module.css";
@@ -13,13 +14,12 @@ interface ProfileAvatarProps {
 
 export default function ProfileAvatar({ user }: ProfileAvatarProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const queryClient = useQueryClient();
+  const router = useRouter();
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateUserAvatar,
-    onSuccess: (updatedUser) => {
-      queryClient.setQueryData(["user"], updatedUser);
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+    onSuccess: () => {
+      router.refresh();
     },
   });
 
@@ -37,14 +37,14 @@ export default function ProfileAvatar({ user }: ProfileAvatarProps) {
   return (
     <section className={css.wrapper}>
       <Image
-        className={css.avatarUrl}
-        src={user.avatarUrl || "/default-avatar.png"}
-        alt={user.name}
+        className={css.avatar}
+        src={user.avatar || "/Avatar-def.jpg"}
+        alt={user.username}
         width={120}
         height={120}
       />
       <div className={css.infoUser}>
-        <p className={css.name}>{user.name}</p>
+        <p className={css.name}>{user.username}</p>
         <p className={css.email}>{user.email}</p>
       </div>
 

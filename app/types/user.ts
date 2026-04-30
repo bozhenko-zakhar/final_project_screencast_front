@@ -1,23 +1,23 @@
 export interface User {
   id: string;
-  name: string;
+  username: string;
   email: string;
   gender?: "boy" | "girl" | null;
   dueDate?: string;
-  avatarUrl: string;
+  avatar?: string;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface UpdateUserPayload {
-  name: string;
+  username: string;
   email: string;
   gender: "boy" | "girl" | null;
   dueDate: string | null;
 }
 
 export interface FormValues {
-  name: string;
+  username: string;
   email: string;
   gender: "" | "boy" | "girl";
   dueDate: string;

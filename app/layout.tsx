@@ -1,33 +1,33 @@
 import { Lato, Comfortaa } from "next/font/google";
 import "./globals.css";
+// import { DashBoardPage } from "@/components/DashBoardPage/DashBoardPage";
+import "modern-normalize/modern-normalize.css";
 import "modern-normalize";
+import { AuthProvider } from "./providers/AuthProvider";
 
 const lato = Lato({
-	subsets: ["latin"],
-	weight: ["300", "400", "700", "900"],
-	variable: "--font-lato",
-	display: "swap"
+  subsets: ["latin"],
+  weight: ["300", "400", "700", "900"],
+  variable: "--font-lato",
+  display: "swap",
 });
 
 const comfortaa = Comfortaa({
-	subsets: ["latin"],
-	weight: ["700"],
-	variable: "--font-comfortaa",
-	display: "swap"
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-comfortaa",
+  display: "swap",
 });
 
 export default function RootLayout({
   children,
-	modal
 }: Readonly<{
-  children: React.ReactNode,
-	modal: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body className={`${lato.variable} ${comfortaa.variable}`}>
-				{children}
-				{modal}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
