@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import styles from "./FeelingCheckCard.module.css";
-import cardStyles from "../DashboardPage/DashboardPage.module.css";
+import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
 
 const FeelingCheckCard = () => {
   const router = useRouter();
