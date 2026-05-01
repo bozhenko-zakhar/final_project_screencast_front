@@ -5,9 +5,10 @@ type ConfirmationModalProps = {
 	onConfirm: () => void;
 	onCancel: () => void;
 	isLoading: boolean;
+	errorMessage?: string;
 };
 
-const ConfirmationModal = ({ isOpen, onCancel, onConfirm, isLoading }: ConfirmationModalProps) => {
+const ConfirmationModal = ({ isOpen, onCancel, onConfirm, isLoading, errorMessage }: ConfirmationModalProps) => {
 	if (!isOpen) {
 		return null;
 	}
@@ -22,6 +23,7 @@ const ConfirmationModal = ({ isOpen, onCancel, onConfirm, isLoading }: Confirmat
 			>
 				<h2 className={css.title}>Підтвердіть вихід</h2>
 				<p className={css.text}>Ви дійсно хочете вийти з системи?</p>
+				{errorMessage ? <p className={css.error}>{errorMessage}</p> : null}
 				<div className={css.actions}>
 					<button className={css.cancel} onClick={onCancel} disabled={isLoading}>
 						Скасувати

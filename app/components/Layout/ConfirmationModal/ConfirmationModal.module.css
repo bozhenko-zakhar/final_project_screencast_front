@@ -24,6 +24,12 @@
 	color: #4b5563;
 }
 
+.error {
+	margin: 0 0 12px;
+	color: #dc2626;
+	font-size: 14px;
+}
+
 .actions {
 	display: flex;
 	gap: 10px;
