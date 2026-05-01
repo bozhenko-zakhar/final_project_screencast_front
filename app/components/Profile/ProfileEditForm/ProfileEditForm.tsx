@@ -122,6 +122,10 @@ export default function ProfileEditForm({ user }: Props) {
 
             router.refresh();
           },
+
+          onError: () => {
+            toast.error("Не вдалося оновити профіль");
+          },
         });
       }}
     >
