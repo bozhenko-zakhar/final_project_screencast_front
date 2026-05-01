@@ -123,87 +123,93 @@ export default function ProfileEditForm({ user }: Props) {
     >
       {({ dirty, resetForm }) => (
         <Form className={css.form}>
-          <label className={css.label}>
-            Імʼя
-            <Field className={css.input} type="text" name="username" />
-            <ErrorMessage name="username" component="p" className={css.error} />
-          </label>
+          <div className={css.fields}>
+            <label className={css.label}>
+              Імʼя
+              <Field className={css.input} type="text" name="username" />
+              <ErrorMessage
+                name="username"
+                component="p"
+                className={css.error}
+              />
+            </label>
 
-          <label className={css.label}>
-            Пошта
-            <Field className={css.input} type="email" name="email" />
-            <ErrorMessage name="email" component="p" className={css.error} />
-          </label>
+            <label className={css.label}>
+              Пошта
+              <Field className={css.input} type="email" name="email" />
+              <ErrorMessage name="email" component="p" className={css.error} />
+            </label>
 
-          <label className={css.label}>
-            Стать дитини
-            <div className={css.inputWrapper}>
-              <Field name="gender">
-                {({ field, form }: FieldProps<string, FormValues>) => (
-                  <Select<GenderOption, false>
-                    unstyled
-                    options={genderOptions}
-                    value={genderOptions.find(
-                      (option) => option.value === field.value,
-                    )}
-                    onChange={(option: SingleValue<GenderOption>) => {
-                      const gender = option?.value || "";
+            <label className={css.label}>
+              Стать дитини
+              <div className={css.inputWrapper}>
+                <Field name="gender">
+                  {({ field, form }: FieldProps<string, FormValues>) => (
+                    <Select<GenderOption, false>
+                      unstyled
+                      options={genderOptions}
+                      value={genderOptions.find(
+                        (option) => option.value === field.value,
+                      )}
+                      onChange={(option: SingleValue<GenderOption>) => {
+                        const gender = option?.value || "";
 
-                      form.setFieldValue("gender", gender);
+                        form.setFieldValue("gender", gender);
 
-                      document.body.dataset.theme =
-                        gender === "girl" || gender === "boy" ?
-                          gender
-                        : "neutral";
-                    }}
-                    onBlur={() => form.setFieldTouched("gender", true)}
-                    placeholder="Оберіть стать"
-                    isSearchable={false}
-                    classNames={selectClassNames}
-                    components={{
-                      DropdownIndicator,
-                      IndicatorSeparator: () => null,
-                    }}
-                  />
-                )}
-              </Field>
-            </div>
-          </label>
+                        document.body.dataset.theme =
+                          gender === "girl" || gender === "boy" ?
+                            gender
+                          : "neutral";
+                      }}
+                      onBlur={() => form.setFieldTouched("gender", true)}
+                      placeholder="Оберіть стать"
+                      isSearchable={false}
+                      classNames={selectClassNames}
+                      components={{
+                        DropdownIndicator,
+                        IndicatorSeparator: () => null,
+                      }}
+                    />
+                  )}
+                </Field>
+              </div>
+            </label>
 
-          <label className={css.label}>
-            Планова дата пологів
-            <div className={css.inputWrapper}>
-              <Field name="dueDate">
-                {({ field, form }: FieldProps<string, FormValues>) => (
-                  <DatePicker
-                    selected={field.value ? new Date(field.value) : null}
-                    open={isDateOpen}
-                    onInputClick={() => setIsDateOpen(true)}
-                    onClickOutside={() => setIsDateOpen(false)}
-                    onChange={(date: Date | null) => {
-                      form.setFieldValue(
-                        "dueDate",
-                        date ? date.toISOString().split("T")[0] : "",
-                      );
-                      form.setFieldTouched("dueDate", true);
-                    }}
-                    onSelect={() => {
-                      setTimeout(() => {
-                        setIsDateOpen(false);
-                      }, 0);
-                    }}
-                    dateFormat="dd.MM.yyyy"
-                    className={`${css.input} ${css.inputDate}`}
-                    placeholderText="Оберіть дату"
-                  />
-                )}
-              </Field>
+            <label className={css.label}>
+              Планова дата пологів
+              <div className={css.inputWrapper}>
+                <Field name="dueDate">
+                  {({ field, form }: FieldProps<string, FormValues>) => (
+                    <DatePicker
+                      selected={field.value ? new Date(field.value) : null}
+                      open={isDateOpen}
+                      onInputClick={() => setIsDateOpen(true)}
+                      onClickOutside={() => setIsDateOpen(false)}
+                      onChange={(date: Date | null) => {
+                        form.setFieldValue(
+                          "dueDate",
+                          date ? date.toISOString().split("T")[0] : "",
+                        );
+                        form.setFieldTouched("dueDate", true);
+                      }}
+                      onSelect={() => {
+                        setTimeout(() => {
+                          setIsDateOpen(false);
+                        }, 0);
+                      }}
+                      dateFormat="dd.MM.yyyy"
+                      className={`${css.input} ${css.inputDate}`}
+                      placeholderText="Оберіть дату"
+                    />
+                  )}
+                </Field>
 
-              <svg className={css.icon}>
-                <use href="/sprite.svg#arrow-down" />
-              </svg>
-            </div>
-          </label>
+                <svg className={css.icon}>
+                  <use href="/sprite.svg#arrow-down" />
+                </svg>
+              </div>
+            </label>
+          </div>
 
           <div className={css.buttons}>
             <button

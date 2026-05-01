@@ -1,7 +1,15 @@
 .form {
     margin-top: 32px;
-    width: 335px;
+    width: 100%;
 
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+
+.fields {
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -24,9 +32,10 @@
     border: 2px solid var(--opacity-transparent);
     border-radius: 12px;
     padding: 8px 12px;
-    width: 335px;
+    width: 100%;
     height: 37px;
     background-color: var(--opacity-neutral-darkest-5);
+    font-size: 14px;
     transition: border 0.2s ease;
 }
 
@@ -39,6 +48,14 @@
 
 .input:active {
     border: 2px solid var(--color-scheme-accent);
+}
+
+.inputSelect {
+    height: 40px;
+}
+
+.inputDate {
+    height: 48px;
 }
 
 .inputSelect,
@@ -76,19 +93,19 @@
 /* =============================BUTTONS================================== */
 .buttons {
     display: flex;
-    margin: 40px auto 0 auto;
     gap: 16px;
     width: 100%;
+    margin-top: 48px;
 }
 
 .buttons button {
     flex: 1;
-    height: 56px;
+    height: 38px;
     border: none;
     border-radius: 100px;
     font-family: var(--font-family);
     font-weight: 500;
-    font-size: 18px;
+    font-size: 14px;
     color: var(--color-scheme-text);
     transition: background-color 0.2s ease, border 0.2s ease;
 }
@@ -143,7 +160,7 @@
 
 .inputWrapper {
     position: relative;
-    width: 335px;
+    width: 100%;
 }
 
 .selectMenu {
@@ -152,7 +169,7 @@
     left: 0;
     z-index: 20;
 
-    width: 335px;
+    width: 100%;
     border-radius: 12px;
     background-color: var(--color-neutral-lightest);
     overflow: hidden;
@@ -193,3 +210,53 @@
 }
 
 /* =============================END-STYLEL-FOR-SELECT============================= */
+:global(.react-datepicker-wrapper) {
+    width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+    .buttons {
+        justify-content: flex-end;
+    }
+
+    .buttons .cancelButton {
+        flex: 0 0 150px;
+        width: 150px;
+    }
+
+
+    .buttons .submitButton {
+        flex: 0 0 135px;
+        width: 135px;
+    }
+}
+
+@media only screen and (min-width: 1440px) {
+
+    .label {
+        font-size: 16px;
+    }
+
+    .input {
+        font-size: 16px;
+        height: 40px;
+    }
+
+    .inputDate {
+        height: 48px;
+    }
+
+    .buttons button {
+        height: 42px;
+    }
+
+    .buttons .submitButton {
+        flex: 0 0 149px;
+        width: 149px;
+    }
+
+    .buttons .cancelButton {
+        flex: 0 0 165px;
+        width: 165px;
+    }
+}

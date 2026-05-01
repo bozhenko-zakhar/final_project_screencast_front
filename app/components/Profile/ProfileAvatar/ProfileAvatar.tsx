@@ -43,19 +43,21 @@ export default function ProfileAvatar({ user }: ProfileAvatarProps) {
         width={120}
         height={120}
       />
-      <div className={css.infoUser}>
-        <p className={css.name}>{user.username}</p>
-        <p className={css.email}>{user.email}</p>
-      </div>
+      <div className={css.content}>
+        <div className={css.infoUser}>
+          <p className={css.name}>{user.username}</p>
+          <p className={css.email}>{user.email}</p>
+        </div>
 
-      <button
-        className={css.button}
-        type="button"
-        onClick={() => inputRef.current?.click()}
-        disabled={isPending}
-      >
-        {isPending ? "Завантаження..." : "Завантажити нове фото"}
-      </button>
+        <button
+          className={css.button}
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          disabled={isPending}
+        >
+          {isPending ? "Завантаження..." : "Завантажити нове фото"}
+        </button>
+      </div>
 
       <input
         ref={inputRef}

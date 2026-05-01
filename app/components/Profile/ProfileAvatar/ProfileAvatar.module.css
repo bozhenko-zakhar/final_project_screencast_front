@@ -2,9 +2,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 335px;
-    margin-top: 24px;
-    background-color: #fff;
+    width: 100%;
+
+    background-color: var(--color-scheme-background);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .avatar {
@@ -12,10 +19,13 @@
     height: 132px;
     border-radius: 50%;
     object-fit: cover;
-    background-color: #eee;
+
 }
 
 .infoUser {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 12px auto 16px auto;
 }
 
@@ -25,7 +35,6 @@
     font-size: 20px;
     line-height: 140%;
     letter-spacing: 0.01em;
-    text-align: center;
     color: var(--color-scheme-text);
     margin: 0;
 }
@@ -35,7 +44,6 @@
     font-weight: 400;
     font-size: 14px;
     line-height: 150%;
-    text-align: center;
     color: var(--color-scheme-text);
     margin: 0;
 }
@@ -46,7 +54,8 @@
     border-bottom: 4px solid var(--opacity-neutral-darkest-15);
     border-radius: 100px;
     padding: 8px 20px;
-    width: 335px;
+    width: 100%;
+    max-width: 335px;
     height: 38px;
     background-color: var(--opacity-neutral-darkest-5);
     font-weight: 500;
@@ -71,4 +80,41 @@
     opacity: 0.3;
     border-bottom: 4px solid var(--opacity-neutral-darkest-15);
 
+}
+
+@media only screen and (min-width: 768px) {
+    .wrapper {
+        max-width: 768px;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 12px;
+    }
+
+    .content {
+        align-items: flex-start;
+    }
+
+    .infoUser {
+        margin: 0 auto 0 4px;
+        align-items: flex-start;
+    }
+
+    .button {
+        max-width: 218px;
+        margin-top: 16px;
+    }
+}
+
+@media only screen and (min-width: 1440px) {
+    .name {
+        font-size: 24px;
+    }
+
+    .email {
+        font-size: 16px;
+    }
+
+    .button {
+        height: 42px;
+    }
 }
