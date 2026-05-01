@@ -4,6 +4,7 @@ import "./globals.css";
 import "modern-normalize/modern-normalize.css";
 import "modern-normalize";
 import { AuthProvider } from "./providers/AuthProvider";
+import { Toaster } from "react-hot-toast";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -28,6 +29,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${lato.variable} ${comfortaa.variable}`}>
         <AuthProvider>{children}</AuthProvider>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 3000,
+            style: {
+              fontSize: "14px",
+            },
+          }}
+        />
       </body>
     </html>
   );

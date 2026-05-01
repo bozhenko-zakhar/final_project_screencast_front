@@ -17,6 +17,7 @@ import Select, {
   type DropdownIndicatorProps,
   type ClassNamesConfig,
 } from "react-select";
+import toast from "react-hot-toast";
 
 interface Props {
   user: User;
@@ -102,8 +103,11 @@ export default function ProfileEditForm({ user }: Props) {
           onSuccess: async (updatedUser) => {
             queryClient.setQueryData(["user"], updatedUser);
 
+            toast.success("Профіль оновлено");
+
             if (isEmailChanged) {
               await sendVerifyEmail(values.email);
+              toast.success("Лист підтвердження відправлено");
             }
 
             resetForm({
