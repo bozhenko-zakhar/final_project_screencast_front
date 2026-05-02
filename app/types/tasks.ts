@@ -1,17 +1,28 @@
+export interface BackendTask {
+  _id: string;
+  userId: string;
+  date: string;
+  name: string;
+  isDone: boolean;
+  __v: number;
+}
+
 export interface Task {
-  id: string;
-  title: string;
-  createdAt: string;
-  isCompleted: boolean;
+    id: string;
+    userId: string;
+    date: string;
+    title: string;
+    isCompleted: boolean;
 }
 
 export interface CreateTaskPayload {
-  title: string;
+    name: string;
+    title: string;
   // якщо бекенд очікує дату створення з фронта:
-  createdAt?: string;
+    date?: string;
 }
 
 export interface ToggleTaskStatusPayload {
   id: string;
-  isCompleted: boolean;
+  isDone: boolean;
 }

@@ -2,13 +2,13 @@
 
 import { useAuthStore } from '@/lib/store/authStore';
 import styles from './GreetingBlock.module.css';
-import cardStyles from '../DashboardPage/DashboardPage.module.css';
+
 
 const GreetingBlock = () => {
   const user = useAuthStore((state) => state.user);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
-  const userName = user?.username;
+  const userName = user?.name?.trim();
 
   const greetingText = isAuthenticated
     ? `Доброго ранку, ${userName}!`
