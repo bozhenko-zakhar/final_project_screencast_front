@@ -4,6 +4,7 @@ import { DashBoardPage } from "@/components/DashBoardPage/DashBoardPage";
 import "modern-normalize/modern-normalize.css";
 import "modern-normalize";
 import { AuthProvider } from "./providers/AuthProvider";
+import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 
 
 const lato = Lato({
@@ -29,7 +30,10 @@ export default function RootLayout({
     <html lang="en">
       {/* <body className={`${geistSans.variable} ${geistMono.variable} ${lato.className} ${comfortaa.className}` }> */}
 		<body className={`${lato.className} ${comfortaa.className}`}>		
-		  <AuthProvider>{children}</AuthProvider>
+			  <TanStackProvider>
+				  <AuthProvider>{children}</AuthProvider>
+			  </TanStackProvider>
+			  
       </body>
     </html>
   );

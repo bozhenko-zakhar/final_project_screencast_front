@@ -17,7 +17,6 @@ export interface Task {
 
 export interface CreateTaskPayload {
     name: string;
-    title: string;
   // якщо бекенд очікує дату створення з фронта:
     date?: string;
 }
