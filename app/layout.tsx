@@ -1,9 +1,7 @@
 import { Lato, Comfortaa } from "next/font/google";
 import "./globals.css";
-import { DashBoardPage } from "@/components/DashBoardPage/DashBoardPage";
 import "modern-normalize/modern-normalize.css";
 import "modern-normalize";
-import { AuthProvider } from "./providers/AuthProvider";
 
 
 const lato = Lato({
