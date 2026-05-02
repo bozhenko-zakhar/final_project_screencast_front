@@ -1,7 +1,134 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+* {
+  box-sizing: border-box;
 }
+
+:root {
+  --color-white: #fff;
+  --color-neutral-darkest: #000;
+
+  --color-neutral-lightest: #f2f2f2;
+  --color-neutral-lighter: #d8d8d8;
+  --color-neutral-light: #b2b2b2;
+  --color-neutral: #7f7f7f;
+  --color-neutral-dark: #4c4c4c;
+  --color-neutral-darker: #191919;
+  --input-bg: var(--opacity-neutral-darkest-5);
+
+  --opacity-neutral-darkest-5: rgba(0, 0, 0, 0.05);
+  --input-bg: rgba(0, 0, 0, 0.05);
+  --input-text: #000;
+  --input-border-focus: #fff4f6;
+
+  --input-bg: #f6f6f6;
+  --input-text: #000;
+  --input-border-focus: #ffdae0;
+  --control-focus-border: var(--color-oasis);
+  --input-border: transparent;
+  --input-border-error: #c60000;
+  --input-shadow-focus: 0 0 0 2px rgba(255, 244, 246, 0.6);
+
+  --opacity-transparent: rgba(255, 255, 255, 0);
+  --opacity-neutral-darkest-5: rgba(0, 0, 0, 0.05);
+  --opacity-neutral-darkest-10: rgba(0, 0, 0, 0.1);
+  --opacity-neutral-darkest-15: rgba(0, 0, 0, 0.15);
+  --opacity-neutral-darkest-20: rgba(0, 0, 0, 0.2);
+  --opacity-neutral-darkest-30: rgba(0, 0, 0, 0.3);
+  --opacity-neutral-darkest-40: rgba(0, 0, 0, 0.4);
+  --opacity-neutral-darkest-50: rgba(0, 0, 0, 0.5);
+  --opacity-neutral-darkest-60: rgba(0, 0, 0, 0.6);
+
+  --opacity-white-5: rgba(255, 255, 255, 0.05);
+  --opacity-white-10: rgba(255, 255, 255, 0.1);
+  --opacity-white-15: rgba(255, 255, 255, 0.15);
+  --opacity-white-20: rgba(255, 255, 255, 0.2);
+  --opacity-white-30: rgba(255, 255, 255, 0.3);
+  --opacity-white-40: rgba(255, 255, 255, 0.4);
+  --opacity-white-50: rgba(255, 255, 255, 0.5);
+  --opacity-white-60: rgba(255, 255, 255, 0.6);
+
+  --color-oasis-lightest: #fefdf9;
+  --color-oasis-lighter: #fefbf4;
+  --color-oasis-light: #fef1db;
+  --color-oasis: #feeccc;
+  --color-oasis-dark: #cbbca3;
+  --color-oasis-darker: #655e51;
+  --color-oasis-darkest: #4c463d;
+
+  --color-pastel-pink-lightest: #fff9fa;
+  --color-pastel-pink-lighter: #fff4f6;
+  --color-pastel-pink-light: #ffdae0;
+  --color-pastel-pink: #ffcbd3;
+  --color-pastel-pink-dark: #cca2a8;
+  --color-pastel-pink-darker: #665154;
+  --color-pastel-pink-darkest: #4c3c3f;
+
+  --color-french-pass-lightest: #fbfefe;
+  --color-french-pass-lighter: #e5fafe;
+  --color-french-pass-light: #c4f2fe;
+  --color-french-pass: #adeffe;
+  --color-french-pass-dark: #98c1cb;
+  --color-french-pass-darker: #4c6065;
+  --color-french-pass-darkest: #39484c;
+
+  --color-scheme-background: var(--color-white);
+  --color-scheme-text: var(--color-neutral-darkest);
+  --color-scheme-border: var(--opacity-neutral-darkest-15);
+
+  --color-scheme-foreground: var(--color-oasis-light);
+  --color-scheme-foreground-alt: var(--color-oasis-lighter);
+  --color-scheme-accent: var(--color-oasis);
+  --color-scheme-accent-dark: var(--color-oasis-dark);
+
+  --color-red: #c60000;
+
+  --font-family: 'Lato', sans-serif;
+  --second-family: 'Comfortaa', sans-serif;
+}
+
+body[data-theme='girl'] {
+  --color-scheme-foreground-alt: var(--color-pastel-pink-lighter);
+  --color-scheme-foreground: var(--color-pastel-pink-light);
+  --color-scheme-accent: var(--color-pastel-pink);
+  --color-scheme-accent-dark: var(--color-pastel-pink-dark);
+  --input-bg: #fff0f5;
+  --input-text: #000;
+  --input-border-focus: #ffb6c1;
+  --input-border: transparent;
+  --input-border-focus: #ffdae0;
+  --input-border-error: #c60000;
+  --input-shadow-focus: 0 0 0 2px rgba(255, 218, 224, 0.6);
+  --control-focus-border: var(--color-pastel-pink);
+}
+
+body[data-theme='boy'] {
+  --color-scheme-foreground-alt: var(--color-french-pass-lighter);
+  --color-scheme-foreground: var(--color-french-pass-light);
+  --color-scheme-accent: var(--color-french-pass);
+  --color-scheme-accent-dark: var(--color-french-pass-dark);
+  --input-bg: #eef7ff;
+  --input-text: #000;
+  --input-border-focus: #9ecbff;
+  --control-focus-border: var(--color-french-pass);
+  --input-bg: #f0f6ff;
+  --input-border: transparent;
+  --input-border-focus: #d6e4ff;
+  --input-border-error: #c60000;
+  --input-shadow-focus: 0 0 0 2px rgba(214, 228, 255, 0.6);
+}
+
+body {
+  font-family: var(--font-family);
+  line-height: 1.5;
+  margin: 0;
+  background-color: var(--color-scheme-background);
+  color: var(--color-scheme-text);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
 
 @media (prefers-color-scheme: dark) {
   :root {
