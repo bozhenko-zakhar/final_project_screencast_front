@@ -3,6 +3,7 @@ import "./globals.css";
 import "modern-normalize/modern-normalize.css";
 import "modern-normalize";
 
+
 const lato = Lato({
 	subsets: ["latin"],
 	weight: ["300", "400", "700", "900"],
@@ -24,8 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${lato.className} ${comfortaa.className}` }>
-				{children}
+      {/* <body className={`${geistSans.variable} ${geistMono.variable} ${lato.className} ${comfortaa.className}` }> */}
+		<body className={`${lato.className} ${comfortaa.className}`}>		
+		  <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
