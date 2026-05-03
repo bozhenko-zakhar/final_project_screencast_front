@@ -11,18 +11,35 @@ const titleMap: Record<string, string> = {
 	profile: "Профіль",
 	edit: "Редагування",
 	diary: "Щоденник",
-	journey: "Подорож"
+	journey: "Подорож",
+	new: "Новий запис"
 };
 
 const Breadcrumbs = () => {
 	const pathname = usePathname();
 	const segments = pathname.split("/").filter(Boolean);
 
+	const formatSegmentLabel = (segment: string) => {
+		if (titleMap[segment]) {
+			return titleMap[segment];
+		}
+
+		// Hide raw ids/slugs in breadcrumbs and show a stable human label.
+		const isIdLikeSegment = /^[a-f0-9-]{8,}$/i.test(segment) || /^\d+$/.test(segment);
+		if (isIdLikeSegment) {
+			return "Запис";
+		}
+
+		return decodeURIComponent(segment)
+			.replace(/-/g, " ")
+			.replace(/^\p{L}/u, (letter) => letter.toUpperCase());
+	};
+
 	const crumbs = [
 		{ href: "/", label: "Мій день" },
 		...segments.map((segment, index) => ({
 			href: `/${segments.slice(0, index + 1).join("/")}`,
-			label: titleMap[segment] ?? segment
+			label: formatSegmentLabel(segment)
 		}))
 	];
 

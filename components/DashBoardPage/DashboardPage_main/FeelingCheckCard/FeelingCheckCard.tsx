@@ -59,5 +59,3 @@ const FeelingCheckCard = () => {
 };
 
 export default FeelingCheckCard;
-
-

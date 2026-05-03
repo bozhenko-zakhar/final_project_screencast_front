@@ -3,7 +3,6 @@
 import { useAuthStore } from '@/lib/store/authStore';
 import styles from './GreetingBlock.module.css';
 
-
 const GreetingBlock = () => {
   const user = useAuthStore((state) => state.user);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
