@@ -19,7 +19,7 @@ const MomTipCard = () => {
   return (
     <section className={`${cardStyles.card}  ${css.advicesForMom}`}>
       <div className={css.advicesForMomWrap}>
-        <h3 className={css.babyContainerHeaderline}>Порада для мами</h3>
+        <h3 className={css.babyContainerHeaderline}>Порада для мами </h3>
         <p className={css.momDailyTips}>{babyWeek?.momDailyTips}</p>
       </div>
     </section>
