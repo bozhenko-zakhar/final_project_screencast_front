@@ -24,6 +24,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+	console.log("LAYOUT WORKING");
   return (
     <html lang="en">
 		  <body className={`${lato.className} ${comfortaa.className}`}>		
