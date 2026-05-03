@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 import Breadcrumbs from "../components/Layout/Breadcrumbs/Breadcrumbs";
 import Header from "../components/Layout/Header/Header";
 
@@ -17,6 +18,8 @@ export default function LehlehkaLayout({
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	return (
+		<>
+		<Toaster position="top-right" />
 		<div className={css.shell}>
 			<SideBar isOpen={isMobileMenuOpen} setBarInactive={() => setIsMobileMenuOpen(false)} />
 			<div className={css.content}>
@@ -27,5 +30,6 @@ export default function LehlehkaLayout({
 				</div>
 			</div>
 		</div>
+		</>
 	);
 }

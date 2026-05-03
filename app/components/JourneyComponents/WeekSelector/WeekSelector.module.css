@@ -18,6 +18,21 @@
 }
 
 
+/* .wrapper :global(.swiper) {
+  overflow: visible;
+  padding-block: 8px;
+}
+
+.wrapper :global(.swiper-wrapper) {
+  align-items: center;
+}
+
+.wrapper :global(.swiper-slide) {
+  width: auto;
+  height: auto;
+  display: flex;
+} */
+
 .buttons {
   list-style-type: none;
   padding: 0;

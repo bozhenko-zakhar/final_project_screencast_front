@@ -21,6 +21,8 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 	const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
+	
+
 	const navItems = [
 		{ href: "/", label: "Мій день" },
 		{ href: "/journey", label: "Подорож" },

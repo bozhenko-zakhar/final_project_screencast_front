@@ -1,3 +1,4 @@
+
 "use client";
 
 import css from "./JourneyDetails.module.css";
@@ -14,6 +15,15 @@ import TasksReminderCard from "@/app/components/TasksReminderCard/TasksReminderC
 import GreetingBlock from "@/app/components/GreetingBlock/GreetingBlock";
 import BabyMomToggle from "@/app/components/JourneyComponents/BabyMomToggle/BabyMomToggle";
 import WeekSelector from "@/app/components/JourneyComponents/WeekSelector/WeekSelector";
+
+export async function getCurrentWeek() {
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/weeks/private`
+  );
+
+  return res.data.currentWeek as number;
+}
+
 
 export async function getMomStateInfo(weekNumber?: number) {
   const url = `${process.env.NEXT_PUBLIC_API_URL}/api/weeks/mom-state`;
@@ -57,6 +67,18 @@ type JourneyDetailsProps = {
 
 const JourneyDetails = ({ weekNumber }: JourneyDetailsProps) => {
   const [mode, setMode] = useState("baby");
+  const [selectedWeek, setSelectedWeek] = useState();
+
+//    const { data: userCurrentWeek } = useQuery({
+//     queryKey: ["current-week"],
+//     queryFn: ()=> getCurrentWeek(),
+//  });
+
+const userCurrentWeek = 16;
+
+const handleClick = (newWeek) => {
+  setSelectedWeek(newWeek);
+}
 
   const {
     data: babyData,
@@ -102,7 +124,7 @@ const JourneyDetails = ({ weekNumber }: JourneyDetailsProps) => {
     <>
       <GreetingBlock />
 
-      <WeekSelector currentWeek={weekNumber} />
+      <WeekSelector userCurrentWeek={userCurrentWeek} viewWeek={selectedWeek} onClick={selectedWeek}/>
       <section className={css.journeySection}>
         <BabyMomToggle mode={mode} setMode={setMode} />
 
@@ -120,3 +142,4 @@ const JourneyDetails = ({ weekNumber }: JourneyDetailsProps) => {
 };
 
 export default JourneyDetails;
+

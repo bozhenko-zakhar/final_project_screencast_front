@@ -1,78 +1,14 @@
-// "use client";
 
-// import { useRouter } from "next/navigation";
-// import css from "./WeekSelector.module.css";
-// import { useState } from "react";
-
-// type WeekSelectorProps = {
-//   currentWeek: number;
-// };
-
-// export default function WeekSelector({
-//   currentWeek =
-// }: WeekSelectorProps) {
-  
-//   const router = useRouter();
-
-//   const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
-//   // currentWeek = weeks[10];
-
-
-
-//   return (
-//     <div className={css.wrapper}>
-//       {weeks.map((week) => {
-//         const isCurrent = week === currentWeek;
-//         const isActive = week <= currentWeek;
-//         const isDisabled = week > currentWeek;
-
-//         return (
-//           <button 
-//             key={week}
-//                 ref={(el) => {
-//               //  auto-scroll current week when it renders
-//               if (isCurrent && el) {
-//                 el.scrollIntoView({
-//                   behavior: "smooth",
-//                   inline: "center",
-//                   block: "nearest",
-//                 });
-//               }
-//             }}
-//             className={`
-//               ${css.button}
-//               ${isCurrent ? css.active : ""}
-//               ${isActive ? css.button : ""}
-//               ${isDisabled ? css.disabled : ""}
-//             `}
-//             disabled={isDisabled}
-//             onClick={() => {
-//               if (isDisabled) return;
-//               router.push(`/journey/${week}`);
-//             }}
-//             onMouseEnter={() => {
-//               if (!isDisabled) {
-//                 router.prefetch(`/journey/${week}`);
-//               }
-//             }}
-//           >
-//             <span className={css.number}>{week}</span>
-//             Тиждень
-//           </button>
-//         );
-//       })}
-//     </div>
-//   );
-// }
 
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import css from "./WeekSelector.module.css";
 
 type WeekSelectorProps = {
-  userCurrentWeek: number; // real pregnancy week
-  viewWeek: number;        // current URL week
+  userCurrentWeek: number;
+  viewWeek: number;
 };
 
 export default function WeekSelector({
@@ -83,40 +19,63 @@ export default function WeekSelector({
 
   const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
 
+  /**
+   * 🎯 ACTIVE WEEK = what is currently selected in UI
+   * first load → userCurrentWeek
+   * after navigation → viewWeek
+   */
+  const activeWeek = viewWeek ?? userCurrentWeek;
+
+  /**
+   * store DOM nodes instead of single ref
+   */
+  const weekRefs = useRef<Record<number, HTMLButtonElement | null>>({});
+
+  /**
+   * scroll whenever activeWeek changes
+   */
+  useEffect(() => {
+    const el = weekRefs.current[activeWeek];
+
+    if (!el) return;
+
+    el.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest",
+    });
+  }, [activeWeek]);
+
   return (
     <div className={css.wrapper}>
       {weeks.map((week) => {
-        const isUserWeek = week === userCurrentWeek;
-        const isSelectedWeek = week === viewWeek;
-        const isPastOrCurrent = week <= userCurrentWeek;
+        const isCurrentUserWeek = week === userCurrentWeek;
+        const isActive = week === activeWeek;
         const isFuture = week > userCurrentWeek;
+        const isClickable = week <= userCurrentWeek;
 
         return (
           <button
             key={week}
-            disabled={isFuture}
+            ref={(el) => {
+              weekRefs.current[week] = el;
+            }}
+            disabled={!isClickable}
             className={`
               ${css.button}
-              ${isSelectedWeek ? css.active : ""}
-              ${isUserWeek ? css.active : ""}
+              ${isActive ? css.active : ""}
+              ${isCurrentUserWeek ? css.currentWeek : ""}
               ${isFuture ? css.disabled : ""}
             `}
-            ref={(el) => {
-              // center USER current week (not view week)
-              if (isUserWeek && el) {
-                el.scrollIntoView({
-                  behavior: "smooth",
-                  inline: "center",
-                  block: "nearest",
-                });
-              }
-            }}
             onClick={() => {
-              if (isFuture) return;
+              if (!isClickable) return;
+
+              if (week === activeWeek) return;
+
               router.push(`/journey/${week}`);
             }}
             onMouseEnter={() => {
-              if (!isFuture) {
+              if (isClickable) {
                 router.prefetch(`/journey/${week}`);
               }
             }}
