@@ -5,6 +5,7 @@ import "modern-normalize";
 import { AuthProvider } from "./providers/AuthProvider";
 
 
+
 const lato = Lato({
 	subsets: ["latin"],
 	weight: ["300", "400", "700", "900"],

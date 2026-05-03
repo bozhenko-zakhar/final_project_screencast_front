@@ -1,15 +1,23 @@
 import css from "./StatusBlock.module.css";
 import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
-import * as babyStates from "@/lehlehka.baby_states.json";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCurrentBabyWeek } from "@/app/lib/api/babyClientApi";
+import { useAuthStore } from "@/lib/store/authStore";
 
 const StatusBlock = () => {
-  const data = babyStates[0];
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  const { data: dataWeeks } = useQuery({
+    queryKey: ["dataWeeks"],
+    queryFn: fetchCurrentBabyWeek,
+    enabled:isAuthenticated
+  });
 
   return (
     <section className={css.daysCountWrapper}>
       <div className={`${cardStyles.card} ${css.weeks}`}>
         <p className={css.title}>Тиждень</p>
-        <h3 className={css.days}>{data.weekNumber}</h3>
+        <h3 className={css.days}>{dataWeeks?.weekNumber}</h3>
       </div>
       <div className={`${cardStyles.card} ${css.weeks}`}>
         <p className={css.title}>Днів до зустрічі</p>

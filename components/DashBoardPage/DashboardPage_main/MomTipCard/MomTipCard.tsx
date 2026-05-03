@@ -1,16 +1,26 @@
+"use client";
+
 import css from "./MomTipCard.module.css";
 
-import * as babyStates from "@/lehlehka.baby_states.json";
 import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCurrentBabyWeek } from "@/app/lib/api/babyClientApi";
+import { useAuthStore } from "@/lib/store/authStore";
 
 const MomTipCard = () => {
-  const data = babyStates[0];
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  const { data: babyWeek } = useQuery({
+    queryKey: ["babyWeek"],
+    queryFn: fetchCurrentBabyWeek,
+    enabled: isAuthenticated
+  });
 
   return (
     <section className={`${cardStyles.card}  ${css.advicesForMom}`}>
       <div className={css.advicesForMomWrap}>
         <h3 className={css.babyContainerHeaderline}>Порада для мами</h3>
-        <p className={css.momDailyTips}>{data.momDailyTips}</p>
+        <p className={css.momDailyTips}>{babyWeek?.momDailyTips}</p>
       </div>
     </section>
   );
