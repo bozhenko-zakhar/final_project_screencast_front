@@ -80,7 +80,7 @@ const TasksReminderCard = ({babyImageUrl}: TasksReminderCardProps) => {
   const handleToggleTask = (task: Task) => {
     toggleStatusMutation.mutate({
       id: task.id,
-      isCompleted: !task.isCompleted,
+      isDone: !task.isCompleted,
     });
   };
 

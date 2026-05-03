@@ -53,8 +53,7 @@
 
 /* Базова картка для всіх блоків Dashboard */
 .card {
-    background-color: #FFF4F6;
-    /* підставиш точний з макету */
+    background-color: #fefbf4;
     border-radius: 32px;
     padding: 24px 24px;
 }
@@ -63,7 +62,6 @@
 @media screen and (min-width: 1024px) {
     .cardFixedHeight {
         height: 499px;
-        /* поставиш точні значення з макету */
         overflow-y: auto;
     }
         .greetingHeight {
