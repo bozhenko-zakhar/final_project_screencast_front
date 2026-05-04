@@ -1,12 +1,28 @@
-import css from "./page.module.css";
+import css from './page.module.css';
 
-const LoginPage = () => {
-	return (
-		<section className={css.container}>
-			<h1 className={css.title}>Увійти</h1>
-			<p className={css.text}>Сторінка логіну.</p>
-		</section>
-	);
-};
+import clsx from 'clsx';
+import Image from 'next/image';
 
-export default LoginPage;
+import LoginForm from '@/components/LoginForm/LoginForm';
+
+export default function Login() {
+  return (
+    <main>
+      <div className={clsx(css.box, 'container')}>
+        <div className={css.formBox}>
+          <LoginForm />
+        </div>
+        <div className={css.imageBox}>
+          <Image
+            src="/image/login.png"
+            alt="eggs"
+            fill
+            className={css.image}
+            sizes="(min-width: 1440px) 50vw, 0px"
+            priority
+          />
+        </div>
+      </div>
+    </main>
+  );
+}
