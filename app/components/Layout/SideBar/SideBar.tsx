@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import AuthBar from "../AuthBar/AuthBar";
 import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
 import UserBar from "../UserBar/UserBar";
-import { useAuth } from "@/app/providers/AuthProvider";
+import { useAuthStore } from "@/lib/store/authStore";
 import css from "./SideBar.module.css";
 
 interface Props {
@@ -17,9 +17,12 @@ interface Props {
 const SideBar = ({ setBarInactive, isOpen }: Props) => {
 	const pathname = usePathname();
 	const router = useRouter();
-	const { isAuthenticated, user, clearUser } = useAuth();
+	const user = useAuthStore((state: ReturnType<typeof useAuthStore.getState>) => state.user);
+	const isAuthenticated = useAuthStore((state: ReturnType<typeof useAuthStore.getState>) => state.isAuthenticated);
+	const clearUser = useAuthStore((state: ReturnType<typeof useAuthStore.getState>) => state.clearUser);
 	const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [logoutError, setLogoutError] = useState<string | null>(null);
 
 	const navItems = [
 		{ href: "/", label: "Мій день" },
@@ -42,12 +45,19 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 
 	const handleLogout = async () => {
 		setIsLoading(true);
+		setLogoutError(null);
 
 		try {
-			await fetch("/api/auth/logout", { method: "POST" });
+			const response = await fetch("/api/auth/logout", { method: "POST" });
+			if (!response.ok) {
+				throw new Error("Logout request failed");
+			}
+
 			clearUser();
 			setIsConfirmationOpen(false);
 			router.push("/");
+		} catch {
+			setLogoutError("Не вдалося вийти. Спробуйте ще раз.");
 		} finally {
 			setIsLoading(false);
 		}
@@ -114,10 +124,13 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 				<div className={css.bottom}>
 					{isAuthenticated && user ? (
 						<UserBar
-							name={user.name}
+							name={user.username}
 							email={user.email}
-							avatar={user.avatar}
-							onLogout={() => setIsConfirmationOpen(true)}
+							avatar={user.avatar ?? user.username.slice(0, 2).toUpperCase()}
+							onLogout={() => {
+								setLogoutError(null);
+								setIsConfirmationOpen(true);
+							}}
 							isLoading={isLoading}
 						/>
 					) : (
@@ -128,9 +141,13 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 
 			<ConfirmationModal
 				isOpen={isConfirmationOpen}
-				onCancel={() => setIsConfirmationOpen(false)}
+				onCancel={() => {
+					setLogoutError(null);
+					setIsConfirmationOpen(false);
+				}}
 				onConfirm={handleLogout}
 				isLoading={isLoading}
+				errorMessage={logoutError ?? undefined}
 			/>
 		</>
 	)
