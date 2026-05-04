@@ -19,14 +19,14 @@ const mapTaskFromBackend = (task: BackendTask): Task => {
 
 // GET /tasks – всі задачі користувача
 export const fetchTasks = async (): Promise<Task[]> => {
-  const { data } = await nextServer.get<BackendTask[]>('/api/tasks');
+  const { data } = await nextServer.get<BackendTask[]>('/tasks');
   return data.map(mapTaskFromBackend);
 };
 
 // POST /tasks – створення нового завдання
 export const createTask = async (payload: CreateTaskPayload):
     Promise<Task> => {
-  const { data } = await nextServer.post<BackendTask>('/api/tasks', payload);
+  const { data } = await nextServer.post<BackendTask>('/tasks', payload);
   return mapTaskFromBackend(data);
 };
 
@@ -36,6 +36,6 @@ export const toggleTaskStatus = async ({
     isDone,
 }: ToggleTaskStatusPayload):
     Promise<Task> => {
-  const { data } = await nextServer.patch<BackendTask>(`/api/tasks/${id}`, { isDone });
+  const { data } = await nextServer.patch<BackendTask>(`/tasks/${id}`, { isDone });
     return mapTaskFromBackend( data );
 };

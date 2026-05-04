@@ -2,7 +2,7 @@ import { create } from "zustand";
 import type { User } from "../../types/user";
 
 interface AuthStore {
-  user: User | null;
+  user: User| Partial<User> | null;
   isAuthenticated: boolean;
   setUser: (user: User) => void;
   clearUser: () => void;
