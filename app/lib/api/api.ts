@@ -5,6 +5,3 @@ export const nextServer = axios.create({
   baseURL: "/api",
   withCredentials: true,  //додаються cookies до запитів
 });
-
-
-

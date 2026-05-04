@@ -3,15 +3,19 @@ import { nextServer } from './api';
 import type { BackendBabyWeek, BabyWeek } from '@/app/types/baby';
 
 export const fetchCurrentBabyWeek = async (): Promise<BabyWeek> => {
+
+  localStorage.setItem("token", "demo_user_token");
   // Бекенд повертає масив тижнів
-  const { data } = await nextServer.get<BackendBabyWeek[]>(
-    '/dashboard/baby-weeks',// ← твій реальний шлях, який повертає масив
+  const res = await nextServer.get<BackendBabyWeek[]>(
+    "/weeks/baby-state",// ← твій реальний шлях, який повертає масив
+    
   );
 
-  // Якщо не знаємо currentWeek, беремо перший елемент масиву як поточний тиждень
-  const current = data[0];
 
-  if (!current) {
+  // Якщо не знаємо currentWeek, беремо перший елемент масиву як поточний тиждень
+  const current = res.data[0];
+
+  if (!current) {3
     throw new Error('No baby week data received');
   } //це не треба
 
@@ -28,4 +32,9 @@ export const fetchCurrentBabyWeek = async (): Promise<BabyWeek> => {
     interestingFact: current.interestingFact,
     momDailyTips: current.momDailyTips,
   };
+};
+
+export const fetchPrivateWeeks = async () => {
+  const res = await nextServer.get("/weeks/private");
+  return res.data;
 };
