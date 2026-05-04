@@ -1,0 +1,26 @@
+.main {
+    max-width: 335px;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 16px;
+    padding-bottom: 55px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+@media only screen and (min-width: 768px) {
+    .main {
+        max-width: 704px;
+        padding-bottom: 170px;
+    }
+}
+
+@media only screen and (min-width: 1440px) {
+
+
+    .main {
+        max-width: 580px;
+        padding-bottom: 216px;
+    }
+}

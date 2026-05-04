@@ -1,0 +1,120 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    background-color: var(--color-scheme-background);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.avatar {
+    width: 132px;
+    height: 132px;
+    border-radius: 50%;
+    object-fit: cover;
+
+}
+
+.infoUser {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 12px auto 16px auto;
+}
+
+.name {
+    font-family: var(--second-family);
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 140%;
+    letter-spacing: 0.01em;
+    color: var(--color-scheme-text);
+    margin: 0;
+}
+
+.email {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: var(--color-scheme-text);
+    margin: 0;
+}
+
+.button {
+    font-family: var(--font-family);
+    border: none;
+    border-bottom: 4px solid var(--opacity-neutral-darkest-15);
+    border-radius: 100px;
+    padding: 8px 20px;
+    width: 100%;
+    max-width: 335px;
+    height: 38px;
+    background-color: var(--opacity-neutral-darkest-5);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--color-scheme-text);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.button:hover,
+.button:focus {
+    background-color: var(--color-scheme-foreground);
+
+}
+
+.button:active {
+    background-color: var(--color-scheme-accent);
+}
+
+.button:disabled {
+    background-color: var(--opacity-neutral-darkest-5);
+    opacity: 0.3;
+    border-bottom: 4px solid var(--opacity-neutral-darkest-15);
+
+}
+
+@media only screen and (min-width: 768px) {
+    .wrapper {
+        max-width: 768px;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 12px;
+    }
+
+    .content {
+        align-items: flex-start;
+    }
+
+    .infoUser {
+        margin: 0 auto 0 4px;
+        align-items: flex-start;
+    }
+
+    .button {
+        max-width: 218px;
+        margin-top: 16px;
+    }
+}
+
+@media only screen and (min-width: 1440px) {
+    .name {
+        font-size: 24px;
+    }
+
+    .email {
+        font-size: 16px;
+    }
+
+    .button {
+        height: 42px;
+    }
+}
