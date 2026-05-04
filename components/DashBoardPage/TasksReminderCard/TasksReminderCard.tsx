@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 
 import styles from './TasksReminderCard.module.css';
-import cardStyles from '../../DashboardPage_main/DashboardPage_main.module.css';
+import cardStyles from '../DashboardPage_main/DashboardPage_main.module.css';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/lib/store/authStore';
 import { useState } from 'react';
@@ -11,7 +11,7 @@ import { fetchTasks, toggleTaskStatus } from '@/lib/tasksClientApi';
 import { Task } from '@/app/types/tasks';
 import toast from 'react-hot-toast';
 import EmojiLoader from '@/components/EmojiLoader/EmojiLoader';
-import AddTaskModal from "@/components/modals/AddTaskModal/AddTaskModal";
+// import AddTaskModal from "@/components/modals/AddTaskModal/AddTaskModal";
 
   
 const TasksReminderCard = () => {
@@ -135,10 +135,10 @@ const TasksReminderCard = () => {
           </ul>
         )}
       </div>
-      <AddTaskModal
+      {/* <AddTaskModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-      />
+      /> */}
     </section>
   );
 };

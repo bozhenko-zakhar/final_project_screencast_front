@@ -4,12 +4,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import styles from "./FeelingCheckCard.module.css";
-import cardStyles from "../DashboardPage_main.module.css";
+import cardStyles from "../DashboardPage_main/DashboardPage_main.module.css";
 
 import { useAuthStore } from "@/lib/store/authStore";
 
-import DiaryEntryModal from "@/app/components/AddDiaryEntryModal/AddDiaryEntryModal";
-import { DiaryEntryForm } from "@/app/components/AddDiaryEntryForm/AddDiaryEntryForm";
+// import DiaryEntryModal from "@/app/components/AddDiaryEntryModal/AddDiaryEntryModal";
+// import { DiaryEntryForm } from "@/app/components/AddDiaryEntryForm/AddDiaryEntryForm";
 
 const FeelingCheckCard = () => {
   const router = useRouter();
@@ -43,11 +43,11 @@ const FeelingCheckCard = () => {
           Зробити запис у щоденник
         </button>
       </section>
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <DiaryEntryModal onClose={handleCloseModal} title="Новий запис">
           <DiaryEntryForm onClose={handleCloseModal} />
         </DiaryEntryModal>
-      )}
+      )} */}
     </>
   );
 };

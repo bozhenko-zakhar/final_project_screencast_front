@@ -3,7 +3,6 @@ import { nextServer } from '../app/lib/api/api'
 import {
     BackendTask,
     Task,
-    // CreateTaskPayload,
     ToggleTaskStatusPayload
 } from "@/app/types/tasks";
 
@@ -17,20 +16,11 @@ const mapTaskFromBackend = (task: BackendTask): Task => {
   };
 };
 
-// GET /tasks – всі задачі користувача
 export const fetchTasks = async (): Promise<Task[]> => {
   const { data } = await nextServer.get<BackendTask[]>('/api/tasks');
   return data.map(mapTaskFromBackend);
 };
 
-// POST /tasks – створення нового завдання
-// export const createTask = async (payload: CreateTaskPayload):
-//     Promise<Task> => {
-//   const { data } = await nextServer.post<BackendTask>('/api/tasks', payload);
-//   return mapTaskFromBackend(data);
-// };
-
-// PATCH /tasks/:id – зміна статусу
 export const toggleTaskStatus = async ({
     id,
     isDone,

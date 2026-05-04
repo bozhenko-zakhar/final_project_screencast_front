@@ -2,9 +2,9 @@
 
 import css from "./MomTipCard.module.css";
 
-import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
+import cardStyles from "../DashboardPage_main/DashboardPage_main.module.css";
 import { useQuery } from "@tanstack/react-query";
-import { fetchCurrentBabyWeek } from "@/app/lib/api/babyClientApi";
+import { fetchCurrentBabyWeek } from "../../../lib/babyClientApi";
 import { useAuthStore } from "@/lib/store/authStore";
 
 const MomTipCard = () => {
