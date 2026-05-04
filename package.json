@@ -13,6 +13,7 @@
     "axios": "^1.15.2",
     "clsx": "^2.1.1",
     "cookie": "^1.1.1",
+    "antd": "^6.3.7",
     "formik": "^2.4.9",
     "modern-normalize": "^3.0.1",
     "mongodb": "^7.2.0",
