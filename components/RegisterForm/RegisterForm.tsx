@@ -11,7 +11,7 @@ import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '@/lib/store/authStore';
 import type { RegisterRequest,} from '@/app/types/auth';
-import { User } from '@/app/types/user';
+import { User } from '@/types/user';
 
 
 const RegisterFormSchema = Yup.object().shape({
@@ -60,7 +60,7 @@ export default function RegisterForm() {
 
               setUser(user);
               resetForm();
-              router.push('/edit');
+              router.push('/');
             } catch (error: unknown) {
               if (isAxiosError(error)) {
                 toast.error(
