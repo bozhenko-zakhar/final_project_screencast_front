@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation';
 import { useId } from 'react';
 import css from './RegisterForm.module.css';
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
-import { register } from '@/lib/api/clientApi';
+import { register } from '@/lib/api/clientApi/auth';
 import { isAxiosError } from 'axios';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '@/lib/store/authStore';
-import type { RegisterRequest,} from '@/app/types/auth';
-import { User } from '@/types/user';
+import type { RegisterRequest,} from '@/types/auth';
+import type { User } from '@/types/user';
 
 
 const RegisterFormSchema = Yup.object().shape({

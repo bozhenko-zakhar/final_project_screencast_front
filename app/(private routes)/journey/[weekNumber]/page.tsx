@@ -7,12 +7,12 @@ import { useState } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import toast, { Toaster } from "react-hot-toast";
 
-import BabyDevelopment from "@/app/components/JourneyComponents/BabyDevelopment/BabyDevelopment";
-import MomState from "@/app/components/JourneyComponents/MomState/MomState";
-import TasksReminderCard from "@/app/components/TasksReminderCard/TasksReminderCard";
-import GreetingBlock from "@/app/components/GreetingBlock/GreetingBlock";
-import BabyMomToggle from "@/app/components/JourneyComponents/BabyMomToggle/BabyMomToggle";
-import WeekSelector from "@/app/components/JourneyComponents/WeekSelector/WeekSelector";
+import BabyDevelopment from "@/components/JourneyComponents/BabyDevelopment/BabyDevelopment";
+import MomState from "@/components/JourneyComponents/MomState/MomState";
+import TasksReminderCard from "@/components/DashBoardPage/DashboardPage_main/TasksReminderCard/TasksReminderCard";
+import GreetingBlock from "@/components/DashBoardPage/DashboardPage_main/GreetingBlock/GreetingBlock";
+import BabyMomToggle from "@/components/JourneyComponents/BabyMomToggle/BabyMomToggle";
+import WeekSelector from "@/components/JourneyComponents/WeekSelector/WeekSelector";
 
 
 

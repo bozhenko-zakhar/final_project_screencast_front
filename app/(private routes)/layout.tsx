@@ -16,64 +16,30 @@ import SideBar from "@/components/Layout/SideBar/SideBar";
 
 import { useAuthStore } from "@/lib/store/authStore";
 
-import { getMe } from "@/lib/api/clientApi";
+import { getMe } from "@/lib/api/clientApi/users";
 
 import css from "./layout.module.css"
 
 type Props = {
   children: React.ReactNode;
-};
-
-const queryClient = new QueryClient();
-
-function PrivateLayoutContent({ children }: Props) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const { data: user } = useQuery({
-    queryKey: ["user"],
-    queryFn: getMe,
-  });
-
-  useEffect(() => {
-    const gender = user?.gender;
-
-    document.body.dataset.theme =
-      gender === "girl" || gender === "boy" ? gender : "neutral";
-  }, [user?.gender]);
-
-  return (
-    <div className={css.container}>
-      <Header setBarActive={() => setIsMobileMenuOpen(true)} />
-      <SideBar
-        isOpen={isMobileMenuOpen}
-        setBarInactive={() => setIsMobileMenuOpen(false)}
-      />
-      <Breadcrumbs />
-      {children}
-    </div>
-  );
-
-	// return (
-	// 	<>
-	// 	<Toaster position="top-right" />
-	// 	<div className={css.shell}>
-	// 		<SideBar isOpen={isMobileMenuOpen} setBarInactive={() => setIsMobileMenuOpen(false)} />
-	// 		<div className={css.content}>
-	// 			<div className={css.container}>
-	// 				<Header setBarActive={() => setIsMobileMenuOpen(true)} />
-	// 				<Breadcrumbs />
-	// 				<main>{children}</main>
-	// 			</div>
-	// 		</div>
-	// 	</div>
-	// 	</>
-	// );
 }
 
 export default function LehlehkaLayout({ children }: Props) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <PrivateLayoutContent>{children}</PrivateLayoutContent>
-    </QueryClientProvider>
+  	<>
+			<Toaster position="top-right" />
+			<div className={css.shell}>
+				<SideBar isOpen={isMobileMenuOpen} setBarInactive={() => setIsMobileMenuOpen(false)} />
+				<div className={css.content}>
+					<div className={css.container}>
+						<Header setBarActive={() => setIsMobileMenuOpen(true)} />
+						<Breadcrumbs />
+						<main>{children}</main>
+					</div>
+				</div>
+			</div>
+	 	</>
   );
 }

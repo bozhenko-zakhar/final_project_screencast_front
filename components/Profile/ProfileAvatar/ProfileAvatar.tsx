@@ -4,8 +4,8 @@ import Image from "next/image";
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
-import { updateUserAvatar } from "@/lib/api/clientApi";
-import type { User } from "@/app/types/user";
+import { updateUserAvatar } from "@/lib/api/clientApi/users";
+import type { User } from "@/types/user";
 import css from "./ProfileAvatar.module.css";
 import toast from "react-hot-toast";
 
@@ -56,13 +56,13 @@ export default function ProfileAvatar({ user }: ProfileAvatarProps) {
       <Image
         className={css.avatar}
         src={user.avatar || "/Avatar-def.jpg"}
-        alt={user.username}
+        alt={user.name}
         width={120}
         height={120}
       />
       <div className={css.content}>
         <div className={css.infoUser}>
-          <p className={css.name}>{user.username}</p>
+          <p className={css.name}>{user.name}</p>
           <p className={css.email}>{user.email}</p>
         </div>
 

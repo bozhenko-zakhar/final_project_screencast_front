@@ -1,11 +1,15 @@
 
 "use client";
 
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+
+import * as Yup from "yup";
 import toast from "react-hot-toast";
-import { fetchEmotions, createDiaryEntry, Emotion } from "../../lib/api/serverApi";
+
+import { Emotion, fetchEmotions } from "@/lib/api/clientApi/emotions";
+import { createDiaryEntry } from "@/lib/api/clientApi/diaries";
+
 import css from "./AddDiaryEntryForm.module.css";
 
 export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
