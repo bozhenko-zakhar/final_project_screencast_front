@@ -1,0 +1,64 @@
+.descriptionAboutBaby {
+  width: 100%;
+  max-width: 335px;
+  box-sizing: border-box;
+}
+
+.aboutBabyContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.babyContainerHeaderline {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 140%;
+  letter-spacing: 0.01em;
+}
+
+.babyDescriptionContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.babyContainerImg {
+  width: 100%;
+  max-width: 257px;
+  height: 194px;
+  align-self: flex-start;
+  border-radius: 24px;
+  border: 1px rgba(0, 0, 0, 0.15) solid;
+  display: block;
+}
+
+.titlesOfBabyToday {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.babyDescriptionText {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.description {
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+@media screen and (min-width: 768px) {
+  .descriptionAboutBaby {
+    max-width: 704px;
+  }
+  
+  .babyDescriptionContainer {
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+  }
+}

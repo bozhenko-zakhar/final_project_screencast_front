@@ -5,14 +5,10 @@ import { usePathname } from "next/navigation";
 import css from "./Breadcrumbs.module.css";
 
 const titleMap: Record<string, string> = {
-	auth: "Авторизація",
-	login: "Увійти",
-	register: "Зареєструватися",
+	my_day: "Мій день",
 	profile: "Профіль",
-	edit: "Редагування",
 	diary: "Щоденник",
 	journey: "Подорож",
-	new: "Новий запис"
 };
 
 const Breadcrumbs = () => {
@@ -36,7 +32,7 @@ const Breadcrumbs = () => {
 	};
 
 	const crumbs = [
-		{ href: "/", label: "Мій день" },
+		{ href: "/", label: "Лелека" },
 		...segments.map((segment, index) => ({
 			href: `/${segments.slice(0, index + 1).join("/")}`,
 			label: formatSegmentLabel(segment)

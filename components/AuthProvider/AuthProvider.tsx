@@ -1,30 +1,34 @@
-'use client';
-import { getMe, refreshSession } from '@/lib/api/clientApi';
-import { useAuthStore } from '@/lib/store/authStore';
-import { useEffect } from 'react';
+"use client";
 
-interface AuthStoreProps {
+import { useAuthStore } from "@/lib/store/authStore";
+import { useEffect } from "react";
+
+type Props = {
   children: React.ReactNode;
-}
+};
 
-export default function AuthProvider({ children }: AuthStoreProps) {
-  const setUser = useAuthStore(state => state.setUser);
-  const clearUser = useAuthStore(state => state.clearUser);
+type User = {
+	name: string;
+	email: string;
+	avatar: string;
+};
 
-  useEffect(() => {
-    async function autorisation() {
-      const isLogin = await refreshSession();
-      if (isLogin) {
-        const user = await getMe();
-        if (user) {
-          setUser(user);
-        }
-      } else {
-        clearUser();
-      }
-    }
-    autorisation();
-  }, [clearUser, setUser]);
+export const AuthProvider = ({ children }: Props) => {
+  const setUser = useAuthStore((state) => state.setUser);
+  const clearUser = useAuthStore((state) => state.clearUser);
 
-  return children;
-}
+	useEffect(() => {
+    const fetchUser = async () => {
+      const user: User = { // тут пізніше зробити запит на отримання користувача
+				name: "Demo User",
+				email: "demo@example.com",
+				avatar: "DU"
+			};
+			
+			if (user) setUser(user);
+    };
+    fetchUser();
+  }, [setUser]);
+
+	return children
+};

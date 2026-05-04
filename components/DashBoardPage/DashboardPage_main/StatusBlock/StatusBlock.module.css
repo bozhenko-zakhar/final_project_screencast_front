@@ -1,0 +1,32 @@
+.daysCountWrapper {
+  display: flex;
+  gap: 16px; 
+  width: 100%;
+}
+
+.weeks {
+  flex: 1; 
+  height: 105px; 
+  padding: 16px;
+  box-sizing: border-box; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+}
+
+.title {
+  font-family: var(--font-family);
+  font-size: 14px;
+  line-height: 150%;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+}
+
+.days {
+  font-family: var(--headerlines-font);
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 100%;
+  letter-spacing: 0.01em;
+  margin: 0;
+}

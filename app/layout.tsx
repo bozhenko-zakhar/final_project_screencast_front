@@ -2,7 +2,8 @@ import { Lato, Comfortaa } from "next/font/google";
 import "./globals.css";
 import "modern-normalize/modern-normalize.css";
 import "modern-normalize";
-
+import { AuthProvider } from "../components/AuthProvider/AuthProvider";
+import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 
 const lato = Lato({
 	subsets: ["latin"],
@@ -23,11 +24,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+	console.log("LAYOUT WORKING");
   return (
     <html lang="en">
-      {/* <body className={`${geistSans.variable} ${geistMono.variable} ${lato.className} ${comfortaa.className}` }> */}
-		<body className={`${lato.className} ${comfortaa.className}`}>		
-		  <AuthProvider>{children}</AuthProvider>
+		  <body className={`${lato.className} ${comfortaa.className}`}>		
+			  <TanStackProvider>
+				  <AuthProvider>
+            {children}
+          </AuthProvider>
+			  </TanStackProvider>
       </body>
     </html>
   );

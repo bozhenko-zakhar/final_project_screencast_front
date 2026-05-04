@@ -7,8 +7,8 @@ import cardStyles from '../../DashboardPage_main/DashboardPage_main.module.css';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/lib/store/authStore';
 import { useState } from 'react';
-import { createTask, fetchTasks, toggleTaskStatus } from '@/app/lib/api/tasksClientApi';
-import { CreateTaskPayload, Task } from '@/app/types/tasks';
+import { createTask, fetchTasks, toggleTaskStatus } from '@/lib/api/tasks/tasksClientApi';
+import { CreateTaskPayload, Task } from '@/types/tasks';
 import toast from 'react-hot-toast';
 import PregnancyLoader from '@/components/Loading/PregnancyLoader';
 
@@ -80,7 +80,7 @@ const TasksReminderCard = ({babyImageUrl}: TasksReminderCardProps) => {
   const handleToggleTask = (task: Task) => {
     toggleStatusMutation.mutate({
       id: task.id,
-      isCompleted: !task.isCompleted,
+      isDone: !task.isCompleted,
     });
   };
 
