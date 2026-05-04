@@ -1,4 +1,4 @@
-import { User } from '@/app/types/user';
+import { User } from '@/types/user';
 import { nextServer } from './api';
 import type {
   LoginRequest,
@@ -18,7 +18,7 @@ export async function register(credentials: RegisterRequest): Promise<User> {
 }
 
 export async function getMe(): Promise<User> {
-  const res = await nextServer.get<User>('/user/me');
+  const res = await nextServer.get<User>('/users/me');
   return res.data;
 }
 
