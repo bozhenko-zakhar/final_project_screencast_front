@@ -10,11 +10,12 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.100.6",
-    "axios": "^1.15.2",
     "clsx": "^2.1.1",
     "cookie": "^1.1.1",
     "antd": "^6.3.7",
     "formik": "^2.4.9",
+    "axios": "^1.16.0",
+    "izitoast": "^1.4.0",
     "modern-normalize": "^3.0.1",
     "mongodb": "^7.2.0",
     "next": "16.2.4",
@@ -27,6 +28,7 @@
     "react-select": "^5.10.2",
     "tanstack": "^2.0.3",
     "yup": "^1.7.1",
+    "swiper": "^12.1.4",
     "zustand": "^5.0.12"
   },
   "devDependencies": {

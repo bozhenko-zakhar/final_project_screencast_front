@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Toaster } from "react-hot-toast";
 
 import {
   QueryClient,
@@ -51,6 +52,22 @@ function PrivateLayoutContent({ children }: Props) {
       {children}
     </div>
   );
+
+	// return (
+	// 	<>
+	// 	<Toaster position="top-right" />
+	// 	<div className={css.shell}>
+	// 		<SideBar isOpen={isMobileMenuOpen} setBarInactive={() => setIsMobileMenuOpen(false)} />
+	// 		<div className={css.content}>
+	// 			<div className={css.container}>
+	// 				<Header setBarActive={() => setIsMobileMenuOpen(true)} />
+	// 				<Breadcrumbs />
+	// 				<main>{children}</main>
+	// 			</div>
+	// 		</div>
+	// 	</div>
+	// 	</>
+	// );
 }
 
 export default function LehlehkaLayout({ children }: Props) {

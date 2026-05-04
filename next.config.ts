@@ -1,12 +1,10 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'https://final-project-screencast-back.onrender.com/api/:path*',
-      },
-    ];
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+  reactCompiler: true,
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "ftp.goit.study" }],
   },
 };
 

@@ -1,0 +1,40 @@
+/* .container {
+	padding: 16px 0;
+} */
+.container {
+  min-width: 320px;
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.journeySection {
+  padding: 24px 0 24px 0;
+}
+
+.title {
+  margin: 0;
+}
+
+.momBodyChange {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media only screen and (min-width: 1440px) {
+      .momBodyChange {
+        flex-wrap: wrap;
+        max-height: 540px;
+        width: 1064px;
+        margin: 0 auto;
+     }
+
+       .importantTasks {
+        width: 390px;
+        background-color: #fff4f6;
+        height: 540px;
+        border-radius: 32px;
+
+    }
+}
