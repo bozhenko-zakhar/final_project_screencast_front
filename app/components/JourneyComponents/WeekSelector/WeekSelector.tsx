@@ -1,48 +1,40 @@
 
-
 "use client";
 
-import { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import css from "./WeekSelector.module.css";
 
 type WeekSelectorProps = {
   userCurrentWeek: number;
   viewWeek: number;
+  onWeekChange: (week: number) => void;
 };
 
 export default function WeekSelector({
   userCurrentWeek,
   viewWeek,
+  onWeekChange,
 }: WeekSelectorProps) {
-  const router = useRouter();
-
+  
   const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
 
-  /**
-   * 🎯 ACTIVE WEEK = what is currently selected in UI
-   * first load → userCurrentWeek
-   * after navigation → viewWeek
-   */
+//  Active week
   const activeWeek = viewWeek ?? userCurrentWeek;
 
-  /**
-   * store DOM nodes instead of single ref
-   */
-  const weekRefs = useRef<Record<number, HTMLButtonElement | null>>({});
-
-  /**
-   * scroll whenever activeWeek changes
-   */
+//  Center week
   useEffect(() => {
-    const el = weekRefs.current[activeWeek];
+    const element = document.querySelector(
+      `[data-week="${activeWeek}"]`
+    ) as HTMLButtonElement | null;
 
-    if (!el) return;
+    if (!element) return;
 
-    el.scrollIntoView({
-      behavior: "smooth",
-      inline: "center",
-      block: "nearest",
+    requestAnimationFrame(() => {
+      element.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
     });
   }, [activeWeek]);
 
@@ -50,16 +42,17 @@ export default function WeekSelector({
     <div className={css.wrapper}>
       {weeks.map((week) => {
         const isCurrentUserWeek = week === userCurrentWeek;
+
         const isActive = week === activeWeek;
+
         const isFuture = week > userCurrentWeek;
+
         const isClickable = week <= userCurrentWeek;
 
         return (
           <button
             key={week}
-            ref={(el) => {
-              weekRefs.current[week] = el;
-            }}
+            data-week={week}
             disabled={!isClickable}
             className={`
               ${css.button}
@@ -72,12 +65,7 @@ export default function WeekSelector({
 
               if (week === activeWeek) return;
 
-              router.push(`/journey/${week}`);
-            }}
-            onMouseEnter={() => {
-              if (isClickable) {
-                router.prefetch(`/journey/${week}`);
-              }
+              onWeekChange(week);
             }}
           >
             <span className={css.number}>{week}</span>
