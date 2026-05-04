@@ -1,4 +1,4 @@
-import { nextServer } from "./api";
+import { nextServer } from "../api";
 
 export type WeekFeelings = {
   weekNumber: number;

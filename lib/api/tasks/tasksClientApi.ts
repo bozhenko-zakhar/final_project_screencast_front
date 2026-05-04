@@ -1,11 +1,11 @@
-import { nextServer } from './api'
+import { nextServer } from '../api'
 // або твій axios instance
 import {
     BackendTask,
     Task,
     CreateTaskPayload,
     ToggleTaskStatusPayload
-} from "@/app/types/tasks";
+} from "@/types/tasks";
 
 const mapTaskFromBackend = (task: BackendTask): Task => {
   return {

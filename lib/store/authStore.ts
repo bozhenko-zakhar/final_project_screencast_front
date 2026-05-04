@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { User } from "../../app/types/user";
+import type { User } from "../../types/user";
 
 interface AuthStore {
   user: User | null;
@@ -12,7 +12,7 @@ export const useAuthStore = create<AuthStore>()((set) => ({
   isAuthenticated: true,
   user: {
     email: "demo@example.com",
-    username: "Demo User",
+    name: "Demo User",
     avatar: "DU",
   },
   setUser: (user: User) => {

@@ -95,7 +95,9 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 						</svg>
 					</Link>
 					<button className={css.close} onClick={closeMenu} aria-label="Close menu">
-						×
+						<svg className={css.svg_close}>
+							<use href="/sprite.svg#close"></use>
+						</svg>
 					</button>
 				</div>
 
@@ -124,9 +126,9 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 				<div className={css.bottom}>
 					{isAuthenticated && user ? (
 						<UserBar
-							name={user.username}
+							name={user.name}
 							email={user.email}
-							avatar={user.avatar ?? user.username.slice(0, 2).toUpperCase()}
+							avatar={user.avatar ?? user.name.slice(0, 2).toUpperCase()}
 							onLogout={() => {
 								setLogoutError(null);
 								setIsConfirmationOpen(true);

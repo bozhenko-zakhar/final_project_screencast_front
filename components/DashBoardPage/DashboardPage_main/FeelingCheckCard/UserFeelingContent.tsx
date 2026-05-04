@@ -6,7 +6,7 @@ import styles from "./FeelingCheckCard.module.css";
 import {
   fetchWeekFeelings,
   type WeekFeelings,
-} from "@/app/lib/api/weekfeeling";
+} from "@/lib/api/weeks/weekfeeling";
 
 type UserFeelingContentProps = {
   weekNumber: number;

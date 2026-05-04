@@ -1,7 +1,7 @@
 import css from "./BabyTodayCard.module.css";
 import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
 import { useQuery } from "@tanstack/react-query";
-import { fetchCurrentBabyWeek } from "@/app/lib/api/babyClientApi";
+import { fetchCurrentBabyWeek } from "@/lib/api/weeks/babyClientApi";
 import { useAuthStore } from "@/lib/store/authStore";
 
 const BabyTodayCard = () => {

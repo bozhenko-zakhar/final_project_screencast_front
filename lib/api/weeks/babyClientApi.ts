@@ -1,6 +1,6 @@
 // app/lib/api/babyClientApi.ts
-import { nextServer } from './api';
-import type { BackendBabyWeek, BabyWeek } from '@/app/types/baby';
+import { nextServer } from '../api';
+import type { BackendBabyWeek, BabyWeek } from '@/types/baby';
 
 export const fetchCurrentBabyWeek = async (): Promise<BabyWeek> => {
   // Бекенд повертає масив тижнів

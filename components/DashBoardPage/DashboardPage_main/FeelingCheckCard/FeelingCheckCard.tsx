@@ -7,7 +7,6 @@ import styles from "./FeelingCheckCard.module.css";
 import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
 
 import { useAuthStore } from "@/lib/store/authStore";
-import { calculatePregnancyWeek } from "@/app/lib/utils/pregnancyUtils";
 // взяти у команди:
 // import AddDiaryEntryModal from '@components/AddDiaryEntryModal/AddDiaryEntryModal';
 import UserFeelingContent from "./UserFeelingContent";
@@ -18,9 +17,8 @@ const FeelingCheckCard = () => {
 
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const user = useAuthStore((state) => state.user);
-  const currentWeek = user?.dueDate ? calculatePregnancyWeek(user?.dueDate) : 1;
 
-  console.log("Поточний тиждень:", currentWeek); // видалити
+  console.log("Поточний тиждень:", 1); // видалити
 
   const handleOpenModal = () => {
     if (!isAuthenticated) {
@@ -36,7 +34,7 @@ const FeelingCheckCard = () => {
         className={`${cardStyles.card} ${cardStyles.cardFixedHeight} ${styles.feeling}`}
       >
         {isAuthenticated ? (
-        <UserFeelingContent weekNumber = {currentWeek} />
+        <UserFeelingContent weekNumber = {1} />
         ) : (
             <>
               <h2 className={styles.title}>Як ви себе почуваєте?</h2>

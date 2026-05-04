@@ -2,9 +2,6 @@ import axios from "axios";
 
 export const nextServer = axios.create({
   // baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-  baseURL: "/api",
+  baseURL: process.env.NEXT_PUBLIC_API_URL + "/api",
   withCredentials: true,  //додаються cookies до запитів
 });
-
-
-
