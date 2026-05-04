@@ -1,16 +1,16 @@
 import css from "./BabyTodayCard.module.css";
 import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
 import { useQuery } from "@tanstack/react-query";
-import { fetchCurrentBabyWeek } from "@/lib/api/weeks/babyClientApi";
+import { fetchCurrentBabyWeek } from "@/lib/api/clientApi/weeks";
 import { useAuthStore } from "@/lib/store/authStore";
+import { useParams } from "next/navigation";
 
 const BabyTodayCard = () => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+	const { weekNumber } = useParams<{weekNumber: string}>();
 
   const { data:babyData } = useQuery({
     queryKey: ["babyWeek"],
-    queryFn: fetchCurrentBabyWeek,
-    enabled: isAuthenticated,
+    queryFn: () => fetchCurrentBabyWeek({weekNumber: weekNumber})
   });
 
 

@@ -5,12 +5,13 @@ import { useRouter } from 'next/navigation';
 import { useId } from 'react';
 import css from './LoginForm.module.css';
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
-import { login, getMe } from '@/lib/api/clientApi';
+import { login } from '@/lib/api/clientApi/auth';
+import { getMe } from '@/lib/api/clientApi/users';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '@/lib/store/authStore';
 import { isAxiosError } from 'axios';
-import { type LoginRequest as LoginFormValues } from '@/app/types/auth';
+import { type LoginRequest as LoginFormValues } from '@/types/auth';
 
 const LoginFormSchema = Yup.object().shape({
   email: Yup.string().email('Некоректна пошта').required('Обовʼязкове поле'),

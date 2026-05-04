@@ -1,16 +1,12 @@
 "use client";
 
+import { getMe } from "@/lib/api/clientApi/users";
 import { useAuthStore } from "@/lib/store/authStore";
+import { User } from "@/types/user";
 import { useEffect } from "react";
 
 type Props = {
   children: React.ReactNode;
-};
-
-type User = {
-	name: string;
-	email: string;
-	avatar: string;
 };
 
 export const AuthProvider = ({ children }: Props) => {
@@ -19,11 +15,7 @@ export const AuthProvider = ({ children }: Props) => {
 
 	useEffect(() => {
     const fetchUser = async () => {
-      const user: User = { // тут пізніше зробити запит на отримання користувача
-				name: "Demo User",
-				email: "demo@example.com",
-				avatar: "DU"
-			};
+      const user: User = await getMe();
 			
 			if (user) setUser(user);
     };

@@ -29,14 +29,14 @@
 // export default ProfilePage;
 
 import css from "./profilePage.module.css";
-import type { User } from "@/app/types/user";
-import ProfileAvatar from "@/app/components/Profile/ProfileAvatar/ProfileAvatar";
-import ProfileEditForm from "@/app/components/Profile/ProfileEditForm/ProfileEditForm";
+import type { User } from "@/types/user";
+import ProfileAvatar from "@/components/Profile/ProfileAvatar/ProfileAvatar";
+import ProfileEditForm from "@/components/Profile/ProfileEditForm/ProfileEditForm";
 
 const ProfilePage = async () => {
   const user: User = {
     id: "1",
-    username: "Test User",
+    name: "Test User",
     email: "test@test.com",
     gender: null,
     dueDate: "2026-06-01",

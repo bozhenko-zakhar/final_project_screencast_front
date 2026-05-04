@@ -7,15 +7,18 @@ import FeelingCheckCard from "./FeelingCheckCard/FeelingCheckCard";
 import styles from "../DashboardPage_main/DashboardPage_main.module.css";
 
 import { useQuery } from "@tanstack/react-query";
-import { fetchCurrentBabyWeek } from "@/lib/api/weeks/babyClientApi";
+import { fetchCurrentBabyWeek } from "@/lib/api/clientApi/weeks";
 import StatusBlock from "./StatusBlock/StatusBlock";
 import BabyTodayCard from "./BabyTodayCard/BabyTodayCard";
 import MomTipCard from "./MomTipCard/MomTipCard";
+import { useParams } from "next/navigation";
 
 const DashboardPage = () => {
+	const { weekNumber } = useParams<{weekNumber: string}>();
+
   const { data: babyWeek } = useQuery({
     queryKey: ["babyWeek"],
-    queryFn: fetchCurrentBabyWeek,
+    queryFn: () => fetchCurrentBabyWeek({weekNumber: weekNumber}),
   });
 
   return (

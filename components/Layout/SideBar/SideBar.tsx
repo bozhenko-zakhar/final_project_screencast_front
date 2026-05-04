@@ -130,7 +130,7 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 						<UserBar
 							name={user.name}
 							email={user.email}
-							avatar={user.avatar ?? user.name.slice(0, 2).toUpperCase()}
+							avatar={user.avatar ?? user?.name?.slice(0, 2).toUpperCase()}
 							onLogout={() => {
 								setLogoutError(null);
 								setIsConfirmationOpen(true);

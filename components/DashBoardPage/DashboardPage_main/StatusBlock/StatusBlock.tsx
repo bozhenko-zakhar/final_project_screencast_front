@@ -2,20 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 
 import css from "./StatusBlock.module.css";
 import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
-import { useQuery } from "@tanstack/react-query";
-import { fetchCurrentBabyWeek } from "@/lib/api/weeks/babyClientApi";
-import { fetchCurrentBabyWeek, fetchPrivateWeeks } from "@/app/lib/api/babyClientApi";
+import { fetchCurrentBabyWeek, fetchPrivateWeeks } from "@/lib/api/clientApi/weeks";
 import { useAuthStore } from "@/lib/store/authStore";
+import { useParams } from "next/navigation";
 
 
 
 const StatusBlock = () => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+	const { weekNumber } = useParams<{weekNumber: string}>();
 
   const { data: dataWeeks } = useQuery({
     queryKey: ["dataWeeks"],
-    queryFn: fetchCurrentBabyWeek,
-    enabled: isAuthenticated,
+    queryFn: () => fetchCurrentBabyWeek({weekNumber: weekNumber}),
   });
 
   const {
@@ -23,7 +21,6 @@ const StatusBlock = () => {
   } = useQuery({
     queryKey: ["daysLeft"],
     queryFn: fetchPrivateWeeks,
-    enabled: isAuthenticated,
     select: (response) => response?.daysLeft,
   });
 

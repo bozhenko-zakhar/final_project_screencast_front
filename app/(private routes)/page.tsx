@@ -3,7 +3,9 @@ import css from "./page.module.css"
 
 const DashboardPage = () => {
 	return (
-		<Breadcrumbs />
+		<>
+		
+		</> 
 	)
 };
 

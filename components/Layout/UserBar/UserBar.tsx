@@ -1,9 +1,9 @@
 import css from "./UserBar.module.css";
 
 type UserBarProps = {
-	name: string;
-	email: string;
-	avatar: string;
+	name: string | undefined;
+	email: string | undefined;
+	avatar: string | undefined;
 	onLogout: () => void;
 	isLoading: boolean;
 };

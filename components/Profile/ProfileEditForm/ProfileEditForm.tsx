@@ -3,8 +3,8 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateUser, sendVerifyEmail } from "@/lib/api/clientApi";
-import type { User, UpdateUserPayload, FormValues } from "@/app/types/user";
+import { updateUser } from "@/lib/api/clientApi/users";
+import type { User, UpdateUserPayload, FormValues } from "@/types/user";
 import css from "./ProfileEditForm.module.css";
 import { useRouter } from "next/navigation";
 import DatePicker from "react-datepicker";
@@ -80,7 +80,7 @@ export default function ProfileEditForm({ user }: Props) {
   return (
     <Formik<FormValues>
       initialValues={{
-        username: user.username,
+        username: user.name,
         email: user.email,
         gender: user.gender || "",
         dueDate: user.dueDate ? user.dueDate.split("T")[0] : "",
@@ -105,14 +105,14 @@ export default function ProfileEditForm({ user }: Props) {
 
             toast.success("Профіль оновлено");
 
-            if (isEmailChanged) {
+            /* if (isEmailChanged) {
               await sendVerifyEmail(values.email);
               toast.success("Лист підтвердження відправлено");
-            }
+            } */
 
             resetForm({
               values: {
-                username: updatedUser.username,
+                username: updatedUser.name,
                 email: updatedUser.email,
                 gender: updatedUser.gender || "",
                 dueDate:
