@@ -1,9 +1,9 @@
-import { nextServer } from './api'
-// або твій axios instance
+import { nextServer } from '../app/lib/api/api'
+
 import {
     BackendTask,
     Task,
-    CreateTaskPayload,
+    // CreateTaskPayload,
     ToggleTaskStatusPayload
 } from "@/app/types/tasks";
 
@@ -24,11 +24,11 @@ export const fetchTasks = async (): Promise<Task[]> => {
 };
 
 // POST /tasks – створення нового завдання
-export const createTask = async (payload: CreateTaskPayload):
-    Promise<Task> => {
-  const { data } = await nextServer.post<BackendTask>('/api/tasks', payload);
-  return mapTaskFromBackend(data);
-};
+// export const createTask = async (payload: CreateTaskPayload):
+//     Promise<Task> => {
+//   const { data } = await nextServer.post<BackendTask>('/api/tasks', payload);
+//   return mapTaskFromBackend(data);
+// };
 
 // PATCH /tasks/:id – зміна статусу
 export const toggleTaskStatus = async ({
@@ -36,6 +36,8 @@ export const toggleTaskStatus = async ({
     isDone,
 }: ToggleTaskStatusPayload):
     Promise<Task> => {
-  const { data } = await nextServer.patch<BackendTask>(`/api/tasks/${id}`, { isDone });
+  const { data } = await nextServer.patch<BackendTask>(
+    `/api/tasks/${id}/status`,
+    { isDone });
     return mapTaskFromBackend( data );
 };

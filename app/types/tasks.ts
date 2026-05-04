@@ -4,7 +4,6 @@ export interface BackendTask {
   date: string;
   name: string;
   isDone: boolean;
-  __v: number;
 }
 
 export interface Task {
@@ -17,7 +16,6 @@ export interface Task {
 
 export interface CreateTaskPayload {
     name: string;
-  // якщо бекенд очікує дату створення з фронта:
     date?: string;
 }
 

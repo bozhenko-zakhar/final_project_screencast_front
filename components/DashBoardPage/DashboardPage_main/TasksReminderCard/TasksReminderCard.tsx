@@ -7,17 +7,14 @@ import cardStyles from '../../DashboardPage_main/DashboardPage_main.module.css';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/lib/store/authStore';
 import { useState } from 'react';
-import { createTask, fetchTasks, toggleTaskStatus } from '@/app/lib/api/tasksClientApi';
-import { CreateTaskPayload, Task } from '@/app/types/tasks';
+import { fetchTasks, toggleTaskStatus } from '@/lib/tasksClientApi';
+import { Task } from '@/app/types/tasks';
 import toast from 'react-hot-toast';
-import PregnancyLoader from '@/components/Loading/PregnancyLoader';
+import EmojiLoader from '@/components/EmojiLoader/EmojiLoader';
+import AddTaskModal from "@/components/modals/AddTaskModal/AddTaskModal";
 
-
-interface TasksReminderCardProps {
-  babyImageUrl?: string;
-}
   
-const TasksReminderCard = ({babyImageUrl}: TasksReminderCardProps) => {
+const TasksReminderCard = () => {
 
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -37,20 +34,7 @@ const TasksReminderCard = ({babyImageUrl}: TasksReminderCardProps) => {
     enabled: isAuthenticated, // гість не робить запитів
   });
 
-  // 2. Мутація створення завдання
-  // const createTaskMutation = useMutation({
-  //   mutationFn: (payload: CreateTaskPayload) => createTask(payload),
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['tasks'] });
-  //     toast.success("Завдання створено");
-  //     setIsAddModalOpen(false);
-  //   },
-  //   onError: () => {
-  //     toast.error('Не вдалося створити завдання');
-  //   },
-  // });
-
-  // 3. Мутація зміни статусу (чекбокс)
+  // 1. Мутація зміни статусу (чекбокс)
   const toggleStatusMutation = useMutation({
     mutationFn: toggleTaskStatus,
     onSuccess: () => {
@@ -61,7 +45,7 @@ const TasksReminderCard = ({babyImageUrl}: TasksReminderCardProps) => {
       toast.error('Не вдалося оновити завдання');
     },
   });
-  // 4. Клік по "+"/"Створити завдання"
+  // 2. Клік по "+"/"Створити завдання"
   const handleCreateTaskClick = () => {
     if (!isAuthenticated) {
       router.push('/auth/register');
@@ -70,13 +54,7 @@ const TasksReminderCard = ({babyImageUrl}: TasksReminderCardProps) => {
     setIsAddModalOpen(true);
   };
 
-  // 5. Submit з модалки (назва + дата) підключити її як onSubmit у компоненті модалки
-  //бере дані з форми модалки і стартує запит “створити завдання” через React Query
-  // const handleTaskCreate = (values: CreateTaskPayload) => {
-  //   createTaskMutation.mutate(values);
-  // };
-
-  //6. Клік по чекбоксу
+  //3. Клік по чекбоксу
   const handleToggleTask = (task: Task) => {
     toggleStatusMutation.mutate({
       id: task.id,
@@ -85,6 +63,10 @@ const TasksReminderCard = ({babyImageUrl}: TasksReminderCardProps) => {
   };
 
   const hasTasks = tasks.length > 0;
+
+  const sortedTasks = [...tasks].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
 
   return (
     <section
@@ -104,8 +86,8 @@ const TasksReminderCard = ({babyImageUrl}: TasksReminderCardProps) => {
       </div>
 
       <div className={styles.content}>
-        {isLoading && <PregnancyLoader imageUrl={ babyImageUrl } />}
-        
+        {isLoading && <EmojiLoader/>}
+
         {!isLoading && isError &&
           <p>Сталася помилка при завантаженні завдань.</p>
         }
@@ -126,7 +108,7 @@ const TasksReminderCard = ({babyImageUrl}: TasksReminderCardProps) => {
 
         {!isLoading && !isError && hasTasks && (
           <ul className={styles.list}>
-            {tasks.map((task) => {
+            {sortedTasks.map((task) => {
               const isThisPending =
                 toggleStatusMutation.isPending &&
                 toggleStatusMutation.variables?.id === task.id;
@@ -153,8 +135,13 @@ const TasksReminderCard = ({babyImageUrl}: TasksReminderCardProps) => {
           </ul>
         )}
       </div>
+      <AddTaskModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+      />
     </section>
   );
 };
 
 export default TasksReminderCard;
+

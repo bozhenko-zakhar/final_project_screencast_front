@@ -6,14 +6,12 @@ import TasksReminderCard from './TasksReminderCard/TasksReminderCard';
 import FeelingCheckCard from './FeelingCheckCard/FeelingCheckCard';
 import styles from '../DashboardPage_main/DashboardPage_main.module.css';
 import { DashBoardPage } from '../DashBoardPage';
-import { useQuery } from '@tanstack/react-query';
-import { fetchCurrentBabyWeek } from '@/app/lib/api/babyClientApi';
 
 const DashboardPage = () => {
-  const { data: babyWeek } = useQuery({
-    queryKey: ['babyWeek'],
-    queryFn: fetchCurrentBabyWeek,
-  });
+  // const { data: babyWeek } = useQuery({
+  //   queryKey: ['babyWeek'],
+  //   queryFn: fetchCurrentBabyWeek,
+  // });
 
     return (
     <section className={styles.dashboard}>
@@ -25,8 +23,8 @@ const DashboardPage = () => {
 
       {/* Права колонка: Tasks + Feeling */}
       <div className={styles.rightColumn}>
-        <TasksReminderCard babyImageUrl={babyWeek?.image}/>
-        <FeelingCheckCard />
+        <TasksReminderCard />
+          <FeelingCheckCard /> {/* перевірити */}
       </div>
     </section>
   );
