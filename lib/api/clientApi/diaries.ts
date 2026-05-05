@@ -1,12 +1,53 @@
 import { nextServer } from "../api";
+import { 
+  DiaryEntry, 
+  BackendDiaryEntry, 
+  DiaryListItem, 
+  DiaryEntryDetail 
+} from "@/types/diary";
 
-export interface DiaryEntry {
-  title: string;
-  description: string;
-  emotions: string[]; 
-  date: string;
-}
+const transformBackendEntry = (entry: BackendDiaryEntry): DiaryEntryDetail => ({
+  id: entry._id.$oid,
+  title: entry.title,
+  date: entry.date,
+  description: entry.description,
+  emotions: entry.emotions.map(emo => ({
+    id: emo._id.$oid,
+    title: emo.title,
+  })),
+});
+
+const transformToListItem = (entry: BackendDiaryEntry): DiaryListItem => ({
+  id: entry._id.$oid,
+  title: entry.title,
+  date: entry.date,
+  emotions: entry.emotions.map(emo => ({
+    id: emo._id.$oid,
+    title: emo.title,
+  })),
+});
 
 export const createDiaryEntry = async (payload: DiaryEntry): Promise<void> => {
   await nextServer.post("/diary", payload);
+};
+
+export const fetchDiaries = async (): Promise<DiaryListItem[]> => {
+  const response = await nextServer.get<BackendDiaryEntry[]>("/diaries");
+  return response.data.map(transformToListItem);
+};
+
+export const getDiaryEntry = async (entryId: string): Promise<DiaryEntryDetail> => {
+  const response = await nextServer.get<BackendDiaryEntry>(`/diaries/${entryId}`);
+  return transformBackendEntry(response.data);
+};
+
+export const updateDiaryEntry = async (
+  entryId: string,
+  payload: Partial<DiaryEntry>
+): Promise<void> => {
+  await nextServer.patch(`/diaries/${entryId}`, payload);
+};
+
+export const deleteDiaryEntry = async (entryId: string): Promise<void> => {
+  await nextServer.delete(`/diaries/${entryId}`);
 };
