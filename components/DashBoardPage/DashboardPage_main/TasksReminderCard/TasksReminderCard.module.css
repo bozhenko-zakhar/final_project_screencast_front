@@ -16,7 +16,7 @@
     font-size: 20px;
     font-weight: 700;
     font-family: var(--second-family);
-    letter-spacing: 0.01em;
+    letter-spacing: 1px;
     line-height: 1.4;
     color: #000;
 }
@@ -36,8 +36,8 @@
     color: #000;
 }
 .iconButtonIcon {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     fill: currentColor;
 }
 
@@ -53,7 +53,7 @@
     font-weight: 700;
     font-size: 14px;
     margin: 0px;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .noTasksText {
@@ -155,7 +155,7 @@
     border-radius: 999px;
     border: none;
 
-    background: #fef1db;
+    background: var(--color-scheme-accent);
     line-height: 1.6;
     color: #000;
 
@@ -164,7 +164,7 @@
     cursor: pointer;
     height: 42px;
 
-border-bottom: 4px solid #fef1db;
+border-bottom: 4px solid var(--color-scheme-accent-dark);
 }
 
 /* === Tablet (768-1440px) — динамічна висота === */
@@ -183,5 +183,7 @@ border-bottom: 4px solid #fef1db;
     .noTasksText {
         font-size: 16px;
     }
-
+    .taskDate {
+        font-size: 12px;
+    }
 }
