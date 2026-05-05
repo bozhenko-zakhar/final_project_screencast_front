@@ -1,24 +1,35 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 import styles from './TasksReminderCard.module.css';
 import cardStyles from '../../DashboardPage_main/DashboardPage_main.module.css';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 import { useAuthStore } from '@/lib/store/authStore';
-import { useState } from 'react';
-import { fetchTasks, toggleTaskStatus } from '@/lib/api/clientApi/tasks';
-import { Task } from '@/types/tasks';
-// TODO: повернути коли AddTaskModal буде готовий
-// import { createTask } from '@/lib/api/clientApi/tasks';
-// import { CreateTaskPayload } from '@/types/tasks';
-import toast from 'react-hot-toast';
+
+import {
+  createTask,
+  fetchTasks,
+  toggleTaskStatus,
+} from '@/lib/api/clientApi/tasks';
+
+import type { CreateTaskPayload, Task } from '@/types/tasks';
+import { CreateTaskPayload } from '@/types/tasks';
+
+import PregnancyLoader from '@/components/Loading/PregnancyLoader';
+import AddTaskModal from '@/components/modals/AddTaskModal/AddTaskModal';
 import EmojiLoader from '@/components/EmojiLoader/EmojiLoader';
-// TODO: розкоментувати коли компонент AddTaskModal з'явиться у проєкті
-// import AddTaskModal from '@/components/AddTaskModal/AddTaskModal';
+
+interface TasksReminderCardProps {
+  babyImageUrl?: string;
+}
 
 const TasksReminderCard = () => {
 
+const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -26,7 +37,6 @@ const TasksReminderCard = () => {
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  // 1. Список завдань лише для авторизованого користувача
   const {
     data: tasks = [],
     isLoading,
@@ -34,7 +44,19 @@ const TasksReminderCard = () => {
   } = useQuery({
     queryKey: ['tasks'],
     queryFn: fetchTasks,
-    enabled: isAuthenticated, // гість не робить запитів
+    enabled: isAuthenticated,
+  });
+
+  const createTaskMutation = useMutation({
+    mutationFn: (payload: CreateTaskPayload) => createTask(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks'] });
+      toast.success('Завдання створено');
+      setIsAddModalOpen(false);
+    },
+    onError: () => {
+      toast.error('Не вдалося створити завдання');
+    },
   });
 
   // 2. Мутація зміни статусу (чекбокс)
@@ -48,13 +70,19 @@ const TasksReminderCard = () => {
       toast.error('Не вдалося оновити завдання');
     },
   });
+
   // 3. Клік по "+"/"Створити завдання"
   const handleCreateTaskClick = () => {
     if (!isAuthenticated) {
       router.push('/auth/register');
       return;
     }
+
     setIsAddModalOpen(true);
+  };
+
+  const handleTaskCreate = (values: CreateTaskPayload) => {
+    createTaskMutation.mutate(values);
   };
 
   //6. Клік по чекбоксу
@@ -93,12 +121,12 @@ const TasksReminderCard = () => {
         
         {!isLoading && isError &&
           <p>Сталася помилка при завантаженні завдань.</p>
-        }
+        )}
 
         {!isLoading && !isError && !hasTasks && (
           <div className={styles.placeholder}>
             <p className={styles.noTasksTitle}>Наразі немає жодних завдань</p>
-            <p className={styles.noTasksText}>Створіть мершій нове завдання!</p>
+            <p className={styles.noTasksText}>Створіть перше нове завдання!</p>
             <button
               type="button"
               className={styles.createButton}
@@ -115,7 +143,7 @@ const TasksReminderCard = () => {
               const isThisPending =
                 toggleStatusMutation.isPending &&
                 toggleStatusMutation.variables?.id === task.id;
-              
+
               return (
                 <li key={task.id} className={styles.item}>
                   <label className={styles.taskLabel}>
@@ -125,9 +153,10 @@ const TasksReminderCard = () => {
                       disabled={isThisPending}
                       onChange={() => handleToggleTask(task)}
                     />
-                    <span className={
-                      task.isCompleted ? styles.taskCompleted : undefined
-                    }
+                    <span
+                      className={
+                        task.isCompleted ? styles.taskCompleted : undefined
+                      }
                     >
                       {task.title}
                     </span>
@@ -139,6 +168,13 @@ const TasksReminderCard = () => {
         )}
       </div>
 
+      <AddTaskModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        task={null}
+        onSubmit={handleTaskCreate}
+        isSubmitting={createTaskMutation.isPending}
+      />
       {/* TODO: підключити коли AddTaskModal буде готовий
       {isAddModalOpen && (
         <AddTaskModal

@@ -1,41 +1,47 @@
-import { nextServer } from '../api'
-// або твій axios instance
-import {
-		BackendTask,
-		Task,
-		CreateTaskPayload,
-		ToggleTaskStatusPayload
-} from "@/types/tasks";
+import { nextServer } from '../api';
+import type {
+  BackendTask,
+  Task,
+  CreateTaskPayload,
+  ToggleTaskStatusPayload,
+} from '@/types/tasks';
 
-const mapTaskFromBackend = (task: BackendTask): Task => {
-	return {
-		id: task._id,
-		userId: task.userId,
-		date: task.date,
-		title: task.name,
-		isCompleted: task.isDone,
-	};
+type TaskResponse = {
+  data: BackendTask;
 };
 
-// GET /tasks – всі задачі користувача
+const mapTaskFromBackend = (task: BackendTask): Task => ({
+  id: task._id,
+  userId: task.userId,
+  date: task.date,
+  title: task.name,
+  isCompleted: task.isDone,
+});
+
 export const fetchTasks = async (): Promise<Task[]> => {
-	const { data } = await nextServer.get<BackendTask[]>('/tasks');
-	return data.map(mapTaskFromBackend);
+  const { data } = await nextServer.get<BackendTask[]>('/tasks');
+
+  return data
+    .map(mapTaskFromBackend)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 };
 
-// POST /tasks – створення нового завдання
-export const createTask = async (payload: CreateTaskPayload):
-		Promise<Task> => {
-	const { data } = await nextServer.post<BackendTask>('/tasks', payload);
-	return mapTaskFromBackend(data);
+export const createTask = async (
+  payload: CreateTaskPayload
+): Promise<Task> => {
+  const { data } = await nextServer.post<TaskResponse>('/tasks', payload);
+
+  return mapTaskFromBackend(data.data);
 };
 
-// PATCH /tasks/:id – зміна статусу
 export const toggleTaskStatus = async ({
-		id,
-		isDone,
-}: ToggleTaskStatusPayload):
-		Promise<Task> => {
-	const { data } = await nextServer.patch<BackendTask>(`/tasks/${id}`, { isDone });
-		return mapTaskFromBackend( data );
+  id,
+  isDone,
+}: ToggleTaskStatusPayload): Promise<Task> => {
+  const { data } = await nextServer.patch<TaskResponse>(
+    `/tasks/${id}/status`,
+    { isDone }
+  );
+
+  return mapTaskFromBackend(data.data);
 };
