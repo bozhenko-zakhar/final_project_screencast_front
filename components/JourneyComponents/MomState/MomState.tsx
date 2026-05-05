@@ -1,5 +1,8 @@
 import css from './MomState.module.css';
 import Image from 'next/image';
+import forkImage from "../../../app/(private routes)/journey/[weekNumber]/img/fork_spoon.svg"
+import fitnessImage from "../../../app/(private routes)/journey/[weekNumber]/img/fitness_center.svg"
+import sofaImage from "../../../app/(private routes)/journey/[weekNumber]/img/chair.svg"
 
 export default function MomState({data}) {
     // const data = momState[3];
@@ -30,8 +33,8 @@ export default function MomState({data}) {
             <li className={css.advice}>
               <div className={css.adviceTypeContainer}>
                 <Image
-                  src="/img/fork_spoon.svg"
-                  alt=""
+                  src={forkImage}
+                  alt="fork-and-spoon-icon"
                   width={24}
                   height={24}
                 />
@@ -51,8 +54,8 @@ export default function MomState({data}) {
             <li className={css.advice}>
               <div className={css.adviceTypeContainer}>
                 <Image
-                  src="/img/fitness_center.svg"
-                  alt=""
+                  src={fitnessImage}
+                  alt="fitness-icon"
                   width={24}
                   height={24}
                 />
@@ -69,9 +72,12 @@ export default function MomState({data}) {
 
             <li className={css.advice}>
               <div className={css.adviceTypeContainer}>
-                <svg className={css.icon} width="24" height="24">
-                  <use href="/img/sprite.svg#icon-chair" />
-                </svg>
+             <Image
+                  src={sofaImage}
+                  alt="sofa-icon"
+                  width={24}
+                  height={24}
+                />
 
                 <div className={css.text}>
                   <p className={css.adviceType}>

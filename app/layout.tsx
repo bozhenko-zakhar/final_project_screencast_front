@@ -29,9 +29,9 @@ export default function RootLayout({
     <html lang="en">
 		  <body className={`${lato.variable} ${comfortaa.variable}`}>		
 			  <TanStackProvider>
-				  <AuthProvider>
+				  {/* <AuthProvider> */}
             {children}
-          </AuthProvider>
+          {/* </AuthProvider> */}
 			  </TanStackProvider>
         <Toaster
           position="top-right"
