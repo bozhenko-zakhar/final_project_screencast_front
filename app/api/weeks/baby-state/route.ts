@@ -4,15 +4,16 @@ import { cookies } from 'next/headers';
 import { logErrorResponse } from '../../utils/utils';
 import { isAxiosError } from 'axios';
 
-type Props = {
-	params: Promise<{ weekNumber: number }>;
-}
+// type Props = {
+// 	params: Promise<{ weekNumber: number }>;
+// }
 
-export async function GET({ params }: Props) {
+export async function GET(req: Request) {
 	try {
 		const cookieStore = await cookies();
 
-		const { weekNumber } = await params;
+		const { searchParams } = new URL(req.url);
+		const weekNumber = Number(searchParams.get('weekNumber'));
 
 		const res = await api.get('/weeks/baby-state', {
 			params: { weekNumber },

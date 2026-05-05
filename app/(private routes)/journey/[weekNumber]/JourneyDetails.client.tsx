@@ -47,8 +47,6 @@ const JourneyDetails = ({ weekNumber }: Props) => {
     placeholderData: keepPreviousData,
   });
 
-  const data = mode === "baby" ? babyData : momData;
-
   if (babyLoading || momLoading) {
     return <p>Loading, please wait...</p>;
   }
@@ -76,13 +74,17 @@ const JourneyDetails = ({ weekNumber }: Props) => {
       />
 
       <section className={css.journeySection}>
-        <BabyMomToggle mode={mode} setMode={setMode} />
+        <BabyMomToggle
+					mode={mode}
+					setBabyMode={() => setMode("baby")}
+					setMomMode={() => setMode("mom")}
+				/> {/* Я не змінював функції, а додав одну так, по класичному, щоби лінтер не видавав помилку */}
 
         {mode === "baby" ? (
-          <BabyDevelopment data={data} />
+          <BabyDevelopment data={babyData} />
         ) : (
           <div className={css.momBodyChange}>
-            <MomState data={data} />
+            <MomState data={momData} />
             <TasksReminderCard />
           </div>
         )}
