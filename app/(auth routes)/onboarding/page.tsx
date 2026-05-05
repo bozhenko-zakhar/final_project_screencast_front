@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import OnboardingForm from '@/components/OnboardingForm/OnboardingForm';
+import { OnboardingForm } from '@/components/OnboardingForm/OnboardingForm';
 import styles from './page.module.css';
 
 export default function OnboardingPage() {

@@ -1,4 +1,4 @@
-import type { User, UpdateUserPayload } from '@/types/user';
+import type { User } from '@/types/user';
 import { nextServer } from '@/lib/api/api'
 
 
@@ -8,14 +8,18 @@ export async function getMe(): Promise<User> {
 }
 
 
-export const updateUserAvatar = async (formData: FormData): Promise<User> => {
-  const { data } = await nextServer.patch<User>("/users/avatar", formData);
-  return data;
+export const updateMe = async (data: Partial<User>) => {
+  const response = await nextServer.patch('/users/me', data);
+  return response.data;
 };
 
-export const updateUser = async (payload: UpdateUserPayload): Promise<User> => {
-  const { data } = await nextServer.patch<User>("/users", payload);
-  return data;
+export const updateAvatar = async (formData: FormData) => {
+  const response = await nextServer.patch('/users/me/avatar', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
 };
 
 // =================ДОДАТКОВЕ-1===============================
