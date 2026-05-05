@@ -9,18 +9,25 @@ import styles from './TasksReminderCard.module.css';
 import cardStyles from '../../DashboardPage_main/DashboardPage_main.module.css';
 
 import { useAuthStore } from '@/lib/store/authStore';
+
 import {
   createTask,
   fetchTasks,
   toggleTaskStatus,
 } from '@/lib/api/clientApi/tasks';
+
 import type { CreateTaskPayload, Task } from '@/types/tasks';
+import { CreateTaskPayload } from '@/types/tasks';
+
 import PregnancyLoader from '@/components/Loading/PregnancyLoader';
 import AddTaskModal from '@/components/modals/AddTaskModal/AddTaskModal';
+import EmojiLoader from '@/components/EmojiLoader/EmojiLoader';
 
 interface TasksReminderCardProps {
   babyImageUrl?: string;
 }
+
+const TasksReminderCard = () => {
 
 const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
   const router = useRouter();
@@ -52,6 +59,7 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
     },
   });
 
+  // 2. Мутація зміни статусу (чекбокс)
   const toggleStatusMutation = useMutation({
     mutationFn: toggleTaskStatus,
     onSuccess: () => {
@@ -63,6 +71,7 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
     },
   });
 
+  // 3. Клік по "+"/"Створити завдання"
   const handleCreateTaskClick = () => {
     if (!isAuthenticated) {
       router.push('/auth/register');
@@ -76,6 +85,7 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
     createTaskMutation.mutate(values);
   };
 
+  //6. Клік по чекбоксу
   const handleToggleTask = (task: Task) => {
     toggleStatusMutation.mutate({
       id: task.id,
@@ -84,6 +94,10 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
   };
 
   const hasTasks = tasks.length > 0;
+
+  const sortedTasks = [...tasks].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
 
   return (
     <section
@@ -103,9 +117,9 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
       </div>
 
       <div className={styles.content}>
-        {isLoading && <PregnancyLoader imageUrl={babyImageUrl} />}
-
-        {!isLoading && isError && (
+        {isLoading && <EmojiLoader />}
+        
+        {!isLoading && isError &&
           <p>Сталася помилка при завантаженні завдань.</p>
         )}
 
@@ -125,7 +139,7 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
 
         {!isLoading && !isError && hasTasks && (
           <ul className={styles.list}>
-            {tasks.map((task) => {
+            {sortedTasks.map((task) => {
               const isThisPending =
                 toggleStatusMutation.isPending &&
                 toggleStatusMutation.variables?.id === task.id;
@@ -161,6 +175,14 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
         onSubmit={handleTaskCreate}
         isSubmitting={createTaskMutation.isPending}
       />
+      {/* TODO: підключити коли AddTaskModal буде готовий
+      {isAddModalOpen && (
+        <AddTaskModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+        />
+      )}
+      */}
     </section>
   );
 };

@@ -2,21 +2,41 @@ import { BabyWeek, BackendBabyWeek } from "@/types/baby";
 import { nextServer } from "../api";
 import { MomWeek } from "@/types/mom";
 
-type WeekParams = {
-	weekNumber: string
-}
+export const getMomStateInfo = async (weekNumber: number): Promise<MomWeek> => {
+  const res = await nextServer.get<MomWeek>("/weeks/mom-state", {
+    params: { weekNumber },
+  });
 
-export const fetchCurrentBabyWeek = async ({weekNumber}: WeekParams): Promise<BabyWeek> => {
-	const weekNumberQuery = weekNumber ? `weekNumber=${weekNumber}` : "";
+  return res.data;
+};
+
+export const getBabyStateInfo = async (
+  weekNumber: number,
+): Promise<BabyWeek> => {
+  const res = await nextServer.get<BabyWeek>("/weeks/baby-state", {
+    params: { weekNumber },
+  });
+
+  return res.data;
+};
+
+type WeekParams = {
+  weekNumber: number;
+};
+
+export const fetchCurrentBabyWeek = async ({
+  weekNumber,
+}: WeekParams): Promise<BabyWeek> => {
+  const weekNumberQuery = weekNumber ? `weekNumber=${weekNumber}` : "";
   // Бекенд повертає масив тижнів
   const res = await nextServer.get<BabyWeek>(
     `/weeks/baby-state?${weekNumberQuery}`, // ← твій реальний шлях, який повертає масив
   );
 
-	const data = res.data
+  const data = res.data;
 
   // Мапимо структуру бекенду (_id.$oid → id, решта поля 1:1)
-  return data /*{
+  return data; /*{
     id: data.id,
     analogy: data.analogy,
     weekNumber: data.weekNumber,
@@ -30,16 +50,16 @@ export const fetchCurrentBabyWeek = async ({weekNumber}: WeekParams): Promise<Ba
 	};*/
 };
 
-export const fetchCurrentMomWeek = async ({weekNumber}: WeekParams): Promise<MomWeek> => {
-	const weekNumberQuery = weekNumber ? `weekNumber=${weekNumber}` : "";
+export const fetchCurrentMomWeek = async ({
+  weekNumber,
+}: WeekParams): Promise<MomWeek> => {
+  const weekNumberQuery = weekNumber ? `weekNumber=${weekNumber}` : "";
 
-  const res = await nextServer.get(
-    `/weeks/mom-state?${weekNumberQuery}`,
-  );
+  const res = await nextServer.get(`/weeks/mom-state?${weekNumberQuery}`);
 
-	const currentWeek = res.data[0].weekNumber;
+  const currentWeek = res.data[0].weekNumber;
 
-	const data = res.data[currentWeek];
+  const data = res.data[currentWeek];
 
   return data;
 };

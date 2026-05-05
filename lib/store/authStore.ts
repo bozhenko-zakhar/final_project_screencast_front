@@ -10,11 +10,7 @@ interface AuthStore {
 
 export const useAuthStore = create<AuthStore>()((set) => ({
   isAuthenticated: true,
-  user: {
-    email: "demo@example.com",
-    name: "Demo User",
-    avatar: "DU",
-  },
+  user: null,
   setUser: (user: User) => {
     set(() => ({ user, isAuthenticated: true }));
   },

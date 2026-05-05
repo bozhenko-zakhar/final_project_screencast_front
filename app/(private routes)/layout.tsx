@@ -16,7 +16,7 @@ import SideBar from "@/components/Layout/SideBar/SideBar";
 
 import { useAuthStore } from "@/lib/store/authStore";
 
-import { getMe } from "@/lib/api/clientApi/users";
+// import { getMe } from "@/lib/api/clientApi/users";
 
 import css from "./layout.module.css"
 

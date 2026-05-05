@@ -1,0 +1,32 @@
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.emoji {
+    font-size: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #fce4ec;
+    animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 0.75;
+    }
+}
