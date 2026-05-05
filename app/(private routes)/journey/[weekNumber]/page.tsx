@@ -25,6 +25,8 @@ export default async function Page({
     }),
   ]);
 
+	console.log()
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <JourneyDetails weekNumber={weekNumber} />
