@@ -1,0 +1,43 @@
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 40px 24px 24px;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.plantImage {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 140px;
+    height: auto;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.header {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 32px;
+    max-width: 70%;
+}
+
+.title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1F2937;
+    line-height: 1.2;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #6B7280;
+    line-height: 1.4;
+}
