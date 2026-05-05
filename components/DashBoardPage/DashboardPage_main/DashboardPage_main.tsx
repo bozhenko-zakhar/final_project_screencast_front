@@ -33,7 +33,7 @@ const DashboardPage = () => {
 
       {/* Права колонка: Tasks + Feeling */}
       <div className={styles.rightColumn}>
-        <TasksReminderCard babyImageUrl={babyWeek?.image} />
+        <TasksReminderCard />
         <FeelingCheckCard />
       </div>
     </section>
