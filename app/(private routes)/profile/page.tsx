@@ -6,15 +6,11 @@ import ProfileEditForm from "@/components/Profile/ProfileEditForm/ProfileEditFor
 import { redirect } from "next/navigation";
 
 const ProfilePage = async () => {
-  let user: User | null = null;
+  let user: User;
 
   try {
     user = await getServerUser();
   } catch {
-    redirect("/auth/login");
-  }
-
-  if (!user) {
     redirect("/auth/login");
   }
 

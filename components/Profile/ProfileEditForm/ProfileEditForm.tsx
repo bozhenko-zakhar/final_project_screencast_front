@@ -92,13 +92,25 @@ export default function ProfileEditForm({ user }: Props) {
         // const isEmailChanged = values.email !== user.email;
         // =================енд-ДОДАТКОВЕ-1==============================
 
-        const payload: UpdateUserPayload = {
-          username: values.username,
-          email: values.email,
-          gender: values.gender || null,
-          dueDate:
-            values.dueDate ? new Date(values.dueDate).toISOString() : null,
-        };
+        const payload: UpdateUserPayload = {};
+
+        if (values.username !== user.name) {
+          payload.name = values.username;
+        }
+
+        if (
+          values.dueDate !== (user.dueDate ? user.dueDate.split("T")[0] : "")
+        ) {
+          payload.date = values.dueDate || null;
+        }
+
+        if (values.email !== user.email) {
+          payload.newEmail = values.email;
+        }
+
+        if (values.gender !== (user.gender || "")) {
+          payload.gender = values.gender || null;
+        }
 
         mutate(payload, {
           onSuccess: async (updatedUser) => {
@@ -124,8 +136,7 @@ export default function ProfileEditForm({ user }: Props) {
             router.refresh();
           },
 
-          onError: (err) => {
-            console.log(err);
+          onError: () => {
             toast.error("Не вдалося оновити профіль");
           },
         });
