@@ -1,6 +1,6 @@
 import css from './BabyDevelopment.module.css'
 import Image from "next/image";
-import starImage from "../../img/star_shine.svg";
+import starImage from "../../../app/(private routes)/journey/[weekNumber]/img/star_shine.svg"
 
 type BabyDevelopmentData = {
   image: string;

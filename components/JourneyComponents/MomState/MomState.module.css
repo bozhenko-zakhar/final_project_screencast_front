@@ -116,10 +116,15 @@
 
   .possibleFeelings {
     max-width: 650px;
+    height: 194px;
+      overflow-y: auto;
   }
 
   .adviceSection {
     max-width: 650px;
+    height: 322px;
+    overflow-y: auto; 
+
   }
 
   .feelingsHeader {
