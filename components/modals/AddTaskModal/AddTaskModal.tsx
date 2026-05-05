@@ -14,7 +14,7 @@ type AddTaskFormValues = {
   date: string;
 };
 
-const TEMP_ACCESS_TOKEN = 'xxoXBYwLveEEd0C4bdCYxt6j1SA%2Fcc5Wz%2BNgyZl%2B';
+const TEMP_ACCESS_TOKEN = '';
 
 export default function AddTaskModal({ isOpen, onClose }: AddTaskModalProps) {
   const handleSubmit = async (values: AddTaskFormValues) => {
