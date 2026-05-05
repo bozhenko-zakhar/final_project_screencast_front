@@ -3,11 +3,13 @@
     flex-direction: column;
     /* gap: 12px; */
 }
-
-/* "Як ви себе почуваєте?" */
 .title {
     font-size: 20px;
     font-weight: 700;
+    font-family: var(--second-family);
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+    color: #000;
 }
 
 /* "Рекомендація на сьогодні:" */
@@ -44,18 +46,18 @@
     font-weight: 500;
     cursor: pointer;
 }
-@media screen and (min-width: 1024px){
+@media screen and (min-width: 1440px){
     .button {
         font-size: 16px;
     }
     .title {
         font-size: 24px;
     }
-        .subtitle {
-            font-size: 16px;
-        }
-        .text {
-            font-size: 16px;
-        }
+    .subtitle {
+        font-size: 16px;
+    }
+    .text {
+        font-size: 16px;
+    }
 
 }
