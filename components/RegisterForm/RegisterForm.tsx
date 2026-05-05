@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import css from './RegisterForm.module.css';
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
 import { register } from '@/lib/api/clientApi/auth';
@@ -24,6 +24,8 @@ const initialValues: RegisterFormValues = {
   name: '',
   email: '',
   password: '',
+	dueDate: '',
+	gender: ''
 };
 
 type RegisterFormValues = RegisterRequest;
@@ -32,6 +34,8 @@ export default function RegisterForm() {
   const router = useRouter();
   const fieldId = useId();
   const setUser = useAuthStore(state => state.setUser);
+	const [dueDate, setDueDate] = useState("2026-12-01");
+	const [gender, setGender] = useState("")
 
   return (
     <div className={css.page}>
@@ -56,7 +60,7 @@ export default function RegisterForm() {
             }: FormikHelpers<RegisterFormValues>
           ) => {
             try {
-              const user: User = await register(values);
+              const user: User = await register({...values, dueDate, gender});
 
               setUser(user);
               resetForm();
@@ -147,6 +151,10 @@ export default function RegisterForm() {
             </Form>
           )}
         </Formik>
+				<form>
+					<input onChange={(e) => setDueDate(e.target.value)} placeholder='dueDate'></input>
+					<input onChange={(e) => setGender(e.target.value)} placeholder='gender'></input>
+				</form>
       </div>
     </div>
   );

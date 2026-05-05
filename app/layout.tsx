@@ -2,7 +2,7 @@ import { Lato, Comfortaa } from "next/font/google";
 import "./globals.css";
 import "modern-normalize/modern-normalize.css";
 import "modern-normalize";
-import { AuthProvider } from "../components/AuthProvider/AuthProvider";
+import { AuthProvider } from "@/components/AuthProvider/AuthProvider";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 import { Toaster } from "react-hot-toast";
 
@@ -29,9 +29,9 @@ export default function RootLayout({
     <html lang="en">
 		  <body className={`${lato.variable} ${comfortaa.variable}`}>		
 			  <TanStackProvider>
-				  {/* <AuthProvider> */}
+				  <AuthProvider>
             {children}
-          {/* </AuthProvider> */}
+          </AuthProvider>
 			  </TanStackProvider>
         <Toaster
           position="top-right"

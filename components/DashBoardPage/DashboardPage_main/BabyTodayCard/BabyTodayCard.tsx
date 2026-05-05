@@ -10,7 +10,7 @@ const BabyTodayCard = () => {
 
   const { data:babyData } = useQuery({
     queryKey: ["babyWeek"],
-    queryFn: () => fetchCurrentBabyWeek({weekNumber: weekNumber})
+    queryFn: () => fetchCurrentBabyWeek({weekNumber: +weekNumber})
   });
 
 
