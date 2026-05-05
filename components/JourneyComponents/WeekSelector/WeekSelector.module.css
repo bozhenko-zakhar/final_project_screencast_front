@@ -3,8 +3,8 @@
   gap: 16px;
 
   overflow-x: auto;
-  padding: 4px 0;
-  height: 97px;
+  /* padding: 4px 0; */
+  /* height: 97px; */
 
   scroll-behavior: smooth;
 
@@ -25,21 +25,6 @@
 }
 
 
-/* .wrapper :global(.swiper) {
-  overflow: visible;
-  padding-block: 8px;
-}
-
-.wrapper :global(.swiper-wrapper) {
-  align-items: center;
-}
-
-.wrapper :global(.swiper-slide) {
-  width: auto;
-  height: auto;
-  display: flex;
-} */
-
 .buttons {
   list-style-type: none;
   padding: 0;
@@ -47,7 +32,7 @@
   display: flex;
   justify-content: space-around;
   gap: 16px;
-  height: 97px;
+  /* height: 97px; */
 }
 
 .button {

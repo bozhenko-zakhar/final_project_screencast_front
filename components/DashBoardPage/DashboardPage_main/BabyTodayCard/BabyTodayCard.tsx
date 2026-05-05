@@ -1,18 +1,15 @@
 import css from "./BabyTodayCard.module.css";
 import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
 import { useQuery } from "@tanstack/react-query";
-import { fetchCurrentBabyWeek } from "@/lib/api/clientApi/weeks";
+import { getBabyStateInfo } from "@/lib/api/clientApi/weeks";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useParams } from "next/navigation";
 
 const BabyTodayCard = () => {
-	const { weekNumber } = useParams<{weekNumber: string}>();
-
-  const { data:babyData } = useQuery({
+	const { data:babyData } = useQuery({
     queryKey: ["babyWeek"],
-    queryFn: () => fetchCurrentBabyWeek({weekNumber: weekNumber})
+    queryFn: () => getBabyStateInfo(1)
   });
-
 
   return (
     <section className={`${cardStyles.card} ${css.descriptionAboutBaby}`}>
@@ -36,13 +33,10 @@ const BabyTodayCard = () => {
             <p className={css.titlesOfBabyToday}>
               Активність:
               <span className={css.babyDescriptionText}>
-                {babyData?.babyDevelopment}
+                {" " + babyData?.babyDevelopment}
               </span>
             </p>
           </div>
-        </div>
-        <div className={css.description}>
-          <p className={css.babyDescriptionText}>{babyData?.interestingFact}</p>
         </div>
       </div>
     </section>
