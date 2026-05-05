@@ -8,19 +8,26 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 
 import { Emotion, fetchEmotions } from "@/lib/api/clientApi/emotions";
-import { createDiaryEntry } from "@/lib/api/clientApi/diaries";
+import { createDiaryEntry, updateDiaryEntry } from "@/lib/api/clientApi/diaries";
+import { DiaryEntryDetail } from "@/types/diary";
 
 import css from "./AddDiaryEntryForm.module.css";
 
-export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
-  const queryClient = useQueryClient();
+interface DiaryEntryFormProps {
+  onClose: () => void;
+  initialData?: DiaryEntryDetail;
+}
 
-    const { data: emotions = [] } = useQuery({
+export const DiaryEntryForm = ({ onClose, initialData }: DiaryEntryFormProps) => {
+  const queryClient = useQueryClient();
+  const isEditing = !!initialData;
+
+  const { data: emotions = [] } = useQuery({
     queryKey: ["emotions"],
     queryFn: fetchEmotions,
-    });
+  });
     
-  const { mutate, isPending } = useMutation({
+  const { mutate: createMutate, isPending: isCreating } = useMutation({
     mutationFn: createDiaryEntry,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["diary"] });
@@ -30,19 +37,51 @@ export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
     onError: () => toast.error("Помилка запиту"),
   });
 
+  const { mutate: updateMutate, isPending: isUpdating } = useMutation({
+    mutationFn: ({ entryId, data }: { entryId: string; data: any }) =>
+      updateDiaryEntry(entryId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["diary"] });
+      queryClient.invalidateQueries({ queryKey: ["diaryEntry"] });
+      toast.success("Оновлено!");
+      onClose();
+    },
+    onError: () => toast.error("Помилка запиту"),
+  });
+
+  const isPending = isCreating || isUpdating;
+
+  const initialValues = {
+    title: initialData?.title || "",
+    emotions: initialData?.emotions.map((e) => e.id) || [],
+    description: initialData?.description || "",
+  };
+
   return (
     <Formik
-      initialValues={{ title: "", emotions: [], description: "" }}
+      initialValues={initialValues}
       validationSchema={Yup.object({
         title: Yup.string().min(1).required("Обов'язкове поле"),
         description: Yup.string().min(1).max(1000).required("Обов'язкове поле"),
         emotions: Yup.array().min(1, "Оберіть хоча б одну категорію").required("Обов'язково"),
       })}
       onSubmit={(values) => {
-        mutate({
-          ...values,
-          date: new Date().toISOString().split('T')[0],
-        });
+        if (isEditing && initialData) {
+          updateMutate({
+            entryId: initialData.id,
+            data: {
+              title: values.title,
+              description: values.description,
+              emotions: values.emotions,
+              date: initialData.date,
+            },
+          });
+        } else {
+          createMutate({
+            ...values,
+            date: new Date().toISOString().split('T')[0],
+          });
+        }
       }}
     >
       {({ values, errors }) => (
@@ -109,7 +148,13 @@ export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
           </div>
 
           <button type="submit" disabled={isPending} className={css.submitBtn}>
-               Зберегти       
+            {isPending 
+              ? isEditing 
+                ? "Оновлення..." 
+                : "Збереження..." 
+              : isEditing 
+              ? "Оновити" 
+              : "Зберегти"}
           </button>
         </Form>
       )}

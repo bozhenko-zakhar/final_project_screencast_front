@@ -17,7 +17,6 @@ import {
 } from '@/lib/api/clientApi/tasks';
 
 import type { CreateTaskPayload, Task } from '@/types/tasks';
-import { CreateTaskPayload } from '@/types/tasks';
 
 import PregnancyLoader from '@/components/Loading/PregnancyLoader';
 import AddTaskModal from '@/components/modals/AddTaskModal/AddTaskModal';
@@ -26,8 +25,6 @@ import EmojiLoader from '@/components/EmojiLoader/EmojiLoader';
 interface TasksReminderCardProps {
   babyImageUrl?: string;
 }
-
-const TasksReminderCard = () => {
 
 const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
   const router = useRouter();
@@ -119,7 +116,7 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
       <div className={styles.content}>
         {isLoading && <EmojiLoader />}
         
-        {!isLoading && isError &&
+        {!isLoading && isError && (
           <p>Сталася помилка при завантаженні завдань.</p>
         )}
 
@@ -171,9 +168,6 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
       <AddTaskModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        task={null}
-        onSubmit={handleTaskCreate}
-        isSubmitting={createTaskMutation.isPending}
       />
       {/* TODO: підключити коли AddTaskModal буде готовий
       {isAddModalOpen && (
