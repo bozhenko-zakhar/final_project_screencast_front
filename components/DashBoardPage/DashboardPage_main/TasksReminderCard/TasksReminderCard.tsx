@@ -89,7 +89,7 @@ const TasksReminderCard = () => {
 
   return (
     <section
-      className={`${cardStyles.card} ${cardStyles.cardFixedHeight} ${styles.tasks}`}
+      className={`${cardStyles.card} ${cardStyles.tasksHeight} ${styles.tasks}`}
     >
       <div className={styles.header}>
         <h2 className={styles.title}>Важливі завдання</h2>
@@ -100,7 +100,9 @@ const TasksReminderCard = () => {
           onClick={handleCreateTaskClick}
           aria-label="Створити завдання"
         >
-          +
+          <svg className={styles.iconButtonIcon} aria-hidden="true">
+            <use href="/sprite.svg#add_circle" />
+          </svg>
         </button>
       </div>
 
@@ -135,19 +137,26 @@ const TasksReminderCard = () => {
 
               return (
                 <li key={task.id} className={styles.item}>
+                  <span className={styles.taskDate}>
+                    {new Date(task.date).toLocaleDateString('uk-UA', {
+                      day: '2-digit',
+                      month: '2-digit'
+                    })}
+                  </span>
                   <label className={styles.taskLabel}>
                     <input
                       type="checkbox"
+                      className={styles.checkboxInput}
                       checked={task.isCompleted}
                       disabled={isThisPending}
                       onChange={() => handleToggleTask(task)}
                     />
-
-                    <span
-                      className={
-                        task.isCompleted ? styles.taskCompleted : undefined
-                      }
-                    >
+                    <span className={styles.checkboxBox} aria-hidden="true">
+                      <svg className={styles.checkboxIcon}>
+                        <use href="/sprite.svg#check" />
+                      </svg>
+                    </span>
+                    <span className={task.isCompleted ? styles.taskCompleted : styles.taskText}>
                       {task.title}
                     </span>
                   </label>
