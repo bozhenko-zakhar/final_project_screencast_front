@@ -3,10 +3,16 @@ import { api } from "../../api";
 import { cookies } from "next/headers";
 import { logErrorResponse } from "../../utils/utils";
 import { isAxiosError } from "axios";
+import { Cookie } from "next/font/google";
 
 export async function GET() {
   try {
-    const res = await api.get("/weeks/public", {});
+	const cookieStore = await cookies()
+    const res = await api.get("/weeks/public", {
+		params:{
+			Cookie:cookieStore.toString()
+		}
+	});
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
     if (isAxiosError(error)) {

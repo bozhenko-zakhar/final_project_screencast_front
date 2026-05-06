@@ -6,6 +6,8 @@ import TasksReminderCard from "./TasksReminderCard/TasksReminderCard";
 import FeelingCheckCard from "./FeelingCheckCard/FeelingCheckCard";
 import styles from "../DashboardPage_main/DashboardPage_main.module.css";
 
+import { useQuery } from "@tanstack/react-query";
+import { getBabyStateInfo } from "@/lib/api/clientApi/weeks";
 import StatusBlock from "./StatusBlock/StatusBlock";
 import BabyTodayCard from "./BabyTodayCard/BabyTodayCard";
 import MomTipCard from "./MomTipCard/MomTipCard";
