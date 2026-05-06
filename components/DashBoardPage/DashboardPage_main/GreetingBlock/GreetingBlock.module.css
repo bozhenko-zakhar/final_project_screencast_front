@@ -3,23 +3,23 @@
     flex-direction: column;
     justify-content: flex-start;
     gap: 12px;
-
     min-height: 34px;
+    /* padding: 24px 32px 0; */
 }
-
 .title {
     font-size: 24px;
     font-weight: 700;
     line-height: 1.4;
-    letter-spacing: 0.01em;
+    letter-spacing: 1px;
     color: #000;
+    font-family: var(--second-family);
 }
-@media screen and (min-width: 1024px){
+@media screen and (min-width: 1440px){
     .greeting {
         min-height: 45px;
-        margin-bottom: 32px;
+        margin-bottom: -32px; /* щоб схлопнути gap 32px */
     }
     .title {
-            font-size: 32px;
-        }
+        font-size: 32px;
+    }
 }
