@@ -22,3 +22,7 @@ export interface FormValues {
   gender: "" | "boy" | "girl";
   dueDate: string;
 }
+
+export type UpdateAvatarResponse = {
+  url: string;
+};
