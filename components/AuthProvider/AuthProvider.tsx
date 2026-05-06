@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
-import { getMe } from "@/lib/api/clientApi/users";
-import { useAuthStore } from "@/lib/store/authStore";
-import { User } from "@/types/user";
-import { useEffect } from "react";
+import { useEffect } from 'react';
+import { isAxiosError } from 'axios';
+import { User } from '@/types/user.ts'
+import { getMe } from '@/lib/api/clientApi/users';
+import { useAuthStore } from '@/lib/store/authStore';
 
 type Props = {
   children: React.ReactNode;
@@ -13,14 +14,24 @@ export const AuthProvider = ({ children }: Props) => {
   const setUser = useAuthStore((state) => state.setUser);
   const clearUser = useAuthStore((state) => state.clearUser);
 
-	useEffect(() => {
+  useEffect(() => {
     const fetchUser = async () => {
-      const user: User = await getMe();
-			
-			if (user) setUser(user);
-    };
-    fetchUser();
-  }, [setUser]);
+      try {
+        const user: User = await getMe();
+        setUser(user);
+      } catch (error) {
+        clearUser();
 
-	return children
+        if (isAxiosError(error) && error.response?.status === 401) {
+          return;
+        }
+
+        console.error('Failed to fetch user:', error);
+      }
+    };
+
+    fetchUser();
+  }, [setUser, clearUser]);
+
+  return children;
 };
