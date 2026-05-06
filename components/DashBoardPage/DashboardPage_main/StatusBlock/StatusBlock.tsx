@@ -1,30 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-
 import css from "./StatusBlock.module.css";
 import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
-import { getBabyStateInfo, fetchPrivateWeeks } from "@/lib/api/clientApi/weeks";
-import { useAuthStore } from "@/lib/store/authStore";
-import { useParams } from "next/navigation";
-
-
+import { useBabyDataStore } from "@/lib/store/babyDataStore";
 
 const StatusBlock = () => {
-	const { weekNumber } = useParams<{weekNumber: string}>();
-
-  const { data: dataWeeks } = useQuery({
-    queryKey: ["dataWeeks"],
-    queryFn: () => getBabyStateInfo(+weekNumber),
-  });
-
-  const {
-    data: daysLeft,
-  } = useQuery({
-    queryKey: ["daysLeft"],
-    queryFn: fetchPrivateWeeks,
-    select: (response) => response?.daysLeft,
-  });
-
-  const daysDisplay = daysLeft !== undefined ? daysLeft : "...";
+  const dataWeeks = useBabyDataStore((state) => state.babyData);
+  const daysDisplay = useBabyDataStore((state) => state.privateData?.daysLeft);
 
   return (
     <section className={css.daysCountWrapper}>

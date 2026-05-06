@@ -7,7 +7,7 @@ type PublicWeeksResponse = {
 	babyState: BabyWeek
 }
 
-type PrivateWeeksResponse = {
+export type PrivateWeeksResponse = {
 	daysLeft: number,
 	babyState: BabyWeek
 }
