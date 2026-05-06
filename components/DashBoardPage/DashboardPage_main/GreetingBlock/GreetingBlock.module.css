@@ -17,7 +17,7 @@
 @media screen and (min-width: 1440px){
     .greeting {
         min-height: 45px;
-        margin-bottom: -32px; /* щоб схлопнути gap 32px */
+        margin-bottom: 32px;
     }
     .title {
         font-size: 32px;

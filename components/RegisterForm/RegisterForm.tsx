@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import css from './RegisterForm.module.css';
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
 import { register } from '@/lib/api/clientApi/auth';
@@ -23,7 +23,9 @@ const RegisterFormSchema = Yup.object().shape({
 const initialValues: RegisterFormValues = {
   name: '',
   email: '',
-  password: '',
+  password: ''
+	// dueDate: '',
+	// gender: ''
 };
 
 type RegisterFormValues = RegisterRequest;
@@ -32,6 +34,8 @@ export default function RegisterForm() {
   const router = useRouter();
   const fieldId = useId();
   const setUser = useAuthStore(state => state.setUser);
+	const [dueDate, setDueDate] = useState("");
+	const [gender, setGender] = useState("")
 
   return (
     <div className={css.page}>
@@ -55,9 +59,14 @@ export default function RegisterForm() {
               setErrors,
             }: FormikHelpers<RegisterFormValues>
           ) => {
-            try {
-              const user: User = await register(values);
+						// перевірка на те, чи є dueDate і gender, щоб уникнути помилки 400 Bad request
+						const registerRequest = dueDate && gender ? {...values, dueDate, gender} : values;
 
+						try {
+              const user: User = await register(registerRequest);
+							console.log(user)
+							
+							// далі все, як і було
               setUser(user);
               resetForm();
               router.push('/');
@@ -147,6 +156,10 @@ export default function RegisterForm() {
             </Form>
           )}
         </Formik>
+				<form>
+					<input onChange={(e) => setDueDate(e.target.value)} placeholder='dueDate'></input>
+					<input onChange={(e) => setGender(e.target.value)} placeholder='gender'></input>
+				</form>
       </div>
     </div>
   );

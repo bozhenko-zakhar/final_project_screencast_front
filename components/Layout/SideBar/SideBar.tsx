@@ -24,11 +24,9 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [logoutError, setLogoutError] = useState<string | null>(null);
 
-	
-
 	const navItems = [
 		{ href: "/", label: "Мій день" },
-		{ href: "/journey", label: "Подорож" },
+		{ href: "/journey/10", label: "Подорож" },
 		{ href: "/diary", label: "Щоденник" },
 		{ href: "/profile", label: "Профіль" }
 	];
