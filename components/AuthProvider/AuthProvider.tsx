@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react';
 import { isAxiosError } from 'axios';
-import { User } from '@/types/user.ts'
 import { getMe } from '@/lib/api/clientApi/users';
 import { useAuthStore } from '@/lib/store/authStore';
 
