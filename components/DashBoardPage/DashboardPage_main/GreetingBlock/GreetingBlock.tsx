@@ -18,7 +18,7 @@ function getGreeting(date = new Date()): string {
   return 'Доброго вечора';
 }
 
-function PageTitle() {
+function GreetingBlock() {
   const user = useAuthStore((state) => state.user) as UserForTitle | null;
 
   const userName = user?.name || 'Мамо';
@@ -28,4 +28,4 @@ function PageTitle() {
   return <h1 className={css.title}>{greeting}</h1>;
 }
 
-export default PageTitle;
+export default GreetingBlock;
