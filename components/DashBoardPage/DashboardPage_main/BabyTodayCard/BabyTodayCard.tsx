@@ -1,10 +1,12 @@
-
 import css from "./BabyTodayCard.module.css";
 import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
-import { useBabyDataStore } from "@/lib/store/babyDataStore";
+import { BabyWeek } from "@/types/baby";
+import { useWeekStore } from "@/lib/store/babyDataStore";
+
 
 const BabyTodayCard = () => {
-  const babyData = useBabyDataStore((state) => state.babyData);
+
+  const babyData = useWeekStore((state)=>state.babyState)
 
   return (
     <section className={`${cardStyles.card} ${css.descriptionAboutBaby}`}>

@@ -1,9 +1,12 @@
 "use client";
 
-import { getMe } from "@/lib/api/clientApi/users";
-import { useAuthStore } from "@/lib/store/authStore";
-import { User } from "@/types/user";
 import { useEffect } from "react";
+
+import { getMe } from "@/lib/api/clientApi/users";
+import { fetchPrivateWeeks, fetchPublicWeeks } from "@/lib/api/clientApi/weeks";
+import { useAuthStore } from "@/lib/store/authStore";
+import { useWeekStore } from "@/lib/store/babyDataStore";
+import { User } from "@/types/user";
 
 type Props = {
   children: React.ReactNode;
@@ -13,20 +16,40 @@ export const AuthProvider = ({ children }: Props) => {
   const setUser = useAuthStore((state) => state.setUser);
   const clearUser = useAuthStore((state) => state.clearUser);
 
+  const setBabyData = useWeekStore((state) => state.setData);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const user: User = await getMe();
 
-        if (user) setUser(user);
-      } catch (err) {
-        console.warn("Didnt authebticate", 401);
-        clearUser();
-      }
+        setUser(user);
 
-      fetchUser();
+        const weeks = await fetchPrivateWeeks();
+        
+        setBabyData({
+          babyState: weeks.babyState,
+          daysLeft: weeks.daysLeft,
+        });
+      } catch (err) {
+        console.warn("Not authenticated", 401);
+        clearUser();
+
+        try {
+          const publicWeeks = await fetchPublicWeeks();
+        
+          setBabyData({
+            babyState: publicWeeks.babyState,
+            daysLeft: publicWeeks.daysLeft,
+          });
+        } catch (publicErr) {
+          console.error("Помилка при завантаженні публічних тижнів:", publicErr);
+        }
+      }
     };
-  }, [setUser, clearUser]);
+
+    fetchUser();
+  }, [setUser, clearUser, setBabyData]);
 
   return children;
 };
