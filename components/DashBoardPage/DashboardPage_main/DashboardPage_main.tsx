@@ -20,7 +20,7 @@ const DashboardPage = () => {
   const fetchData = useBabyDataStore((state) => state.fetchData);
 
   useEffect(() => {
-    fetchData(1);
+    fetchData(10);
   }, []);
 
   // const { weekNumber } = useParams<{weekNumber: string}>();
