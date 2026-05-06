@@ -20,4 +20,3 @@ export const updateUser = async (payload: UpdateUserPayload): Promise<User> => {
 // тимчасово прибрано: export const sendVerifyEmail = async (email: string): Promise<void> => {
 //   await nextServer.post("/auth/send-verify-email", { email });
 // };
-};
