@@ -13,20 +13,14 @@ export const AuthProvider = ({ children }: Props) => {
   const setUser = useAuthStore((state) => state.setUser);
   const clearUser = useAuthStore((state) => state.clearUser);
 
-  useEffect(() => {
+	useEffect(() => {
     const fetchUser = async () => {
-      try {
-        const user: User = await getMe();
-
-        if (user) setUser(user);
-      } catch (err) {
-        console.warn("Didnt authebticate", 401);
-        clearUser();
-      }
-
-      fetchUser();
+      const user: User = await getMe();
+			
+			if (user) setUser(user);
     };
-  }, [setUser, clearUser]);
+    fetchUser();
+  }, [setUser]);
 
-  return children;
+	return children
 };
