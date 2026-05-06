@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { isAxiosError } from 'axios';
-
+import { User } from '@/types/user.ts'
 import { getMe } from '@/lib/api/clientApi/users';
 import { useAuthStore } from '@/lib/store/authStore';
 
@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }: Props) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const user = await getMe();
+        const user: User = await getMe();
         setUser(user);
       } catch (error) {
         clearUser();
