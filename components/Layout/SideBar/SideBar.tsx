@@ -142,19 +142,15 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 			</aside>
 
 			<ConfirmationModal
-  isOpen={isConfirmationOpen}
-  title="Ви впевнені, що хочете вийти?"
-  description="Після виходу потрібно буде знову увійти в обліковий запис."
-  confirmButtonText="Так, вийти"
-  cancelButtonText="Скасувати"
-  onCancel={() => {
-    setLogoutError(null);
-    setIsConfirmationOpen(false);
-  }}
-  onConfirm={handleLogout}
-  isLoading={isLoading}
-  errorMessage={logoutError ?? undefined}
-/>
+				isOpen={isConfirmationOpen}
+				onCancel={() => {
+					setLogoutError(null);
+					setIsConfirmationOpen(false);
+				}}
+				onConfirm={handleLogout}
+				isLoading={isLoading}
+				errorMessage={logoutError ?? undefined}
+			/>
 		</>
 	)
 }
