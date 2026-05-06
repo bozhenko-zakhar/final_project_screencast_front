@@ -40,7 +40,7 @@ const TasksReminderCard = () => {
   });
 
   const createTaskMutation = useMutation({
-    mutationFn: createTask,
+    mutationFn: (payload: CreateTaskPayload) => createTask(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       toast.success('Завдання створено');
@@ -55,6 +55,7 @@ const TasksReminderCard = () => {
     mutationFn: toggleTaskStatus,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
+      toast.success('Статус завдання оновлено');
     },
     onError: () => {
       toast.error('Не вдалося оновити завдання');
@@ -70,8 +71,8 @@ const TasksReminderCard = () => {
     setIsAddModalOpen(true);
   };
 
-  const handleTaskCreate = async (values: CreateTaskPayload) => {
-    await createTaskMutation.mutateAsync(values);
+  const handleTaskCreate = (values: CreateTaskPayload) => {
+    createTaskMutation.mutate(values);
   };
 
   const handleToggleTask = (task: Task) => {
@@ -108,16 +109,15 @@ const TasksReminderCard = () => {
 
       <div className={styles.content}>
         {isLoading && <EmojiLoader />}
-
-        {!isLoading && isError && (
+        
+        {!isLoading && isError &&
           <p>Сталася помилка при завантаженні завдань.</p>
-        )}
+        }
 
         {!isLoading && !isError && !hasTasks && (
           <div className={styles.placeholder}>
             <p className={styles.noTasksTitle}>Наразі немає жодних завдань</p>
             <p className={styles.noTasksText}>Створіть перше нове завдання!</p>
-
             <button
               type="button"
               className={styles.createButton}
@@ -170,9 +170,18 @@ const TasksReminderCard = () => {
       <AddTaskModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onSubmit={handleTaskCreate}
-        isSubmitting={createTaskMutation.isPending}
+        // task={null}
+        // onSubmit={handleTaskCreate}
+        // isSubmitting={createTaskMutation.isPending}
       />
+      {/* TODO: підключити коли AddTaskModal буде готовий
+      {isAddModalOpen && (
+        <AddTaskModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+        />
+      )}
+      */}
     </section>
   );
 };
