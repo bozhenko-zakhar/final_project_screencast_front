@@ -1,9 +1,8 @@
 import { nextServer } from '../api';
-
 import type {
   BackendTask,
-  CreateTaskPayload,
   Task,
+  CreateTaskPayload,
   ToggleTaskStatusPayload,
 } from '@/types/tasks';
 

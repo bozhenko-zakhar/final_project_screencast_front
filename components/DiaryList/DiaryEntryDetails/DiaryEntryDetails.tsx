@@ -94,16 +94,12 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
         </div>
       </div>
 
-  <ConfirmationModal
-  isOpen={isDeleteModalOpen}
-  title="Ви впевнені, що хочете видалити запис?"
-  description="Цю дію неможливо буде скасувати."
-  confirmButtonText="Видалити"
-  cancelButtonText="Скасувати"
-  onCancel={() => setIsDeleteModalOpen(false)}
-  onConfirm={handleDelete}
-  isLoading={isDeleting}
-/>
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onCancel={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDelete}
+        isLoading={isDeleting}
+      />
 
       {isEditModalOpen && (
         <AddDiaryEntryModal 
