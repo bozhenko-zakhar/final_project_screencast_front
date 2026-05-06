@@ -23,15 +23,14 @@ const DashboardPage = () => {
 
   return (
     <section className={styles.dashboard}>
-      {/* Ліва частина: привітання +, наприклад, StatusBlock */}
-      <div className={styles.leftColumn}>
+      <div className={styles.greetingWrapper}>
         <GreetingBlock />
+      </div>
+      <div className={styles.leftColumn}>
         <StatusBlock />
         <BabyTodayCard />
         <MomTipCard />
       </div>
-
-      {/* Права колонка: Tasks + Feeling */}
       <div className={styles.rightColumn}>
         <TasksReminderCard />
         <FeelingCheckCard />
