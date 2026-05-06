@@ -12,22 +12,8 @@ import StatusBlock from "./StatusBlock/StatusBlock";
 import BabyTodayCard from "./BabyTodayCard/BabyTodayCard";
 import MomTipCard from "./MomTipCard/MomTipCard";
 import { useParams } from "next/navigation";
-import { useBabyDataStore } from "@/lib/store/babyDataStore";
-import { useEffect } from "react";
 
 const DashboardPage = () => {
-
-
-  const {weekNumber} = useParams<{weekNumber:string}>()
-  const fetchData = useBabyDataStore((state)=>state.fetchData)
-
-  useEffect(()=>{
-    if(weekNumber){
-      fetchData(+weekNumber)
-    }
-  },[weekNumber,fetchData])
-
-
 	// const { weekNumber } = useParams<{weekNumber: string}>();
 
   // const { data: babyWeek } = useQuery({
