@@ -3,16 +3,18 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useId, useState } from 'react';
-import css from './RegisterForm.module.css';
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
-import { register } from '@/lib/api/clientApi/auth';
 import { isAxiosError } from 'axios';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
+
+import css from './RegisterForm.module.css';
+import { register } from '@/lib/api/clientApi/auth';
 import { useAuthStore } from '@/lib/store/authStore';
-import type { RegisterRequest,} from '@/types/auth';
+import type { RegisterRequest } from '@/types/auth';
 import type { User } from '@/types/user';
 
+type RegisterFormValues = RegisterRequest;
 
 const RegisterFormSchema = Yup.object().shape({
   name: Yup.string().required('Обовʼязкове поле'),
@@ -23,19 +25,16 @@ const RegisterFormSchema = Yup.object().shape({
 const initialValues: RegisterFormValues = {
   name: '',
   email: '',
-  password: ''
-	// dueDate: '',
-	// gender: ''
+  password: '',
 };
-
-type RegisterFormValues = RegisterRequest;
 
 export default function RegisterForm() {
   const router = useRouter();
   const fieldId = useId();
-  const setUser = useAuthStore(state => state.setUser);
-	const [dueDate, setDueDate] = useState("");
-	const [gender, setGender] = useState("")
+  const setUser = useAuthStore((state) => state.setUser);
+
+  const [dueDate, setDueDate] = useState('');
+  const [gender, setGender] = useState('');
 
   return (
     <div className={css.page}>
@@ -47,6 +46,7 @@ export default function RegisterForm() {
           <use href="/icons.svg#icon-leleka" />
         </svg>
       </div>
+
       <div className={css.center}>
         <Formik
           initialValues={initialValues}
@@ -59,27 +59,33 @@ export default function RegisterForm() {
               setErrors,
             }: FormikHelpers<RegisterFormValues>
           ) => {
-						// перевірка на те, чи є dueDate і gender, щоб уникнути помилки 400 Bad request
-						const registerRequest = dueDate && gender ? {...values, dueDate, gender} : values;
+            const registerRequest: RegisterRequest = {
+              name: values.name.trim(),
+              email: values.email.trim(),
+              password: values.password,
+              ...(dueDate && { dueDate }),
+              ...(gender && { gender }),
+            };
 
-						try {
+            try {
               const user: User = await register(registerRequest);
-							console.log(user)
-							
-							// далі все, як і було
+
               setUser(user);
               resetForm();
               router.push('/');
             } catch (error: unknown) {
               if (isAxiosError(error)) {
                 toast.error(
-                  error.response?.data?.message || 'Помилка реєстрації'
+                  error.response?.data?.response?.message ||
+                    error.response?.data?.message ||
+                    'Помилка реєстрації'
                 );
               } else {
                 toast.error('Щось пішло не так');
               }
+
               setErrors({
-                password: 'Користувач з такою поштою вже існує',
+                password: 'Перевірте дані для реєстрації',
               });
             } finally {
               setSubmitting(false);
@@ -98,7 +104,9 @@ export default function RegisterForm() {
                   id={`${fieldId}-name`}
                   type="text"
                   name="name"
-                  className={`${css.input} ${errors.name && touched.name ? css.inputError : ''}`}
+                  className={`${css.input} ${
+                    errors.name && touched.name ? css.inputError : ''
+                  }`}
                   placeholder="Ваше імʼя"
                 />
                 <ErrorMessage
@@ -107,6 +115,7 @@ export default function RegisterForm() {
                   component="span"
                 />
               </div>
+
               <label htmlFor={`${fieldId}-email`} className={css.label}>
                 Пошта*
               </label>
@@ -115,7 +124,9 @@ export default function RegisterForm() {
                   id={`${fieldId}-email`}
                   type="email"
                   name="email"
-                  className={`${css.input} ${errors.email && touched.email ? css.inputError : ''}`}
+                  className={`${css.input} ${
+                    errors.email && touched.email ? css.inputError : ''
+                  }`}
                   placeholder="hello@leleka.com"
                   autoComplete="email"
                 />
@@ -125,6 +136,7 @@ export default function RegisterForm() {
                   component="span"
                 />
               </div>
+
               <label htmlFor={`${fieldId}-password`} className={css.label}>
                 Пароль*
               </label>
@@ -133,7 +145,9 @@ export default function RegisterForm() {
                   id={`${fieldId}-password`}
                   type="password"
                   name="password"
-                  className={`${css.input} ${errors.password && touched.password ? css.inputError : ''}`}
+                  className={`${css.input} ${
+                    errors.password && touched.password ? css.inputError : ''
+                  }`}
                   placeholder="********"
                   autoComplete="new-password"
                 />
@@ -143,6 +157,7 @@ export default function RegisterForm() {
                   component="span"
                 />
               </div>
+
               <button type="submit" disabled={isSubmitting} className={css.btn}>
                 {isSubmitting ? 'Завантаження...' : 'Зареєструватись'}
               </button>
@@ -156,10 +171,17 @@ export default function RegisterForm() {
             </Form>
           )}
         </Formik>
-				<form>
-					<input onChange={(e) => setDueDate(e.target.value)} placeholder='dueDate'></input>
-					<input onChange={(e) => setGender(e.target.value)} placeholder='gender'></input>
-				</form>
+
+        <form>
+          <input
+            onChange={(e) => setDueDate(e.target.value)}
+            placeholder="dueDate"
+          />
+          <input
+            onChange={(e) => setGender(e.target.value)}
+            placeholder="gender"
+          />
+        </form>
       </div>
     </div>
   );
