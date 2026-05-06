@@ -18,7 +18,6 @@ import {
 
 import type { CreateTaskPayload, Task } from '@/types/tasks';
 
-import PregnancyLoader from '@/components/Loading/PregnancyLoader';
 import AddTaskModal from '@/components/modals/AddTaskModal/AddTaskModal';
 import EmojiLoader from '@/components/EmojiLoader/EmojiLoader';
 
