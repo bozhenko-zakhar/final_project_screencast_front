@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }: Props) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const user: User = await getMe();
+        const user = await getMe();
         setUser(user);
       } catch (error) {
         clearUser();
