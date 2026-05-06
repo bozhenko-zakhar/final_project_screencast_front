@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useEffect } from 'react';
 import { isAxiosError } from 'axios';
@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }: Props) => {
   const setUser = useAuthStore((state) => state.setUser);
   const clearUser = useAuthStore((state) => state.clearUser);
 
-	useEffect(() => {
+  useEffect(() => {
     const fetchUser = async () => {
       try {
         const user = await getMe();
@@ -28,8 +28,9 @@ export const AuthProvider = ({ children }: Props) => {
         console.error('Failed to fetch user:', error);
       }
     };
-    fetchUser();
-  }, [setUser]);
 
-	return children
+    fetchUser();
+  }, [setUser, clearUser]);
+
+  return children;
 };
