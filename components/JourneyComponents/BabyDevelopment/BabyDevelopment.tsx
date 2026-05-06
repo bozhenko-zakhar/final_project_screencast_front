@@ -1,16 +1,10 @@
 import css from './BabyDevelopment.module.css'
 import Image from "next/image";
 import starImage from "../../../app/(private routes)/journey/[weekNumber]/img/star_shine.svg"
-
-type BabyDevelopmentData = {
-  image: string;
-  analogy: string;
-  babyDevelopment: string;
-  interestingFact: string;
-};
+import { BabyWeek } from '@/types/baby';
 
 type Props = {
-  data: BabyDevelopmentData;
+  data: BabyWeek | undefined;
 };
 
 export default function BabyDevelopment({ data }: Props) {

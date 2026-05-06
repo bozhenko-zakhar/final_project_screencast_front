@@ -23,9 +23,9 @@ const RegisterFormSchema = Yup.object().shape({
 const initialValues: RegisterFormValues = {
   name: '',
   email: '',
-  password: '',
-	dueDate: '',
-	gender: ''
+  password: ''
+	// dueDate: '',
+	// gender: ''
 };
 
 type RegisterFormValues = RegisterRequest;
@@ -34,7 +34,7 @@ export default function RegisterForm() {
   const router = useRouter();
   const fieldId = useId();
   const setUser = useAuthStore(state => state.setUser);
-	const [dueDate, setDueDate] = useState("2026-12-01");
+	const [dueDate, setDueDate] = useState("");
 	const [gender, setGender] = useState("")
 
   return (
@@ -59,9 +59,14 @@ export default function RegisterForm() {
               setErrors,
             }: FormikHelpers<RegisterFormValues>
           ) => {
-            try {
-              const user: User = await register({...values, dueDate, gender});
+						// перевірка на те, чи є dueDate і gender, щоб уникнути помилки 400 Bad request
+						const registerRequest = dueDate && gender ? {...values, dueDate, gender} : values;
 
+						try {
+              const user: User = await register(registerRequest);
+							console.log(user)
+							
+							// далі все, як і було
               setUser(user);
               resetForm();
               router.push('/');

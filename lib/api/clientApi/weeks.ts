@@ -1,75 +1,47 @@
-import { BabyWeek, BackendBabyWeek } from "@/types/baby";
+import { BabyWeek } from "@/types/baby";
 import { nextServer } from "../api";
 import { MomWeek } from "@/types/mom";
 
+type PublicWeeksResponse = {
+	daysLeft: number,
+	babyState: BabyWeek
+}
+
+type PrivateWeeksResponse = {
+	daysLeft: number,
+	babyState: BabyWeek
+}
+
+type BabyStateResponse = {
+	babyState: BabyWeek
+}
+
+type MomStateResponse = {
+	momState: MomWeek
+}
+
 export const getMomStateInfo = async (weekNumber: number): Promise<MomWeek> => {
-  const res = await nextServer.get<MomWeek>("/weeks/mom-state", {
+  const res = await nextServer.get<MomStateResponse>("/weeks/mom-state", {
     params: { weekNumber },
   });
 
-  return res.data;
+  return res.data.momState;
 };
 
-export const getBabyStateInfo = async (
-  weekNumber: number,
-): Promise<BabyWeek> => {
-  const res = await nextServer.get<BabyWeek>("/weeks/baby-state", {
+export const getBabyStateInfo = async (weekNumber: number): Promise<BabyWeek> => {
+  const res = await nextServer.get<BabyStateResponse>("/weeks/baby-state", {
     params: { weekNumber },
   });
 
+  return res.data.babyState;
+};
+
+export const fetchPublicWeeks = async (): Promise<PublicWeeksResponse> => {
+  const res = await nextServer.get<PublicWeeksResponse>("/weeks/public");
   return res.data;
 };
 
-type WeekParams = {
-  weekNumber: number;
-};
-
-export const fetchCurrentBabyWeek = async ({
-  weekNumber,
-}: WeekParams): Promise<BabyWeek> => {
-  const weekNumberQuery = weekNumber ? `weekNumber=${weekNumber}` : "";
-  // Бекенд повертає масив тижнів
-  const res = await nextServer.get<BabyWeek>(
-    `/weeks/baby-state?${weekNumberQuery}`, // ← твій реальний шлях, який повертає масив
-  );
-
-  const data = res.data;
-
-  // Мапимо структуру бекенду (_id.$oid → id, решта поля 1:1)
-  return data; /*{
-    id: data.id,
-    analogy: data.analogy,
-    weekNumber: data.weekNumber,
-    babySize: data.babySize,
-    babyWeight: data.babyWeight,
-    image: data.image,
-    babyActivity: data.babyActivity,
-    babyDevelopment: data.babyDevelopment,
-    interestingFact: data.interestingFact,
-    momDailyTips: data.momDailyTips,
-	};*/
-};
-
-export const fetchCurrentMomWeek = async ({
-  weekNumber,
-}: WeekParams): Promise<MomWeek> => {
-  const weekNumberQuery = weekNumber ? `weekNumber=${weekNumber}` : "";
-
-  const res = await nextServer.get(`/weeks/mom-state?${weekNumberQuery}`);
-
-  const currentWeek = res.data[0].weekNumber;
-
-  const data = res.data[currentWeek];
-
-  return data;
-};
-
-export const fetchPublicWeeks = async () => {
-  const res = await nextServer.get("/weeks/public");
-  return res.data;
-};
-
-export const fetchPrivateWeeks = async () => {
-  const res = await nextServer.get("/weeks/private");
+export const fetchPrivateWeeks = async (): Promise<PrivateWeeksResponse> => {
+  const res = await nextServer.get<PrivateWeeksResponse>("/weeks/private");
   return res.data;
 };

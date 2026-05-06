@@ -1,8 +1,9 @@
 "use client";
 
-import { use, useEffect } from "react";
+import { use } from "react";
+import { useQuery } from "@tanstack/react-query";
 import css from "./page.module.css";
-import { useDiaryStore } from "@/lib/store/diaryStore";
+import { getDiaryEntry } from "@/lib/api/clientApi/diaries";
 import DiaryEntryDetails from "@/components/DiaryList/DiaryEntryDetails/DiaryEntryDetails";
 import GreetingBlock from "@/components/DashBoardPage/DashboardPage_main/GreetingBlock/GreetingBlock";
 
@@ -12,14 +13,12 @@ const DiaryEntryPage = ({
 	params: Promise<{ entryId: string }>;
 }) => {
 	const { entryId } = use(params);
-	const { selectEntry, getSelectedEntry, fetchEntries, isLoading, error } = useDiaryStore();
 
-	useEffect(() => {
-		selectEntry(entryId);
-		fetchEntries(); // Ensure data is loaded
-	}, [entryId, selectEntry, fetchEntries]);
-
-	const entry = getSelectedEntry();
+	const { data: entry = null, isLoading, error } = useQuery({
+		queryKey: ["diaryEntry", entryId],
+		queryFn: () => getDiaryEntry(entryId),
+		enabled: !!entryId,
+	});
 
 	return (
 		<div className={css.container}>

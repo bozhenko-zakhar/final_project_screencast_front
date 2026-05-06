@@ -2,11 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { DiaryEntryDetail } from "@/types/diary";
+import { DiaryListItem } from "@/types/diary";
 import css from "./DiaryEntryCard.module.css";
 
 interface DiaryEntryCardProps {
-  entry: DiaryEntryDetail;
+  entry: DiaryListItem;
   onSelectEntry?: (entryId: string) => void;
 }
 

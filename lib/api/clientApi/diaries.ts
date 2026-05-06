@@ -31,13 +31,13 @@ export const createDiaryEntry = async (payload: DiaryEntry): Promise<void> => {
   await nextServer.post("/diary", payload);
 };
 
-export const fetchDiaries = async (): Promise<DiaryEntryDetail[]> => {
-  const response = await nextServer.get<BackendDiaryEntry[]>("/diary");
-  return response.data.map(transformBackendEntry);
+export const fetchDiaries = async (): Promise<DiaryListItem[]> => {
+  const response = await nextServer.get<BackendDiaryEntry[]>("/diaries");
+  return response.data.map(transformToListItem);
 };
 
 export const getDiaryEntry = async (entryId: string): Promise<DiaryEntryDetail> => {
-  const response = await nextServer.get<BackendDiaryEntry>(`/diary/${entryId}`);
+  const response = await nextServer.get<BackendDiaryEntry>(`/diaries/${entryId}`);
   return transformBackendEntry(response.data);
 };
 
@@ -45,9 +45,9 @@ export const updateDiaryEntry = async (
   entryId: string,
   payload: Partial<DiaryEntry>
 ): Promise<void> => {
-  await nextServer.put(`/diary/${entryId}`, payload);
+  await nextServer.patch(`/diaries/${entryId}`, payload);
 };
 
 export const deleteDiaryEntry = async (entryId: string): Promise<void> => {
-  await nextServer.delete(`/diary/${entryId}`);
+  await nextServer.delete(`/diaries/${entryId}`);
 };

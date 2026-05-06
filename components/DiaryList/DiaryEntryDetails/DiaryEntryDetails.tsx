@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import css from "./DiaryEntryDetails.module.css";
 import { DiaryEntryDetail } from "@/types/diary";
-import { useDiaryStore } from "@/lib/store/diaryStore";
+import { deleteDiaryEntry } from "@/lib/api/clientApi/diaries";
 import ConfirmationModal from "@/components/Layout/ConfirmationModal/ConfirmationModal";
 import AddDiaryEntryModal from "@/components/AddDiaryEntryModal/AddDiaryEntryModal";
 import { DiaryEntryForm } from "@/components/AddDiaryEntryForm/AddDiaryEntryForm";
@@ -16,18 +17,19 @@ interface DiaryEntryDetailsProps {
 const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const { deleteEntry } = useDiaryStore();
+  const queryClient = useQueryClient();
 
-  const handleDelete = async () => {
-    if (!entry) return;
-    try {
-      await deleteEntry(entry.id);
+  const { mutate: deleteMutate, isPending: isDeleting } = useMutation({
+    mutationFn: (entryId: string) => deleteDiaryEntry(entryId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["diary"] });
       toast.success("Запис видалено!");
       setIsDeleteModalOpen(false);
-    } catch {
+    },
+    onError: () => {
       toast.error("Помилка при видаленні запису");
-    }
-  };
+    },
+  });
 
   if (!entry) {
     return (
@@ -42,6 +44,10 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
     month: "2-digit",
     year: "numeric",
   });
+
+  const handleDelete = () => {
+    deleteMutate(entry.id);
+  };
 
   const handleEdit = () => {
     setIsEditModalOpen(true);
@@ -59,12 +65,14 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
             <button 
               className={css.editButton} 
               onClick={handleEdit}
+              disabled={isDeleting}
             >
               Редагувати
             </button>
             <button 
               className={css.deleteButton} 
               onClick={() => setIsDeleteModalOpen(true)}
+              disabled={isDeleting}
             >
               Видалити
             </button>
@@ -90,7 +98,7 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
         isOpen={isDeleteModalOpen}
         onCancel={() => setIsDeleteModalOpen(false)}
         onConfirm={handleDelete}
-        isLoading={false}
+        isLoading={isDeleting}
       />
 
       {isEditModalOpen && (
@@ -99,8 +107,7 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
           onClose={() => setIsEditModalOpen(false)}
         >
           <DiaryEntryForm 
-            onClose={() => setIsEditModalOpen(false)} 
-            initialData={entry}
+            onClose={() => setIsEditModalOpen(false)}
           />
         </AddDiaryEntryModal>
       )}

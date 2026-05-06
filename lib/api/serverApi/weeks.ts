@@ -1,11 +1,20 @@
 import { nextServer } from "../api";
 import { cookies } from "next/headers";
 import type { BabyWeek } from "@/types/baby";
+import { MomWeek } from "@/types/mom";
 
-export const getServerBabyState = async (weekNumber: number) => {
+type BabyStateResponse = {
+	babyState: BabyWeek
+}
+
+type MomStateResponse = {
+	momState: MomWeek
+}
+
+export const getServerBabyState = async (weekNumber: number): Promise<BabyWeek> => {
   const cookieStore = await cookies();
 
-  const { data } = await nextServer.get<BabyWeek>("/weeks/baby-state", {
+  const { data } = await nextServer.get<BabyStateResponse>("/weeks/baby-state", {
     params: {
       weekNumber,
     },
@@ -14,13 +23,13 @@ export const getServerBabyState = async (weekNumber: number) => {
     },
   });
 
-  return data;
+  return data.babyState;
 };
 
-export const getServerMomState = async (weekNumber: number) => {
+export const getServerMomState = async (weekNumber: number): Promise<MomWeek>  => {
   const cookieStore = await cookies();
 
-  const { data } = await nextServer.get("/weeks/mom-state", {
+  const { data } = await nextServer.get<MomStateResponse>("/weeks/mom-state", {
     params: {
       weekNumber,
     },
@@ -29,6 +38,21 @@ export const getServerMomState = async (weekNumber: number) => {
     },
   });
 
-  return data;
+  return data.momState;
 };
 
+export const getMomStateInfo = async (weekNumber: number): Promise<MomWeek> => {
+	const res = await nextServer.get<MomStateResponse>("/weeks/mom-state", {
+		params: { weekNumber },
+	});
+
+	return res.data.momState;
+};
+
+export const getBabyStateInfo = async (weekNumber: number): Promise<BabyWeek> => {
+	const res = await nextServer.get<BabyStateResponse>("/weeks/baby-state", {
+		params: { weekNumber },
+	});
+
+	return res.data.babyState;
+};
