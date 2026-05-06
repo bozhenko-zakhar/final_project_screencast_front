@@ -5,7 +5,6 @@ import { useBabyDataStore } from "@/lib/store/babyDataStore";
 
 const BabyTodayCard = () => {
   const babyData = useBabyDataStore((state) => state.babyData);
-  // const isLoading = useBabyDataStore((state) => state.isLoading);
 
   return (
     <section className={`${cardStyles.card} ${css.descriptionAboutBaby}`}>

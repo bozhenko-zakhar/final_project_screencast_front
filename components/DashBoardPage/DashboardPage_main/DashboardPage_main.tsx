@@ -6,8 +6,6 @@ import TasksReminderCard from "./TasksReminderCard/TasksReminderCard";
 import FeelingCheckCard from "./FeelingCheckCard/FeelingCheckCard";
 import styles from "../DashboardPage_main/DashboardPage_main.module.css";
 
-import { useQuery } from "@tanstack/react-query";
-import { getBabyStateInfo } from "@/lib/api/clientApi/weeks";
 import StatusBlock from "./StatusBlock/StatusBlock";
 import BabyTodayCard from "./BabyTodayCard/BabyTodayCard";
 import MomTipCard from "./MomTipCard/MomTipCard";
@@ -16,19 +14,14 @@ import { useBabyDataStore } from "@/lib/store/babyDataStore";
 import { useEffect } from "react";
 
 const DashboardPage = () => {
+  const { weekNumber } = useParams<{ weekNumber: string }>();
+  const fetchData = useBabyDataStore((state) => state.fetchData);
 
+  useEffect(() => {
+    fetchData(1);
+  }, []);
 
-  const {weekNumber} = useParams<{weekNumber:string}>()
-  const fetchData = useBabyDataStore((state)=>state.fetchData)
-
-  useEffect(()=>{
-    if(weekNumber){
-      fetchData(+weekNumber)
-    }
-  },[weekNumber,fetchData])
-
-
-	// const { weekNumber } = useParams<{weekNumber: string}>();
+  // const { weekNumber } = useParams<{weekNumber: string}>();
 
   // const { data: babyWeek } = useQuery({
   //   queryKey: ["babyWeek"],

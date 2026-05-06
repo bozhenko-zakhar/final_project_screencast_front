@@ -4,36 +4,46 @@ import { BabyWeek } from "@/types/baby";
 import {
   fetchPrivateWeeks,
   getBabyStateInfo,
+  getMomStateInfo,
   PrivateWeeksResponse,
 } from "../api/clientApi/weeks";
+import { MomWeek } from "@/types/mom";
 
 interface BabyDataStore {
-  babyData: BabyWeek | Partial<BabyWeek> | null;
+  babyData: BabyWeek | null;
+  momDate: MomWeek | null;
   privateData: PrivateWeeksResponse | null;
-  isLoading: boolean;
   fetchData: (weekNumber: number) => Promise<void>;
 }
 
 export const useBabyDataStore = create<BabyDataStore>((set, get) => ({
   babyData: null,
+  momDate: null,
   privateData: null,
-  isLoading: false,
 
   fetchData: async (WeekNumber) => {
-    if (get().isLoading || get().babyData?.weekNumber === WeekNumber) return;
-
-    set({ isLoading: true });
+    if (get().babyData?.weekNumber === WeekNumber) {
+      return;
+    }
 
     try {
-      const [babyRes, privateRes] = await Promise.all([
-        getBabyStateInfo(WeekNumber),
-        fetchPrivateWeeks(),
-      ]);
+      const babyRes = await getBabyStateInfo(WeekNumber);
+      const momRes = await getMomStateInfo(WeekNumber);
 
-      set({ babyData: babyRes, privateData: privateRes, isLoading: false });
+      set({
+        babyData: babyRes,
+        momDate: momRes,
+      });
+
+      let privateRes = null;
+      try {
+        privateRes = await fetchPrivateWeeks();
+        set({ privateData: privateRes });
+      } catch (err) {
+        console.log("Loading error", err);
+      }
     } catch (err) {
-      console.log("Loading error", err);
-      set({ isLoading: false });
+      console.log("Public loading error", err);
     }
   },
 }));
