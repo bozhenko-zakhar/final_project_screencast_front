@@ -18,15 +18,10 @@ import {
 
 import type { CreateTaskPayload, Task } from '@/types/tasks';
 
-import PregnancyLoader from '@/components/Loading/PregnancyLoader';
 import AddTaskModal from '@/components/modals/AddTaskModal/AddTaskModal';
 import EmojiLoader from '@/components/EmojiLoader/EmojiLoader';
 
-interface TasksReminderCardProps {
-  babyImageUrl?: string;
-}
-
-const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
+const TasksReminderCard = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -56,7 +51,6 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
     },
   });
 
-  // 2. Мутація зміни статусу (чекбокс)
   const toggleStatusMutation = useMutation({
     mutationFn: toggleTaskStatus,
     onSuccess: () => {
@@ -68,7 +62,6 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
     },
   });
 
-  // 3. Клік по "+"/"Створити завдання"
   const handleCreateTaskClick = () => {
     if (!isAuthenticated) {
       router.push('/auth/register');
@@ -82,7 +75,6 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
     createTaskMutation.mutate(values);
   };
 
-  //6. Клік по чекбоксу
   const handleToggleTask = (task: Task) => {
     toggleStatusMutation.mutate({
       id: task.id,
