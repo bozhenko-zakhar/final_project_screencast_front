@@ -1,11 +1,13 @@
-'use client';
+"use client";
 
-import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from 'formik';
-import * as Yup from 'yup';
+import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from "formik";
+import type { FieldProps } from "formik";
+import * as Yup from "yup";
 
-import styles from './AddTaskForm.module.css';
+import CalendarPicker from "@/components/CalendarPicker/CalendarPicker";
+import type { CreateTaskPayload } from "@/types/tasks";
 
-import type { CreateTaskPayload } from '@/types/tasks';
+import styles from "./AddTaskForm.module.css";
 
 type AddTaskFormProps = {
   initialValues: CreateTaskPayload;
@@ -18,15 +20,12 @@ const getTodayDateString = () => new Date().toISOString().slice(0, 10);
 const validationSchema = Yup.object({
   name: Yup.string()
     .trim()
-    .min(1, 'Введіть назву завдання')
-    .max(96, 'Назва завдання має бути не довшою за 96 символів')
-    .required('Введіть назву завдання'),
+    .required("Введіть назву завдання"),
 
   date: Yup.string()
-    .required('Оберіть дату')
-    .test('not-in-past', 'Дата не може бути в минулому', (value) => {
+    .required("Оберіть дату")
+    .test("not-in-past", "Дата не може бути в минулому", (value) => {
       if (!value) return false;
-
       return value >= getTodayDateString();
     }),
 });
@@ -40,16 +39,14 @@ export default function AddTaskForm({
     values: CreateTaskPayload,
     helpers: FormikHelpers<CreateTaskPayload>
   ) => {
-    try {
-      await onSubmit({
-        name: values.name.trim(),
-        date: values.date,
-      });
+    const payload: CreateTaskPayload = {
+      name: values.name.trim(),
+      date: values.date,
+    };
 
-      helpers.resetForm();
-    } finally {
-      helpers.setSubmitting(false);
-    }
+    await onSubmit(payload);
+
+    helpers.setSubmitting(false);
   };
 
   return (
@@ -59,7 +56,7 @@ export default function AddTaskForm({
       onSubmit={handleSubmit}
       enableReinitialize
     >
-      {({ isSubmitting: isFormikSubmitting }) => {
+      {({ isSubmitting: isFormikSubmitting, values, setFieldValue, setFieldTouched }) => {
         const isDisabled = isSubmitting || isFormikSubmitting;
 
         return (
@@ -90,14 +87,21 @@ export default function AddTaskForm({
                 Дата
               </label>
 
-              <Field
-                id="task-date"
-                name="date"
-                type="date"
-                min={getTodayDateString()}
-                className={styles.input}
-                disabled={isDisabled}
-              />
+              <Field name="date">
+                {({ field }: FieldProps<string, CreateTaskPayload>) => (
+                  <CalendarPicker
+                    id="task-date"
+                    value={field.value || values.date}
+                    minDate={getTodayDateString()}
+                    placeholder="Оберіть дату"
+                    disabled={isDisabled}
+                    onChange={(date) => {
+                      setFieldValue("date", date);
+                      setFieldTouched("date", true, false);
+                    }}
+                  />
+                )}
+              </Field>
 
               <ErrorMessage
                 name="date"
@@ -111,7 +115,7 @@ export default function AddTaskForm({
               className={styles.button}
               disabled={isDisabled}
             >
-              {isDisabled ? 'Збереження...' : 'Зберегти'}
+              {isDisabled ? "Збереження..." : "Зберегти"}
             </button>
           </Form>
         );

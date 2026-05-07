@@ -1,23 +1,76 @@
 .wrapper {
   position: relative;
-  padding: 32px 24px 24px;
+  padding: 64px 20px;
+  min-height: 480px;
 }
 
 .closeButton {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 32px;
-  height: 32px;
+  top: 26px;
+  right: 26px;
   border: none;
   background: transparent;
-  font-size: 28px;
-  line-height: 1;
+  color: #000;
+  font-size: 34px;
+  line-height: 0.7;
   cursor: pointer;
+  padding: 0;
 }
 
 .title {
-  margin: 0 0 24px;
-  font-size: 22px;
+  margin: 0 0 48px;
+  font-family: var(--font-comfortaa), var(--second-family), sans-serif;
+  font-size: 36px;
   font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-align: center;
+color: var(--color-scheme-text);}
+
+.titleLine {
+  display: block;
+}
+
+.desktopSpace {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .wrapper {
+    padding: 64px 32px;
+    min-height: 302px;
+  }
+
+  .title {
+    margin-bottom: 34px;
+    font-size: 30px;
+    white-space: nowrap;
+  }
+
+  .titleLine {
+    display: inline;
+  }
+
+  .desktopSpace {
+    display: inline;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .wrapper {
+    padding: 64px;
+    min-height: 175px;
+  }
+
+  .title {
+    margin-bottom: 22px;
+    font-size: 20px;
+    line-height: 1.15;
+  }
+
+  .closeButton {
+    top: 13px;
+    right: 13px;
+    font-size: 20px;
+  }
 }

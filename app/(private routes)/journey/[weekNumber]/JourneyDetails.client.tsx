@@ -1,9 +1,9 @@
 "use client";
 
 import css from "./JourneyDetails.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 import BabyDevelopment from "@/components/JourneyComponents/BabyDevelopment/BabyDevelopment";
 import MomState from "@/components/JourneyComponents/MomState/MomState";
@@ -20,12 +20,8 @@ type Props = {
 
 const JourneyDetails = ({ weekNumber }: Props) => {
   const [mode, setMode] = useState<"baby" | "mom">("baby");
+  const [selectedWeek, setSelectedWeek] = useState<number>(weekNumber);
 
-  const userCurrentWeek = weekNumber;
-
-  const [selectedWeek, setSelectedWeek] = useState<number>(userCurrentWeek);
-
-  // Baby query
   const {
     data: babyData,
     isLoading: babyLoading,
@@ -36,7 +32,6 @@ const JourneyDetails = ({ weekNumber }: Props) => {
     placeholderData: keepPreviousData,
   });
 
-  // Mom query
   const {
     data: momData,
     isLoading: momLoading,
@@ -47,38 +42,43 @@ const JourneyDetails = ({ weekNumber }: Props) => {
     placeholderData: keepPreviousData,
   });
 
-  if (babyLoading || momLoading) {
-    return <p>Loading, please wait...</p>;
-  }
+  const hasError = babyError || momError;
 
-  if (babyError || momError) {
-    toast.error("Failed to fetch data");
-    return <p>Failed to fetch data</p>;
-  }
+  useEffect(() => {
+    if (hasError) {
+      toast.error("Failed to fetch data");
+    }
+  }, [hasError]);
 
   const handleWeekChange = (week: number) => {
     setSelectedWeek(week);
     window.history.replaceState(null, "", `/journey/${week}`);
   };
 
+  if (babyLoading || momLoading) {
+    return <p>Loading, please wait...</p>;
+  }
+
+  if (hasError) {
+    return <p>Failed to fetch data</p>;
+  }
+
   return (
     <>
-      <Toaster position="top-right" />
-
       <GreetingBlock />
 
       <WeekSelector
-        userCurrentWeek={userCurrentWeek}
+        userCurrentWeek={weekNumber}
         viewWeek={selectedWeek}
         onWeekChange={handleWeekChange}
       />
 
       <section className={css.journeySection}>
         <BabyMomToggle
-					mode={mode}
-					setBabyMode={() => setMode("baby")}
-					setMomMode={() => setMode("mom")}
-				/> {/* Я не змінював функції, а додав одну так, по класичному, щоби лінтер не видавав помилку */}
+          mode={mode}
+          setBabyMode={() => setMode("baby")}
+          setMomMode={() => setMode("mom")}
+        />
 
         {mode === "baby" ? (
           <BabyDevelopment data={babyData} />

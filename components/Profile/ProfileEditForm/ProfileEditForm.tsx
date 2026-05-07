@@ -1,16 +1,13 @@
 "use client";
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import type { FieldProps } from "formik";
 import * as Yup from "yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUser } from "@/lib/api/clientApi/users";
 import type { User, UpdateUserPayload, FormValues } from "@/types/user";
 import css from "./ProfileEditForm.module.css";
 import { useRouter } from "next/navigation";
-import DatePicker from "react-datepicker";
-import { useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
-import type { FieldProps } from "formik";
 import Select, {
   components,
   type SingleValue,
@@ -18,6 +15,7 @@ import Select, {
   type ClassNamesConfig,
 } from "react-select";
 import toast from "react-hot-toast";
+import CalendarPicker from "@/components/CalendarPicker/CalendarPicker";
 
 interface Props {
   user: User;
@@ -30,8 +28,6 @@ const validationSchema = Yup.object({
   dueDate: Yup.string().nullable(),
 });
 
-// ===============SETINGS-FOR-SELECT-LIBA================
-
 const genderOptions = [
   { value: "", label: "Не вибрано" },
   { value: "boy", label: "Хлопчик" },
@@ -41,7 +37,7 @@ const genderOptions = [
 type GenderOption = (typeof genderOptions)[number];
 
 const DropdownIndicator = (
-  props: DropdownIndicatorProps<GenderOption, false>,
+  props: DropdownIndicatorProps<GenderOption, false>
 ) => (
   <components.DropdownIndicator {...props}>
     <svg width="12" height="7">
@@ -65,13 +61,9 @@ const selectClassNames: ClassNamesConfig<GenderOption, false> = {
   indicatorSeparator: () => css.selectSeparator,
 };
 
-// ===============END-SETINGS-FOR-SELECT-LIBA================
-
 export default function ProfileEditForm({ user }: Props) {
   const queryClient = useQueryClient();
   const router = useRouter();
-
-  const [isDateOpen, setIsDateOpen] = useState(false);
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateUser,
@@ -88,11 +80,11 @@ export default function ProfileEditForm({ user }: Props) {
       validationSchema={validationSchema}
       enableReinitialize
       onSubmit={(values, { resetForm }) => {
-        // =================ДОДАТКОВЕ-1==============================
-        // const isEmailChanged = values.email !== user.email;
-        // =================енд-ДОДАТКОВЕ-1==============================
-
-        const payload: UpdateUserPayload = {};
+        const payload: Partial<UpdateUserPayload> & {
+          name?: string;
+          date?: string | null;
+          newEmail?: string;
+        } = {};
 
         if (values.username !== user.name) {
           payload.name = values.username;
@@ -112,24 +104,20 @@ export default function ProfileEditForm({ user }: Props) {
           payload.gender = values.gender || null;
         }
 
-        mutate(payload, {
+        mutate(payload as UpdateUserPayload, {
           onSuccess: async (updatedUser) => {
             queryClient.setQueryData(["user"], updatedUser);
 
             toast.success("Профіль оновлено");
-
-            /* if (isEmailChanged) {
-              await sendVerifyEmail(values.email);
-              toast.success("Лист підтвердження відправлено");
-            } */
 
             resetForm({
               values: {
                 username: updatedUser.name,
                 email: updatedUser.email,
                 gender: updatedUser.gender || "",
-                dueDate:
-                  updatedUser.dueDate ? updatedUser.dueDate.split("T")[0] : "",
+                dueDate: updatedUser.dueDate
+                  ? updatedUser.dueDate.split("T")[0]
+                  : "",
               },
             });
 
@@ -148,6 +136,7 @@ export default function ProfileEditForm({ user }: Props) {
             <label className={css.label}>
               Імʼя
               <Field className={css.input} type="text" name="username" />
+
               <ErrorMessage
                 name="username"
                 component="p"
@@ -158,11 +147,17 @@ export default function ProfileEditForm({ user }: Props) {
             <label className={css.label}>
               Пошта
               <Field className={css.input} type="email" name="email" />
-              <ErrorMessage name="email" component="p" className={css.error} />
+
+              <ErrorMessage
+                name="email"
+                component="p"
+                className={css.error}
+              />
             </label>
 
             <label className={css.label}>
               Стать дитини
+
               <div className={css.inputWrapper}>
                 <Field name="gender">
                   {({ field, form }: FieldProps<string, FormValues>) => (
@@ -170,7 +165,7 @@ export default function ProfileEditForm({ user }: Props) {
                       unstyled
                       options={genderOptions}
                       value={genderOptions.find(
-                        (option) => option.value === field.value,
+                        (option) => option.value === field.value
                       )}
                       onChange={(option: SingleValue<GenderOption>) => {
                         const gender = option?.value || "";
@@ -178,9 +173,9 @@ export default function ProfileEditForm({ user }: Props) {
                         form.setFieldValue("gender", gender);
 
                         document.body.dataset.theme =
-                          gender === "girl" || gender === "boy" ?
-                            gender
-                          : "neutral";
+                          gender === "girl" || gender === "boy"
+                            ? gender
+                            : "neutral";
                       }}
                       onBlur={() => form.setFieldTouched("gender", true)}
                       placeholder="Оберіть стать"
@@ -198,37 +193,29 @@ export default function ProfileEditForm({ user }: Props) {
 
             <label className={css.label}>
               Планова дата пологів
+
               <div className={css.inputWrapper}>
                 <Field name="dueDate">
                   {({ field, form }: FieldProps<string, FormValues>) => (
-                    <DatePicker
-                      selected={field.value ? new Date(field.value) : null}
-                      open={isDateOpen}
-                      onInputClick={() => setIsDateOpen(true)}
-                      onClickOutside={() => setIsDateOpen(false)}
-                      onChange={(date: Date | null) => {
-                        form.setFieldValue(
-                          "dueDate",
-                          date ? date.toISOString().split("T")[0] : "",
-                        );
-                        form.setFieldTouched("dueDate", true);
+                    <CalendarPicker
+                      id="dueDate"
+                      value={field.value}
+                      placeholder="Оберіть дату"
+                      disabled={isPending}
+                      onChange={(date) => {
+                        form.setFieldValue("dueDate", date);
+                        form.setFieldTouched("dueDate", true, false);
                       }}
-                      onSelect={() => {
-                        setTimeout(() => {
-                          setIsDateOpen(false);
-                        }, 0);
-                      }}
-                      dateFormat="dd.MM.yyyy"
-                      className={`${css.input} ${css.inputDate}`}
-                      placeholderText="Оберіть дату"
                     />
                   )}
                 </Field>
-
-                <svg className={css.icon}>
-                  <use href="/sprite.svg#arrow-down" />
-                </svg>
               </div>
+
+              <ErrorMessage
+                name="dueDate"
+                component="p"
+                className={css.error}
+              />
             </label>
           </div>
 
@@ -242,7 +229,9 @@ export default function ProfileEditForm({ user }: Props) {
                 const gender = user?.gender;
 
                 document.body.dataset.theme =
-                  gender === "girl" || gender === "boy" ? gender : "neutral";
+                  gender === "girl" || gender === "boy"
+                    ? gender
+                    : "neutral";
               }}
               disabled={!dirty || isPending}
             >
