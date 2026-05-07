@@ -130,19 +130,7 @@ export default function OnboardingForm() {
         {errors.name && <span className={styles.errorText}>{errors.name}</span>}
       </div>
 
-      <div className={styles.inputGroup}>
-        <label>Дата пологів</label>
-        <input
-          type="date"
-          value={dueDate}
-          onChange={(e) => {
-            setDueDate(e.target.value);
-            if (errors.dueDate) setErrors({ ...errors, dueDate: '' });
-          }}
-          className={errors.dueDate ? styles.errorInput : ''}
-        />
-        {errors.dueDate && <span className={styles.errorText}>{errors.dueDate}</span>}
-      </div>
+      
 
       <div className={styles.inputGroup}>
         <label>Стать дитини</label>
@@ -156,12 +144,26 @@ export default function OnboardingForm() {
         </select>
       </div>
 
+      <div className={styles.inputGroup}>
+        <label>Планова дата пологів</label>
+        <input
+          type="date"
+          value={dueDate}
+          onChange={(e) => {
+            setDueDate(e.target.value);
+            if (errors.dueDate) setErrors({ ...errors, dueDate: '' });
+          }}
+          className={errors.dueDate ? styles.errorInput : ''}
+        />
+        {errors.dueDate && <span className={styles.errorText}>{errors.dueDate}</span>}
+      </div>
+
       <button 
         type="submit" 
         className={styles.submitBtn}
         disabled={isLoading}
       >
-        {isLoading ? 'Збереження...' : 'Зберегти та продовжити'}
+        {isLoading ? 'Збереження...' : 'Зберегти'}
       </button>
     </form>
   );

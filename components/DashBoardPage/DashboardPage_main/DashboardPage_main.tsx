@@ -14,8 +14,10 @@ import styles from './DashboardPage_main.module.css';
 const DashboardPage = () => {
   return (
     <section className={styles.dashboard}>
-      <div className={styles.leftColumn}>
+      <div className={styles.greetingWrapper}>
         <GreetingBlock />
+      </div>
+      <div className={styles.leftColumn}>
         <StatusBlock />
         <BabyTodayCard />
         <MomTipCard />

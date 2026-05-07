@@ -1,253 +1,184 @@
 "use client";
 
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import type { FieldProps } from "formik";
-import * as Yup from "yup";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateUser } from "@/lib/api/clientApi/users";
-import type { User, UpdateUserPayload, FormValues } from "@/types/user";
-import css from "./ProfileEditForm.module.css";
-import { useRouter } from "next/navigation";
-import Select, {
-  components,
-  type SingleValue,
-  type DropdownIndicatorProps,
-  type ClassNamesConfig,
-} from "react-select";
-import toast from "react-hot-toast";
-import CalendarPicker from "@/components/CalendarPicker/CalendarPicker";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import AuthBar from "../AuthBar/AuthBar";
+import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
+import UserBar from "../UserBar/UserBar";
+import { useAuthStore } from "@/lib/store/authStore";
+import css from "./SideBar.module.css";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
-  user: User;
+  setBarInactive: () => void;
+  isOpen: boolean;
 }
 
-const validationSchema = Yup.object({
-  username: Yup.string().required("Введіть імʼя"),
-  email: Yup.string().email("Некоректний email").required("Введіть email"),
-  gender: Yup.string().oneOf(["", "boy", "girl"]),
-  dueDate: Yup.string().nullable(),
-});
-
-const genderOptions = [
-  { value: "", label: "Не вибрано" },
-  { value: "boy", label: "Хлопчик" },
-  { value: "girl", label: "Дівчинка" },
-];
-
-type GenderOption = (typeof genderOptions)[number];
-
-const DropdownIndicator = (
-  props: DropdownIndicatorProps<GenderOption, false>
-) => (
-  <components.DropdownIndicator {...props}>
-    <svg width="12" height="7">
-      <use href="/sprite.svg#arrow-down" />
-    </svg>
-  </components.DropdownIndicator>
-);
-
-const selectClassNames: ClassNamesConfig<GenderOption, false> = {
-  control: () => `${css.input} ${css.inputSelect} ${css.selectControl}`,
-  valueContainer: () => css.selectValue,
-  singleValue: () => css.selectText,
-  placeholder: () => css.selectText,
-  menu: () => css.selectMenu,
-  option: ({ isFocused }) =>
-    `${css.selectOption} ${isFocused ? css.selectOptionActive : ""}`,
-  dropdownIndicator: ({ selectProps }) =>
-    `${css.selectIndicator} ${
-      selectProps.menuIsOpen ? css.selectIndicatorOpen : ""
-    }`,
-  indicatorSeparator: () => css.selectSeparator,
-};
-
-export default function ProfileEditForm({ user }: Props) {
-  const queryClient = useQueryClient();
+const SideBar = ({ setBarInactive, isOpen }: Props) => {
+  const pathname = usePathname();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: updateUser,
-  });
+  const user = useAuthStore(
+    (state: ReturnType<typeof useAuthStore.getState>) => state.user,
+  );
+  const isAuthenticated = useAuthStore(
+    (state: ReturnType<typeof useAuthStore.getState>) => state.isAuthenticated,
+  );
+  const clearUser = useAuthStore(
+    (state: ReturnType<typeof useAuthStore.getState>) => state.clearUser,
+  );
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [logoutError, setLogoutError] = useState<string | null>(null);
+
+  const navItems = [
+    { href: "/", label: "Мій день" },
+    { href: "/journey/10", label: "Подорож" },
+    { href: "/diary", label: "Щоденник" },
+    { href: "/profile", label: "Профіль" },
+  ];
+
+  const closeMenu = () => {
+    setBarInactive();
+  };
+
+  const isNavItemActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
+  const handleLogout = async () => {
+    setIsLoading(true);
+    setLogoutError(null);
+
+    try {
+      const response = await fetch("/api/auth/logout", { method: "POST" });
+      if (!response.ok) {
+        throw new Error("Logout request failed");
+      }
+
+      clearUser();
+      queryClient.clear();
+      document.body.dataset.theme = "neutral";
+
+      setIsConfirmationOpen(false);
+
+      router.refresh();
+      router.push("/");
+    } catch {
+      setLogoutError("Не вдалося вийти. Спробуйте ще раз.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      if (isConfirmationOpen) {
+        setIsConfirmationOpen(false);
+        return;
+      }
+
+      if (isOpen) {
+        setBarInactive();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isConfirmationOpen, isOpen, setBarInactive]);
 
   return (
-    <Formik<FormValues>
-      initialValues={{
-        username: user.name,
-        email: user.email,
-        gender: user.gender || "",
-        dueDate: user.dueDate ? user.dueDate.split("T")[0] : "",
-      }}
-      validationSchema={validationSchema}
-      enableReinitialize
-      onSubmit={(values, { resetForm }) => {
-        const payload: Partial<UpdateUserPayload> & {
-          name?: string;
-          date?: string | null;
-          newEmail?: string;
-        } = {};
+    <>
+      {isOpen ? (
+        <div className={css.backdrop} onClick={closeMenu}></div>
+      ) : null}
 
-        if (values.username !== user.name) {
-          payload.name = values.username;
-        }
+      <aside className={`${css.sidebar} ${isOpen ? css.open : ""}`}>
+        <div className={css.top}>
+          <Link href="/" className={css.logoLink} onClick={closeMenu}>
+            <svg className={css.logo}>
+              <use href="/logo.svg#icon-alternate-false"></use>
+            </svg>
+          </Link>
 
-        if (
-          values.dueDate !== (user.dueDate ? user.dueDate.split("T")[0] : "")
-        ) {
-          payload.date = values.dueDate || null;
-        }
+          <button
+            className={css.close}
+            onClick={closeMenu}
+            aria-label="Close menu"
+          >
+            <svg className={css.svg_close}>
+              <use href="/sprite.svg#close"></use>
+            </svg>
+          </button>
+        </div>
 
-        if (values.email !== user.email) {
-          payload.newEmail = values.email;
-        }
+        <nav className={css.nav}>
+          <ul className={css.list}>
+            {navItems.map((item) => {
+              const targetHref = isAuthenticated ? item.href : "/auth/login";
+              const isActive = isAuthenticated && isNavItemActive(item.href);
 
-        if (values.gender !== (user.gender || "")) {
-          payload.gender = values.gender || null;
-        }
+              return (
+                <li key={item.href}>
+                  <Link
+                    className={`${css.link} ${isActive ? css.active : ""}`}
+                    href={targetHref}
+                    onClick={closeMenu}
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
 
-        mutate(payload as UpdateUserPayload, {
-          onSuccess: async (updatedUser) => {
-            queryClient.setQueryData(["user"], updatedUser);
-
-            toast.success("Профіль оновлено");
-
-            resetForm({
-              values: {
-                username: updatedUser.name,
-                email: updatedUser.email,
-                gender: updatedUser.gender || "",
-                dueDate: updatedUser.dueDate
-                  ? updatedUser.dueDate.split("T")[0]
-                  : "",
-              },
-            });
-
-            router.refresh();
-          },
-
-          onError: () => {
-            toast.error("Не вдалося оновити профіль");
-          },
-        });
-      }}
-    >
-      {({ dirty, resetForm }) => (
-        <Form className={css.form}>
-          <div className={css.fields}>
-            <label className={css.label}>
-              Імʼя
-              <Field className={css.input} type="text" name="username" />
-
-              <ErrorMessage
-                name="username"
-                component="p"
-                className={css.error}
-              />
-            </label>
-
-            <label className={css.label}>
-              Пошта
-              <Field className={css.input} type="email" name="email" />
-
-              <ErrorMessage
-                name="email"
-                component="p"
-                className={css.error}
-              />
-            </label>
-
-            <label className={css.label}>
-              Стать дитини
-
-              <div className={css.inputWrapper}>
-                <Field name="gender">
-                  {({ field, form }: FieldProps<string, FormValues>) => (
-                    <Select<GenderOption, false>
-                      unstyled
-                      options={genderOptions}
-                      value={genderOptions.find(
-                        (option) => option.value === field.value
-                      )}
-                      onChange={(option: SingleValue<GenderOption>) => {
-                        const gender = option?.value || "";
-
-                        form.setFieldValue("gender", gender);
-
-                        document.body.dataset.theme =
-                          gender === "girl" || gender === "boy"
-                            ? gender
-                            : "neutral";
-                      }}
-                      onBlur={() => form.setFieldTouched("gender", true)}
-                      placeholder="Оберіть стать"
-                      isSearchable={false}
-                      classNames={selectClassNames}
-                      components={{
-                        DropdownIndicator,
-                        IndicatorSeparator: () => null,
-                      }}
-                    />
-                  )}
-                </Field>
-              </div>
-            </label>
-
-            <label className={css.label}>
-              Планова дата пологів
-
-              <div className={css.inputWrapper}>
-                <Field name="dueDate">
-                  {({ field, form }: FieldProps<string, FormValues>) => (
-                    <CalendarPicker
-                      id="dueDate"
-                      value={field.value}
-                      placeholder="Оберіть дату"
-                      disabled={isPending}
-                      onChange={(date) => {
-                        form.setFieldValue("dueDate", date);
-                        form.setFieldTouched("dueDate", true, false);
-                      }}
-                    />
-                  )}
-                </Field>
-              </div>
-
-              <ErrorMessage
-                name="dueDate"
-                component="p"
-                className={css.error}
-              />
-            </label>
-          </div>
-
-          <div className={css.buttons}>
-            <button
-              className={css.cancelButton}
-              type="button"
-              onClick={() => {
-                resetForm();
-
-                const gender = user?.gender;
-
-                document.body.dataset.theme =
-                  gender === "girl" || gender === "boy"
-                    ? gender
-                    : "neutral";
+        <div className={css.bottom}>
+          {isAuthenticated && user ? (
+            <UserBar
+              name={user.name}
+              email={user.email}
+              avatar={user.avatar ?? user?.name?.slice(0, 2).toUpperCase()}
+              onLogout={() => {
+                setLogoutError(null);
+                setIsConfirmationOpen(true);
               }}
-              disabled={!dirty || isPending}
-            >
-              Відмінити зміни
-            </button>
+              isLoading={isLoading}
+            />
+          ) : (
+            <AuthBar />
+          )}
+        </div>
+      </aside>
 
-            <button
-              className={css.submitButton}
-              type="submit"
-              disabled={!dirty || isPending}
-            >
-              {isPending ? "Збереження..." : "Зберегти зміни"}
-            </button>
-          </div>
-        </Form>
-      )}
-    </Formik>
+      <ConfirmationModal
+        isOpen={isConfirmationOpen}
+        title="Ви впевнені, що хочете вийти?"
+        description="Після виходу потрібно буде знову увійти в обліковий запис."
+        confirmButtonText="Так, вийти"
+        cancelButtonText="Скасувати"
+        onCancel={() => {
+          setLogoutError(null);
+          setIsConfirmationOpen(false);
+        }}
+        onConfirm={handleLogout}
+        isLoading={isLoading}
+        errorMessage={logoutError ?? undefined}
+      />
+    </>
   );
-}
+};
+
+export default SideBar;
