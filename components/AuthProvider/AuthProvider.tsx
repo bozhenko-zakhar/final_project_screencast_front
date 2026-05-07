@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect } from "react";
 
@@ -22,29 +22,37 @@ export const AuthProvider = ({ children }: Props) => {
     const fetchUser = async () => {
       try {
         const user: User = await getMe();
-
         setUser(user);
-
-        const weeks = await fetchPrivateWeeks();
-        
-        setBabyData({
-          babyState: weeks.babyState,
-          daysLeft: weeks.daysLeft,
-        });
       } catch (err) {
-        console.warn("Not authenticated", 401);
+        console.warn("Not authenticated", err);
         clearUser();
 
         try {
           const publicWeeks = await fetchPublicWeeks();
-        
+
           setBabyData({
             babyState: publicWeeks.babyState,
             daysLeft: publicWeeks.daysLeft,
           });
         } catch (publicErr) {
-          console.error("Помилка при завантаженні публічних тижнів:", publicErr);
+          console.error(
+            "Помилка при завантаженні публічних тижнів:",
+            publicErr,
+          );
         }
+
+        return;
+      }
+
+      try {
+        const weeks = await fetchPrivateWeeks();
+
+        setBabyData({
+          babyState: weeks.babyState,
+          daysLeft: weeks.daysLeft,
+        });
+      } catch (weeksErr) {
+        console.error("Помилка при завантаженні приватних тижнів:", weeksErr);
       }
     };
 
