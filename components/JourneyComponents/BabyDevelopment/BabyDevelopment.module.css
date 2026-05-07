@@ -1,6 +1,6 @@
 .babyDevelopment {
   padding: 24px;
-  background-color: #fff4f6;
+  background-color: var(--color-scheme-foreground);
   border-radius: 32px;
   display: flex;
   flex-direction: column;
@@ -35,7 +35,7 @@
 }
 
 .interestingFact {
-  background-color: var(--color-pastel-pink-lighter);
+  background-color: var(--color-scheme-foreground);
   border-radius: 12px;
   padding: 12px;
 }

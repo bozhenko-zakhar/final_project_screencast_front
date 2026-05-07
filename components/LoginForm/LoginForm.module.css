@@ -121,7 +121,7 @@
   width: 100%;
   padding: 10px 24px;
   border-radius: 100px;
-  background-color: var(--color-pastel-pink-light);
+  background-color: var(--color-scheme-foreground);
   color: var(--color-scheme-text);
   font-weight: 500;
   cursor: pointer;
@@ -144,7 +144,7 @@
 }
 
 .btn:disabled {
-  background-color: var(--color-pastel-pink-light);
+  background-color: var(--color-scheme-foreground);
 }
 
 .register {
