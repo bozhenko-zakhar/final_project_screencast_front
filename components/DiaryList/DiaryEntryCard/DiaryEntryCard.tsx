@@ -1,7 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { DiaryEntryDetail } from "@/types/diary";
 import css from "./DiaryEntryCard.module.css";
 
@@ -11,15 +9,9 @@ interface DiaryEntryCardProps {
 }
 
 const DiaryEntryCard = ({ entry, onSelectEntry }: DiaryEntryCardProps) => {
-  const router = useRouter();
-  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const handleCardClick = () => {
-    if (isMobile) {
-      router.push(`/diary/${entry.id}`);
-    } else {
-      onSelectEntry?.(entry.id);
-    }
+    onSelectEntry?.(entry.id);
   };
 
   const formattedDate = new Date(entry.date).toLocaleDateString("uk-UA", {

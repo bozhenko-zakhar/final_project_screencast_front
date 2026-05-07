@@ -28,18 +28,9 @@ const DiaryPage = () => {
         </div>
       )}
       
-      {isDesktop ? (
-        <div className={css.desktopLayout}>
-          <div className={css.listSection}>
-            <DiaryList onSelectEntry={handleSelectEntry} />
-          </div>
-          {/* Details will be rendered in the @details slot */}
-        </div>
-      ) : (
-        <div className={css.mobileLayout}>
-          <DiaryList onSelectEntry={handleSelectEntry} />
-        </div>
-      )}
+      <div className={css.listSection}>
+        <DiaryList onSelectEntry={handleSelectEntry} />
+      </div>
     </div>
   );
 };

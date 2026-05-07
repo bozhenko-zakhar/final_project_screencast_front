@@ -27,8 +27,9 @@ const transformToListItem = (entry: BackendDiaryEntry): DiaryListItem => ({
   })),
 });
 
-export const createDiaryEntry = async (payload: DiaryEntry): Promise<void> => {
-  await nextServer.post("/diary", payload);
+export const createDiaryEntry = async (payload: DiaryEntry): Promise<DiaryEntryDetail> => {
+  const response = await nextServer.post<BackendDiaryEntry>("/diary", payload);
+  return transformBackendEntry(response.data);
 };
 
 export const fetchDiaries = async (): Promise<DiaryEntryDetail[]> => {

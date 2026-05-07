@@ -1,10 +1,18 @@
 "use client";
 
-import { useDiaryStore } from "@/lib/store/diaryStore";
+import { useSelectedDiaryEntry } from "@/lib/store/diaryStore";
 import DiaryEntryDetails from "@/components/DiaryList/DiaryEntryDetails/DiaryEntryDetails";
 
-export default function DiaryDetailsSlot() {
-  const selectedEntry = useDiaryStore((state) => state.getSelectedEntry());
+export default function DiaryDetailsDefault() {
+  const entry = useSelectedDiaryEntry();
 
-  return <DiaryEntryDetails entry={selectedEntry} />;
+  if (!entry) {
+    return (
+      <div className="p-6 text-gray-500">
+        Select diary entry
+      </div>
+    );
+  }
+
+  return <DiaryEntryDetails entry={entry} />;
 }

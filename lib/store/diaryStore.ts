@@ -35,9 +35,11 @@ export const useDiaryStore = create<DiaryStore>((set, get) => ({
 
   createEntry: async (entry: DiaryEntry) => {
     try {
-      await createDiaryEntry(entry);
-      // Refetch entries after creation
-      await get().fetchEntries();
+      const newEntry = await createDiaryEntry(entry);
+      set((state) => ({
+        entries: [newEntry, ...state.entries],
+        selectedEntryId: newEntry.id,
+      }));
     } catch {
       set({ error: "Failed to create diary entry" });
     }
@@ -77,3 +79,11 @@ export const useDiaryStore = create<DiaryStore>((set, get) => ({
     return entries.find((e) => e.id === selectedEntryId) || null;
   },
 }));
+
+export const useSelectedDiaryEntry = () => {
+  return useDiaryStore((state) => {
+    return state.entries.find(
+      (entry) => entry.id === state.selectedEntryId
+    );
+  });
+};
