@@ -1,121 +1,45 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import clsx from "clsx";
+
 import styles from "./CalendarPicker.module.css";
 
 type CalendarPickerProps = {
   id?: string;
-  value?: string;
+  value: string;
+  minDate?: string;
   placeholder?: string;
   disabled?: boolean;
-  minDate?: string;
-  hasError?: boolean;
-  onChange: (value: string) => void;
+  error?: boolean;
+  onChange: (date: string) => void;
 };
-
-type CalendarDay = {
-  day: number;
-  date: Date;
-  isCurrentMonth: boolean;
-};
-
-type CalendarPosition = {
-  top: number;
-  left: number;
-};
-
-const months = [
-  "Січень",
-  "Лютий",
-  "Березень",
-  "Квітень",
-  "Травень",
-  "Червень",
-  "Липень",
-  "Серпень",
-  "Вересень",
-  "Жовтень",
-  "Листопад",
-  "Грудень",
-];
 
 const weekDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"];
-
-const formatDateToInput = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
-};
-
-const formatDateToDisplay = (value?: string) => {
-  if (!value) return "";
-
-  const [year, month, day] = value.split("-");
-
-  if (!year || !month || !day) return "";
-
-  return `${day}.${month}.${year}`;
-};
-
-const getDateFromValue = (value?: string) => {
-  if (!value) return null;
-
-  const [year, month, day] = value.split("-").map(Number);
-
-  if (!year || !month || !day) return null;
-
-  return new Date(year, month - 1, day);
-};
-
-const isSameDate = (dateA: Date, dateB: Date) =>
-  dateA.getFullYear() === dateB.getFullYear() &&
-  dateA.getMonth() === dateB.getMonth() &&
-  dateA.getDate() === dateB.getDate();
 
 export default function CalendarPicker({
   id,
   value,
+  minDate,
   placeholder = "Оберіть дату",
   disabled = false,
-  minDate,
-  hasError = false,
+  error = false,
   onChange,
 }: CalendarPickerProps) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
 
-  const today = new Date();
-  const selectedDate = getDateFromValue(value);
+  const initialDate = value ? new Date(value) : new Date();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [currentDate, setCurrentDate] = useState<Date>(selectedDate ?? today);
-  const [position, setPosition] = useState<CalendarPosition>({
-    top: 0,
-    left: 0,
-  });
-
-  const updateCalendarPosition = () => {
-    if (!buttonRef.current) return;
-
-    const rect = buttonRef.current.getBoundingClientRect();
-
-    setPosition({
-      top: rect.bottom + 6,
-      left: rect.left,
-    });
-  };
-
-  const openCalendar = () => {
-    updateCalendarPosition();
-    setIsOpen((prev) => !prev);
-  };
+  const [currentMonth, setCurrentMonth] = useState(
+    initialDate.getMonth()
+  );
+  const [currentYear, setCurrentYear] = useState(
+    initialDate.getFullYear()
+  );
 
   useEffect(() => {
-    if (!isOpen) return;
-
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleOutsideClick = (event: MouseEvent) => {
       if (
         wrapperRef.current &&
         !wrapperRef.current.contains(event.target as Node)
@@ -124,105 +48,126 @@ export default function CalendarPicker({
       }
     };
 
-    const handleReposition = () => {
-      updateCalendarPosition();
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    window.addEventListener("scroll", handleReposition, true);
-    window.addEventListener("resize", handleReposition);
+    document.addEventListener("mousedown", handleOutsideClick);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      window.removeEventListener("scroll", handleReposition, true);
-      window.removeEventListener("resize", handleReposition);
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [isOpen]);
+  }, []);
 
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
+  const selectedDate = value ? new Date(value) : null;
 
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
+  const formattedValue = selectedDate
+    ? selectedDate.toLocaleDateString("uk-UA")
+    : "";
 
-  const startDay = (firstDay.getDay() + 6) % 7;
-  const daysInMonth = lastDay.getDate();
-  const prevMonthLastDay = new Date(year, month, 0).getDate();
+  const days = useMemo(() => {
+    const firstDay = new Date(currentYear, currentMonth, 1);
+    const lastDay = new Date(currentYear, currentMonth + 1, 0);
 
-  const days: CalendarDay[] = [];
+    const firstWeekDay = (firstDay.getDay() + 6) % 7;
 
-  for (let i = startDay - 1; i >= 0; i--) {
-    days.push({
-      day: prevMonthLastDay - i,
-      date: new Date(year, month - 1, prevMonthLastDay - i),
-      isCurrentMonth: false,
-    });
-  }
+    const daysArray = [];
 
-  for (let day = 1; day <= daysInMonth; day++) {
-    days.push({
-      day,
-      date: new Date(year, month, day),
-      isCurrentMonth: true,
-    });
-  }
+    for (let i = 0; i < firstWeekDay; i += 1) {
+      daysArray.push(null);
+    }
 
-  while (days.length < 42) {
-    const nextDay = days.length - startDay - daysInMonth + 1;
+    for (let day = 1; day <= lastDay.getDate(); day += 1) {
+      daysArray.push(
+        new Date(currentYear, currentMonth, day)
+      );
+    }
 
-    days.push({
-      day: nextDay,
-      date: new Date(year, month + 1, nextDay),
-      isCurrentMonth: false,
-    });
-  }
+    return daysArray;
+  }, [currentMonth, currentYear]);
+
+  const handlePrevMonth = () => {
+    if (currentMonth === 0) {
+      setCurrentMonth(11);
+      setCurrentYear((prev) => prev - 1);
+      return;
+    }
+
+    setCurrentMonth((prev) => prev - 1);
+  };
+
+  const handleNextMonth = () => {
+    if (currentMonth === 11) {
+      setCurrentMonth(0);
+      setCurrentYear((prev) => prev + 1);
+      return;
+    }
+
+    setCurrentMonth((prev) => prev + 1);
+  };
 
   const handleSelectDate = (date: Date) => {
-    const formattedDate = formatDateToInput(date);
+    const isoDate = date.toISOString().split("T")[0];
 
-    if (minDate && formattedDate < minDate) return;
-
-    onChange(formattedDate);
-    setCurrentDate(date);
+    onChange(isoDate);
     setIsOpen(false);
   };
 
+  const isDateDisabled = (date: Date) => {
+    if (!minDate) return false;
+
+    return (
+      date <
+      new Date(new Date(minDate).setHours(0, 0, 0, 0))
+    );
+  };
+
   return (
-    <div className={styles.wrapper} ref={wrapperRef}>
+    <div ref={wrapperRef} className={styles.wrapper}>
       <button
-        ref={buttonRef}
-        id={id}
         type="button"
-        className={`${styles.inputButton} ${hasError ? styles.inputError : ""}`}
+        id={id}
+        className={clsx(
+          styles.inputButton,
+          error && styles.inputError
+        )}
+        onClick={() => setIsOpen((prev) => !prev)}
         disabled={disabled}
-        onClick={openCalendar}
       >
-        <span className={value ? styles.inputValue : styles.placeholder}>
-          {formatDateToDisplay(value) || placeholder}
+        <span
+          className={clsx(
+            formattedValue
+              ? styles.inputValue
+              : styles.placeholder
+          )}
+        >
+          {formattedValue || placeholder}
         </span>
 
-        <span className={styles.inputIcon}>⌄</span>
+  <div className={styles.inputIcon}>
+  <svg width="20" height="20">
+    <use href="/sprite.svg#today" />
+  </svg>
+</div>
       </button>
 
       {isOpen && (
-        <div
-          className={styles.calendar}
-          style={{
-            top: `${position.top}px`,
-            left: `${position.left}px`,
-          }}
-        >
+        <div className={styles.calendar}>
           <div className={styles.header}>
             <div className={styles.title}>
-              <span>{months[month]}</span>
-              <span>{year}</span>
+              <span>
+                {new Date(
+                  currentYear,
+                  currentMonth
+                ).toLocaleString("uk-UA", {
+                  month: "long",
+                })}
+              </span>
+
+              <span>{currentYear}</span>
             </div>
 
             <div className={styles.controls}>
               <button
                 type="button"
                 className={styles.arrowButton}
-                onClick={() => setCurrentDate(new Date(year, month - 1, 1))}
+                onClick={handlePrevMonth}
               >
                 ←
               </button>
@@ -230,7 +175,7 @@ export default function CalendarPicker({
               <button
                 type="button"
                 className={styles.arrowButton}
-                onClick={() => setCurrentDate(new Date(year, month + 1, 1))}
+                onClick={handleNextMonth}
               >
                 →
               </button>
@@ -246,24 +191,32 @@ export default function CalendarPicker({
           </div>
 
           <div className={styles.daysGrid}>
-            {days.map((item) => {
-              const itemValue = formatDateToInput(item.date);
-              const isSelected = selectedDate
-                ? isSameDate(item.date, selectedDate)
-                : false;
-              const isDisabled = minDate ? itemValue < minDate : false;
+            {days.map((date, index) => {
+              if (!date) {
+                return (
+                  <div key={index} className={styles.emptyDay} />
+                );
+              }
+
+              const isoDate = date
+                .toISOString()
+                .split("T")[0];
+
+              const isSelected = value === isoDate;
+              const disabledDate = isDateDisabled(date);
 
               return (
                 <button
-                  key={item.date.toISOString()}
+                  key={isoDate}
                   type="button"
-                  className={`${styles.dayButton} ${
-                    !item.isCurrentMonth ? styles.otherMonth : ""
-                  } ${isSelected ? styles.selected : ""}`}
-                  disabled={isDisabled}
-                  onClick={() => handleSelectDate(item.date)}
+                  className={clsx(
+                    styles.dayButton,
+                    isSelected && styles.selected
+                  )}
+                  disabled={disabledDate}
+                  onClick={() => handleSelectDate(date)}
                 >
-                  {item.day}
+                  {date.getDate()}
                 </button>
               );
             })}

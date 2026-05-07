@@ -16,12 +16,17 @@ const UserBar = ({
   onLogout,
   isLoading,
 }: UserBarProps) => {
+  const imageSrc =
+    avatar && (avatar.startsWith("/") || avatar.startsWith("http"))
+      ? avatar
+      : "/Avatar-def.jpg";
+
   return (
     <div className={css.container}>
       <div className={css.identity}>
         <Image
           className={css.avatar}
-          src={avatar || "/Avatar-def.jpg"}
+          src={imageSrc}
           alt={name || "User avatar"}
           width={40}
           height={40}
