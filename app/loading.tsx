@@ -1,12 +1,18 @@
-"use client"
-
-// import css from "./loading.module.css"
+import styles from './loading.module.css';
 
 const Loading = () => {
-	return (
-		<p>Loading, please wait...</p>
-		// <p className={css.text}>Loading, please wait...</p>
-	)
+  return (
+    <div className={styles.wrapper}>
+      <div className={styles.card}>
+        <div className={styles.loader}>
+          <span className={styles.emoji}>🤰</span>
+          <span className={styles.ring}></span>
+        </div>
+
+        <p className={styles.text}>Завантажуємо...</p>
+      </div>
+    </div>
+  );
 };
 
 export default Loading;

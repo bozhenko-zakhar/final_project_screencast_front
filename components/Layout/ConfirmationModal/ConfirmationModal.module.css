@@ -1,49 +1,158 @@
 .wrapper {
-  padding: 24px;
+  position: relative;
+  padding: 64px 33px 62px;
+  min-height: 413px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.closeButton {
+  position: absolute;
+  top: 26px;
+  right: 26px;
+  border: none;
+  background: transparent;
+  color: #000;
+  font-size: 34px;
+  line-height: 0.7;
+  cursor: pointer;
+  padding: 0;
 }
 
 .title {
-  margin: 0 0 8px;
-  font-size: 20px;
-  font-weight: 700;
+  margin: 0 0 52px;
+  font-family: var(--font-comfortaa), var(--second-family), sans-serif;
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 1.25;
+  text-align: center;
+  color: #000;
+}
+
+.mobileLine {
+  display: block;
+}
+
+.desktopSpace {
+  display: none;
 }
 
 .text {
-  margin: 0 0 16px;
+  margin: -32px 0 24px;
+  font-size: 14px;
+  text-align: center;
   color: #4b5563;
 }
 
 .error {
-  margin: 0 0 12px;
+  margin: -24px 0 16px;
   color: #dc2626;
   font-size: 14px;
+  text-align: center;
 }
 
 .actions {
+  width: 100%;
+  margin-top: auto;
   display: flex;
-  gap: 10px;
-  justify-content: flex-end;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .cancel,
 .confirm {
+  width: 100%;
+  height: 43px;
   border: none;
-  border-radius: 8px;
-  padding: 8px 12px;
+  border-radius: 24px;
   cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  color: #000;
 }
 
 .cancel {
-  background: #e5e7eb;
+  background: var(--color-scheme-accent);
 }
 
 .confirm {
-  background: #ef4444;
-  color: #fff;
+  background: #f2f2f2;
 }
 
 .cancel:disabled,
 .confirm:disabled {
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+@media screen and (min-width: 768px) {
+  .wrapper {
+    padding: 64px 32px;
+    min-height: 130px;
+  }
+
+  .title {
+    margin-bottom: 32px;
+    font-size: 30px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .mobileLine {
+    display: inline;
+  }
+
+  .desktopSpace {
+    display: inline;
+  }
+
+  .actions {
+    flex-direction: row;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .cancel,
+  .confirm {
+    width: 268px;
+    height: 42px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .wrapper {
+    padding: 64px;
+    min-height: 146px;
+  }
+
+  .title {
+    margin-bottom: 26px;
+    max-width: 280px;
+    font-size: 20px;
+    line-height: 1.15;
+    white-space: normal;
+  }
+
+  .mobileLine {
+    display: inline;
+  }
+
+  .desktopSpace {
+    display: inline;
+  }
+
+  .cancel,
+  .confirm {
+    width: 268px;
+    height: 46px;
+    font-size: 10px;
+  }
+
+  .closeButton {
+    top: 14px;
+    right: 14px;
+    font-size: 20px;
+  }
 }
