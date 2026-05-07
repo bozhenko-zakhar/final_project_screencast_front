@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -38,6 +38,12 @@ const TasksReminderCard = () => {
     queryFn: fetchTasks,
     enabled: isAuthenticated,
   });
+
+  useEffect(() => {
+    if (isError) {
+      toast.error('Не вдалося завантажити завдання', {id: 'tasks-fetch-error'});
+    }
+  }, [isError]);
 
   const createTaskMutation = useMutation({
     mutationFn: createTask,
@@ -109,10 +115,6 @@ const TasksReminderCard = () => {
       <div className={styles.content}>
         {isLoading && <EmojiLoader />}
 
-        {!isLoading && isError && (
-          <p>Сталася помилка при завантаженні завдань.</p>
-        )}
-
         {!isLoading && !isError && !hasTasks && (
           <div className={styles.placeholder}>
             <p className={styles.noTasksTitle}>Наразі немає жодних завдань</p>
@@ -152,9 +154,13 @@ const TasksReminderCard = () => {
                       onChange={() => handleToggleTask(task)}
                     />
                     <span className={styles.checkboxBox} aria-hidden="true">
-                      <svg className={styles.checkboxIcon}>
-                        <use href="/sprite.svg#check" />
-                      </svg>
+                      {isThisPending ? (
+                         <span className={styles.spinner} />
+                      ) : (
+                          <svg className={styles.checkboxIcon}>
+                            <use href="/sprite.svg#check" />
+                          </svg>
+                      )}   
                     </span>
                     <span className={task.isCompleted ? styles.taskCompleted : styles.taskText}>
                       {task.title}
