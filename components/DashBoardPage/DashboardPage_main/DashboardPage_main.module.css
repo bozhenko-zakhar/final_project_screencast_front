@@ -4,7 +4,6 @@
   margin: 0 auto;
   padding: 0;
 
-<<<<<<< HEAD
   display: flex;
   flex-direction: column;
   column-gap: 16px;
@@ -26,26 +25,6 @@
   padding-top: 16px;
 }
 
-=======
-    display: flex;
-    flex-direction: column;
-    /* одна колонка */
-    column-gap: 16px;
-}
-.card {
-    background-color: var(--color-scheme-foreground);
-    border-radius: 32px;
-    padding: 24px 24px;
-}
-
-.leftColumn {
-    display: flex;
-    flex-direction: column;
-
-    padding-top: 16px;
-    /* gap: 16px;  */
-}
->>>>>>> origin/main
 .rightColumn {
   display: flex;
   flex-direction: column;
@@ -54,7 +33,6 @@
 
 /* === Tablet ≥ 768px === */
 @media screen and (min-width: 768px) {
-<<<<<<< HEAD
   .dashboard {
     max-width: 768px;
   }
@@ -112,45 +90,3 @@
     display: none;
   }
 }
-=======
-    .dashboard {
-        max-width: 768px;
-        /* ширина tablet-фрейму */
-    }
-}
-
-@media screen and (min-width: 1440px) {
-    .dashboard {
-        max-width: 1128px;
-        padding: 0;
-
-        display: grid;
-        grid-template-columns: 674px 422px;
-        column-gap: 32px;
-        align-items: flex-start;
-    }
-    .greetingWrapper {
-        grid-column: 1 / -1;
-    }
-
-    .leftColumn {
-        /* gap: 32px; */
-    }
-    .rightColumn {
-        padding: 16px 32px 32px 0px;
-        gap: 32px;
-    }
-
-    .tasksHeight {
-        height: 499px;
-        overflow-y: auto;
-    }
-
-    .feelingHeight {
-        height: 210px;
-        overflow-y: auto;
-    }       
-}
-
-    
->>>>>>> origin/main
