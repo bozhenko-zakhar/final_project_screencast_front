@@ -165,7 +165,7 @@ export default function RegisterForm() {
               <p className={css.register}>
                 Вже маєте аккаунт?{' '}
                 <span>
-                  <Link href="/login">Увійти</Link>
+                  <Link href="/auth/login">Увійти</Link>
                 </span>
               </p>
             </Form>
