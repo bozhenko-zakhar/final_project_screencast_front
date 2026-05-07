@@ -21,15 +21,11 @@ const BabyTodayCard = () => {
           <div className={css.babyDescription}>
             <p className={css.titlesOfBabyToday}>
               Розмір:
-              <span className={css.babyDescriptionText}>
-                {babyData?.babySize}
-              </span>
+              <span className={css.babyDescriptionText}>{babyData?.babySize}</span>
             </p>
             <p className={css.titlesOfBabyToday}>
               Вага:
-              <span className={css.babyDescriptionText}>
-                {babyData?.babyWeight}
-              </span>
+              <span className={css.babyDescriptionText}>{babyData?.babyWeight}</span>
             </p>
             <p className={css.titlesOfBabyToday}>
               Активність:

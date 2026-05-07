@@ -21,11 +21,7 @@ import type { CreateTaskPayload, Task } from '@/types/tasks';
 import AddTaskModal from '@/components/modals/AddTaskModal/AddTaskModal';
 import EmojiLoader from '@/components/EmojiLoader/EmojiLoader';
 
-interface TasksReminderCardProps {
-  babyImageUrl?: string;
-}
-
-const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
+const TasksReminderCard = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -44,7 +40,7 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
   });
 
   const createTaskMutation = useMutation({
-    mutationFn: (payload: CreateTaskPayload) => createTask(payload),
+    mutationFn: createTask,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       toast.success('Завдання створено');
@@ -55,19 +51,16 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
     },
   });
 
-  // 2. Мутація зміни статусу (чекбокс)
   const toggleStatusMutation = useMutation({
     mutationFn: toggleTaskStatus,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
-      toast.success('Статус завдання оновлено');
     },
     onError: () => {
       toast.error('Не вдалося оновити завдання');
     },
   });
 
-  // 3. Клік по "+"/"Створити завдання"
   const handleCreateTaskClick = () => {
     if (!isAuthenticated) {
       router.push('/auth/register');
@@ -77,11 +70,10 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
     setIsAddModalOpen(true);
   };
 
-  const handleTaskCreate = (values: CreateTaskPayload) => {
-    createTaskMutation.mutate(values);
+  const handleTaskCreate = async (values: CreateTaskPayload) => {
+    await createTaskMutation.mutateAsync(values);
   };
 
-  //6. Клік по чекбоксу
   const handleToggleTask = (task: Task) => {
     toggleStatusMutation.mutate({
       id: task.id,
@@ -97,7 +89,7 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
 
   return (
     <section
-      className={`${cardStyles.card} ${cardStyles.cardFixedHeight} ${styles.tasks}`}
+      className={`${cardStyles.card} ${cardStyles.tasksHeight} ${styles.tasks}`}
     >
       <div className={styles.header}>
         <h2 className={styles.title}>Важливі завдання</h2>
@@ -108,21 +100,24 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
           onClick={handleCreateTaskClick}
           aria-label="Створити завдання"
         >
-          +
+          <svg className={styles.iconButtonIcon} aria-hidden="true">
+            <use href="/sprite.svg#add_circle" />
+          </svg>
         </button>
       </div>
 
       <div className={styles.content}>
         {isLoading && <EmojiLoader />}
-        
-        {!isLoading && isError &&
+
+        {!isLoading && isError && (
           <p>Сталася помилка при завантаженні завдань.</p>
-        }
+        )}
 
         {!isLoading && !isError && !hasTasks && (
           <div className={styles.placeholder}>
             <p className={styles.noTasksTitle}>Наразі немає жодних завдань</p>
             <p className={styles.noTasksText}>Створіть перше нове завдання!</p>
+
             <button
               type="button"
               className={styles.createButton}
@@ -142,18 +137,26 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
 
               return (
                 <li key={task.id} className={styles.item}>
+                  <span className={styles.taskDate}>
+                    {new Date(task.date).toLocaleDateString('uk-UA', {
+                      day: '2-digit',
+                      month: '2-digit'
+                    })}
+                  </span>
                   <label className={styles.taskLabel}>
                     <input
                       type="checkbox"
+                      className={styles.checkboxInput}
                       checked={task.isCompleted}
                       disabled={isThisPending}
                       onChange={() => handleToggleTask(task)}
                     />
-                    <span
-                      className={
-                        task.isCompleted ? styles.taskCompleted : undefined
-                      }
-                    >
+                    <span className={styles.checkboxBox} aria-hidden="true">
+                      <svg className={styles.checkboxIcon}>
+                        <use href="/sprite.svg#check" />
+                      </svg>
+                    </span>
+                    <span className={task.isCompleted ? styles.taskCompleted : styles.taskText}>
                       {task.title}
                     </span>
                   </label>
@@ -167,18 +170,9 @@ const TasksReminderCard = ({ babyImageUrl }: TasksReminderCardProps) => {
       <AddTaskModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        // task={null}
-        // onSubmit={handleTaskCreate}
-        // isSubmitting={createTaskMutation.isPending}
+        onSubmit={handleTaskCreate}
+        isSubmitting={createTaskMutation.isPending}
       />
-      {/* TODO: підключити коли AddTaskModal буде готовий
-      {isAddModalOpen && (
-        <AddTaskModal
-          isOpen={isAddModalOpen}
-          onClose={() => setIsAddModalOpen(false)}
-        />
-      )}
-      */}
     </section>
   );
 };

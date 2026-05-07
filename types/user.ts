@@ -10,10 +10,10 @@ export interface User {
 }
 
 export interface UpdateUserPayload {
-  username: string;
-  email: string;
-  gender: "boy" | "girl" | null;
-  dueDate: string | null;
+  name?: string;
+  newEmail?: string;
+  gender?: "boy" | "girl" | null;
+  date?: string | null;
 }
 
 export interface FormValues {

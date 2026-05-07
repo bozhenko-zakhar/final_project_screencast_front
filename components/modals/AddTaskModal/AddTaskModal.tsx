@@ -1,55 +1,52 @@
 'use client';
 
-import axios from 'axios';
-import AddTaskForm from './AddTaskForm';
 import Modal from '../Modal/Modal';
+import AddTaskForm from './AddTaskForm';
+
+import styles from './AddTaskModal.module.css';
+
+import type { CreateTaskPayload } from '@/types/tasks';
 
 type AddTaskModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  onSubmit: (values: CreateTaskPayload) => Promise<void> | void;
+  isSubmitting?: boolean;
 };
 
-type AddTaskFormValues = {
-  name: string;
-  date: string;
-};
-
-const TEMP_ACCESS_TOKEN = '';
-
-export default function AddTaskModal({ isOpen, onClose }: AddTaskModalProps) {
-  const handleSubmit = async (values: AddTaskFormValues) => {
-    try {
-      console.log('Sending task:', values);
-
-      const response = await axios.post(
-        'http://localhost:3000/api/tasks',
-        values,
-        {
-          headers: {
-            Authorization: `Bearer ${TEMP_ACCESS_TOKEN}`,
-          },
-        },
-      );
-
-      console.log('Task created successfully:', response.data);
-
-      onClose();
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        console.error('Create task error:', error.response?.data || error.message);
-      } else {
-        console.error('Unexpected error:', error);
-      }
-
-      alert('Помилка при створенні задачі');
-    }
-  };
-
+export default function AddTaskModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  isSubmitting = false,
+}: AddTaskModalProps) {
   if (!isOpen) return null;
+
+  const initialValues: CreateTaskPayload = {
+    name: '',
+    date: new Date().toISOString().slice(0, 10),
+  };
 
   return (
     <Modal onClose={onClose}>
-      <AddTaskForm onSubmit={handleSubmit} />
+      <div className={styles.wrapper}>
+        <button
+          type="button"
+          className={styles.closeButton}
+          onClick={onClose}
+          aria-label="Закрити модальне вікно"
+        >
+          ×
+        </button>
+
+        <h2 className={styles.title}>Нове завдання</h2>
+
+        <AddTaskForm
+          initialValues={initialValues}
+          onSubmit={onSubmit}
+          isSubmitting={isSubmitting}
+        />
+      </div>
     </Modal>
   );
 }

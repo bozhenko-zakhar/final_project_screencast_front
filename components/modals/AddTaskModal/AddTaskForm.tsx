@@ -1,35 +1,121 @@
 'use client';
 
-import { Formik, Form, Field } from 'formik';
+import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from 'formik';
+import * as Yup from 'yup';
 
-type Props = {
-  onSubmit: (values: { name: string; date: string }) => void;
+import styles from './AddTaskForm.module.css';
+
+import type { CreateTaskPayload } from '@/types/tasks';
+
+type AddTaskFormProps = {
+  initialValues: CreateTaskPayload;
+  onSubmit: (values: CreateTaskPayload) => Promise<void> | void;
+  isSubmitting?: boolean;
 };
 
-export default function AddTaskForm({ onSubmit }: Props) {
-  const today = new Date().toISOString().slice(0, 10);
+const getTodayDateString = () => new Date().toISOString().slice(0, 10);
+
+const validationSchema = Yup.object({
+  name: Yup.string()
+    .trim()
+    .min(1, 'Введіть назву завдання')
+    .max(96, 'Назва завдання має бути не довшою за 96 символів')
+    .required('Введіть назву завдання'),
+
+  date: Yup.string()
+    .required('Оберіть дату')
+    .test('not-in-past', 'Дата не може бути в минулому', (value) => {
+      if (!value) return false;
+
+      return value >= getTodayDateString();
+    }),
+});
+
+export default function AddTaskForm({
+  initialValues,
+  onSubmit,
+  isSubmitting = false,
+}: AddTaskFormProps) {
+  const handleSubmit = async (
+    values: CreateTaskPayload,
+    helpers: FormikHelpers<CreateTaskPayload>
+  ) => {
+    try {
+      await onSubmit({
+        name: values.name.trim(),
+        date: values.date,
+      });
+
+      helpers.resetForm();
+    } finally {
+      helpers.setSubmitting(false);
+    }
+  };
 
   return (
-    <Formik
-      initialValues={{
-        name: '',
-        date: today,
-      }}
-      onSubmit={onSubmit}
+    <Formik<CreateTaskPayload>
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+      enableReinitialize
     >
-      <Form>
-        <div>
-          <label>Завдання</label>
-          <Field name="name" type="text" />
-        </div>
+      {({ isSubmitting: isFormikSubmitting }) => {
+        const isDisabled = isSubmitting || isFormikSubmitting;
 
-        <div>
-          <label>Дата</label>
-          <Field name="date" type="date" />
-        </div>
+        return (
+          <Form className={styles.form}>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="task-name">
+                Завдання
+              </label>
 
-        <button type="submit">Зберегти</button>
-      </Form>
+              <Field
+                id="task-name"
+                name="name"
+                type="text"
+                className={styles.input}
+                placeholder="Введіть завдання"
+                disabled={isDisabled}
+              />
+
+              <ErrorMessage
+                name="name"
+                component="p"
+                className={styles.error}
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="task-date">
+                Дата
+              </label>
+
+              <Field
+                id="task-date"
+                name="date"
+                type="date"
+                min={getTodayDateString()}
+                className={styles.input}
+                disabled={isDisabled}
+              />
+
+              <ErrorMessage
+                name="date"
+                component="p"
+                className={styles.error}
+              />
+            </div>
+
+            <button
+              type="submit"
+              className={styles.button}
+              disabled={isDisabled}
+            >
+              {isDisabled ? 'Збереження...' : 'Зберегти'}
+            </button>
+          </Form>
+        );
+      }}
     </Formik>
   );
 }
