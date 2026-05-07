@@ -8,6 +8,7 @@ import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
 import UserBar from "../UserBar/UserBar";
 import { useAuthStore } from "@/lib/store/authStore";
 import css from "./SideBar.module.css";
+import { getCurrentWeek } from "@/lib/services/getCurrentWeek";
 
 interface Props {
 	setBarInactive: () => void;
@@ -23,12 +24,13 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 	const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [logoutError, setLogoutError] = useState<string | null>(null);
+	//  const { user } = useAuthStore();
 
-	
+	const userCurrentWeek = getCurrentWeek(user);
 
 	const navItems = [
 		{ href: "/", label: "Мій день" },
-		{ href: "/journey", label: "Подорож" },
+		{ href: `/journey/${userCurrentWeek}`, label: "Подорож" },
 		{ href: "/diary", label: "Щоденник" },
 		{ href: "/profile", label: "Профіль" }
 	];
