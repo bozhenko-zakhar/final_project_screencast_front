@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import type { FieldProps } from "formik";
 import * as Yup from "yup";
@@ -37,7 +38,7 @@ const genderOptions = [
 type GenderOption = (typeof genderOptions)[number];
 
 const DropdownIndicator = (
-  props: DropdownIndicatorProps<GenderOption, false>
+  props: DropdownIndicatorProps<GenderOption, false>,
 ) => (
   <components.DropdownIndicator {...props}>
     <svg width="12" height="7">
@@ -64,6 +65,13 @@ const selectClassNames: ClassNamesConfig<GenderOption, false> = {
 export default function ProfileEditForm({ user }: Props) {
   const queryClient = useQueryClient();
   const router = useRouter();
+
+  useEffect(() => {
+    const gender = user?.gender;
+
+    document.body.dataset.theme =
+      gender === "girl" || gender === "boy" ? gender : "neutral";
+  }, [user?.gender]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateUser,
@@ -107,6 +115,11 @@ export default function ProfileEditForm({ user }: Props) {
         mutate(payload as UpdateUserPayload, {
           onSuccess: async (updatedUser) => {
             queryClient.setQueryData(["user"], updatedUser);
+
+            document.body.dataset.theme =
+              updatedUser.gender === "girl" || updatedUser.gender === "boy"
+                ? updatedUser.gender
+                : "neutral";
 
             toast.success("Профіль оновлено");
 
@@ -165,7 +178,7 @@ export default function ProfileEditForm({ user }: Props) {
                       unstyled
                       options={genderOptions}
                       value={genderOptions.find(
-                        (option) => option.value === field.value
+                        (option) => option.value === field.value,
                       )}
                       onChange={(option: SingleValue<GenderOption>) => {
                         const gender = option?.value || "";

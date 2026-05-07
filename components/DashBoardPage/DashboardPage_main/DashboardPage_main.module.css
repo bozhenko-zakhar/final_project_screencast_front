@@ -1,103 +1,92 @@
-/* === БАЗА: mobile (375px) === */
 .dashboard {
-    width: 100%;
-    max-width: 375px;
-    /* ширина mobile-фрейму */
-    margin: 0 auto;
-    padding: 0;
+  width: 100%;
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 0;
 
-    display: flex;
-    flex-direction: column;
-    /* одна колонка */
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  column-gap: 16px;
 }
 
-.leftColumn,
+.card {
+  background-color: var(--color-scheme-foreground);
+  border-radius: 32px;
+  padding: 24px 24px;
+}
+
+.greetingWrapper {
+  width: 100%;
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+}
+
 .rightColumn {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 /* === Tablet ≥ 768px === */
 @media screen and (min-width: 768px) {
-    .dashboard {
-        max-width: 768px;
-        /* ширина tablet-фрейму */
-    }
-
-    .leftColumn,
-    .rightColumn {
-        gap: 16px;
-        /* можна трохи збільшити відступи */
-    }
+  .dashboard {
+    max-width: 768px;
+  }
 }
 
-/* === Desktop ≥ 1024px (фрейм 1128px) === */
-@media screen and (min-width: 1024px) {
-    .dashboard {
-        max-width: 1128px;
-        padding: 0;
-        /* ширина desktop-фрейму */
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 32px;
-        align-items: flex-start;
-    }
+@media screen and (min-width: 1440px) {
+  .dashboard {
+    max-width: 1128px;
+    padding: 0;
 
-    .leftColumn,
-    .rightColumn {
-        gap: 32px;
-    }
-}
+    display: grid;
+    grid-template-columns: 674px 422px;
+    column-gap: 32px;
+    align-items: flex-start;
+  }
 
-/* Базова картка для всіх блоків Dashboard */
-.card {
-    background-color: #fefbf4;
-    border-radius: 32px;
-    padding: 24px 24px;
-}
+  .greetingWrapper {
+    grid-column: 1 / -1;
+  }
 
-/* Desktop: фіксована висота + внутрішній скрол */
-@media screen and (min-width: 1024px) {
-    .cardFixedHeight {
-        height: 499px;
-        overflow-y: auto;
+  .rightColumn {
+    padding: 16px 32px 32px 0;
+    gap: 32px;
+  }
 
-        /* hide scrollbar */
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
+  .tasksHeight {
+    height: 499px;
+    overflow-y: auto;
 
-    .cardFixedHeight::-webkit-scrollbar {
-        display: none;
-    }
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
 
-    .greetingHeight {
-        height: 45px;
-    }
+  .tasksHeight::-webkit-scrollbar {
+    display: none;
+  }
 
-    .tasksHeight {
-        height: 499px;
-        overflow-y: auto;
+  .cardFixedHeight::-webkit-scrollbar {
+    display: none;
+  }
 
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
+  .greetingHeight {
+    height: 45px;
+  }
 
-    .tasksHeight::-webkit-scrollbar {
-        display: none;
-    }
+  .feelingHeight {
+    height: 210px;
+    overflow-y: auto;
 
-    .feelingHeight {
-        height: 210px;
-        overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
 
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
-
-    .feelingHeight::-webkit-scrollbar {
-        display: none;
-    }
+  .feelingHeight::-webkit-scrollbar {
+    display: none;
+  }
 }
