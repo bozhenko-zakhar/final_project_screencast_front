@@ -65,12 +65,18 @@
   width: 100%;
   height: 43px;
   border: none;
+  border-bottom: 4px solid var(--color-scheme-accent-dark);
   border-radius: 24px;
   cursor: pointer;
-  font-family: inherit;
+  font-family: var(--font-family);
   font-size: 14px;
-  font-weight: 400;
-  color: #000;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-neutral-darkest);
+  transition:
+    background-color 180ms ease,
+    transform 120ms ease,
+    opacity 180ms ease;
 }
 
 .cancel {
@@ -78,13 +84,32 @@
 }
 
 .confirm {
-  background: #f2f2f2;
+  background: var(--color-neutral-lightest);
+  border-bottom-color: var(--color-neutral-lighter);
+}
+
+.cancel:hover,
+.cancel:focus {
+  background-color: var(--color-scheme-foreground-alt);
+}
+
+.confirm:hover,
+.confirm:focus {
+  background-color: var(--color-neutral-lighter);
+}
+
+.cancel:active,
+.confirm:active {
+  background-color: var(--color-neutral-light);
+  transform: translateY(1px);
 }
 
 .cancel:disabled,
 .confirm:disabled {
+  background-color: var(--color-neutral-lightest);
+  color: var(--color-neutral-light);
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 1;
 }
 
 @media screen and (min-width: 768px) {
