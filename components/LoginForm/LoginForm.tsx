@@ -31,13 +31,13 @@ export default function LoginForm() {
   return (
     <div className={css.loginPage}>
       <div className={css.logo}>
-        <svg className={css.logoIcon} width={30} height={30}>
-          <use href="/icons.svg#logo" />
-        </svg>
-        <svg className={css.logoLeleka} width={60} height={13}>
-          <use href="/icons.svg#icon-leleka" />
-        </svg>
-      </div>
+  <svg className={css.logoIcon} width={30} height={30}>
+    <use href="/public/logo.svg#logo" />
+  </svg>
+  <svg className={css.logoLeleka} width={60} height={13}>
+    <use href="/public/sprite.svg#icon-leleka" />
+  </svg>
+</div>
       <div className={css.center}>
         <Formik
           initialValues={initialValues}
