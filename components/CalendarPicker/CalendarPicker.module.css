@@ -48,9 +48,12 @@
   top: 50%;
   right: 14px;
   transform: translateY(-50%);
-  font-size: 16px;
   color: var(--opacity-neutral-darkest-60);
   pointer-events: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .calendar {
