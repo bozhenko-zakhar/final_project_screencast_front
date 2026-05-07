@@ -3,6 +3,7 @@ import "./globals.css";
 import "modern-normalize/modern-normalize.css";
 import { AuthProvider } from "@/components/AuthProvider/AuthProvider";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
+import GlobalLoader from "@/components/GlobalLoader/GlobalLoader";
 import { Toaster } from "react-hot-toast";
 
 const nunito = Nunito({
@@ -29,6 +30,7 @@ export default function RootLayout({
       <body className={`${nunito.variable} ${comfortaa.variable}`}>
         <TanStackProvider>
           <AuthProvider>{children}</AuthProvider>
+          <GlobalLoader />
         </TanStackProvider>
 
         <Toaster

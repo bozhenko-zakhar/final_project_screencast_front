@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import type { FieldProps } from "formik";
 import * as Yup from "yup";
@@ -37,7 +38,7 @@ const genderOptions = [
 type GenderOption = (typeof genderOptions)[number];
 
 const DropdownIndicator = (
-  props: DropdownIndicatorProps<GenderOption, false>
+  props: DropdownIndicatorProps<GenderOption, false>,
 ) => (
   <components.DropdownIndicator {...props}>
     <svg width="12" height="7">
@@ -64,6 +65,13 @@ const selectClassNames: ClassNamesConfig<GenderOption, false> = {
 export default function ProfileEditForm({ user }: Props) {
   const queryClient = useQueryClient();
   const router = useRouter();
+
+  useEffect(() => {
+    const gender = user?.gender;
+
+    document.body.dataset.theme =
+      gender === "girl" || gender === "boy" ? gender : "neutral";
+  }, [user?.gender]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateUser,
@@ -108,6 +116,11 @@ export default function ProfileEditForm({ user }: Props) {
           onSuccess: async (updatedUser) => {
             queryClient.setQueryData(["user"], updatedUser);
 
+            document.body.dataset.theme =
+              updatedUser.gender === "girl" || updatedUser.gender === "boy" ?
+                updatedUser.gender
+              : "neutral";
+
             toast.success("Профіль оновлено");
 
             resetForm({
@@ -115,9 +128,8 @@ export default function ProfileEditForm({ user }: Props) {
                 username: updatedUser.name,
                 email: updatedUser.email,
                 gender: updatedUser.gender || "",
-                dueDate: updatedUser.dueDate
-                  ? updatedUser.dueDate.split("T")[0]
-                  : "",
+                dueDate:
+                  updatedUser.dueDate ? updatedUser.dueDate.split("T")[0] : "",
               },
             });
 
@@ -136,7 +148,6 @@ export default function ProfileEditForm({ user }: Props) {
             <label className={css.label}>
               Імʼя
               <Field className={css.input} type="text" name="username" />
-
               <ErrorMessage
                 name="username"
                 component="p"
@@ -147,17 +158,11 @@ export default function ProfileEditForm({ user }: Props) {
             <label className={css.label}>
               Пошта
               <Field className={css.input} type="email" name="email" />
-
-              <ErrorMessage
-                name="email"
-                component="p"
-                className={css.error}
-              />
+              <ErrorMessage name="email" component="p" className={css.error} />
             </label>
 
             <label className={css.label}>
               Стать дитини
-
               <div className={css.inputWrapper}>
                 <Field name="gender">
                   {({ field, form }: FieldProps<string, FormValues>) => (
@@ -165,7 +170,7 @@ export default function ProfileEditForm({ user }: Props) {
                       unstyled
                       options={genderOptions}
                       value={genderOptions.find(
-                        (option) => option.value === field.value
+                        (option) => option.value === field.value,
                       )}
                       onChange={(option: SingleValue<GenderOption>) => {
                         const gender = option?.value || "";
@@ -173,9 +178,9 @@ export default function ProfileEditForm({ user }: Props) {
                         form.setFieldValue("gender", gender);
 
                         document.body.dataset.theme =
-                          gender === "girl" || gender === "boy"
-                            ? gender
-                            : "neutral";
+                          gender === "girl" || gender === "boy" ?
+                            gender
+                          : "neutral";
                       }}
                       onBlur={() => form.setFieldTouched("gender", true)}
                       placeholder="Оберіть стать"
@@ -193,7 +198,6 @@ export default function ProfileEditForm({ user }: Props) {
 
             <label className={css.label}>
               Планова дата пологів
-
               <div className={css.inputWrapper}>
                 <Field name="dueDate">
                   {({ field, form }: FieldProps<string, FormValues>) => (
@@ -210,7 +214,6 @@ export default function ProfileEditForm({ user }: Props) {
                   )}
                 </Field>
               </div>
-
               <ErrorMessage
                 name="dueDate"
                 component="p"
@@ -229,9 +232,7 @@ export default function ProfileEditForm({ user }: Props) {
                 const gender = user?.gender;
 
                 document.body.dataset.theme =
-                  gender === "girl" || gender === "boy"
-                    ? gender
-                    : "neutral";
+                  gender === "girl" || gender === "boy" ? gender : "neutral";
               }}
               disabled={!dirty || isPending}
             >
