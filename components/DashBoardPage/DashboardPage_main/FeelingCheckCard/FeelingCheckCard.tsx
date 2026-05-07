@@ -29,7 +29,7 @@ const FeelingCheckCard = () => {
   return (
     <>
       <section
-        className={`${cardStyles.card} ${cardStyles.cardFixedHeight} ${styles.feeling}`}
+        className={`${cardStyles.card} ${cardStyles.feelingHeight} ${styles.feeling}`}
       >
         <h2 className={styles.title}>Як ви себе почуваєте?</h2>
         <p className={styles.subtitle}>Рекомендація на сьогодні:</p>

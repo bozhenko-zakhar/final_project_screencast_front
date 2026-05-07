@@ -1,6 +1,7 @@
 .tasks {
     display: flex;
     flex-direction: column;
+    gap: 16px;
 }
 
 /* заголовок + плюсик */
@@ -14,35 +15,45 @@
 .title {
     font-size: 20px;
     font-weight: 700;
+    font-family: var(--second-family);
+    letter-spacing: 1px;
+    line-height: 1.4;
+    color: #000;
 }
 
 /* кругла кнопка з "+" справа */
 .iconButton {
-    width: 32px;
-    height: 32px;
-    border-radius: 999px;
-    border: 2px solid #000;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: 100px;
+    border: none;
     background-color: transparent;
-    font-size: 20px;
-    line-height: 1;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #000;
 }
+.iconButtonIcon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
 
 /* основний контент картки */
 .content {
     display: flex;
     flex-direction: column;
-    /* gap: 8px; */
+    gap: 16px;
 }
 
 .noTasksTitle {
     font-weight: 700;
     font-size: 14px;
     margin: 0px;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .noTasksText {
@@ -51,7 +62,90 @@
     margin: 0px;
     line-height: 1.5;
 }
-
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.item {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+.taskDate {
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #000;
+    padding-left: 26px;
+}
+.taskLabel {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+    cursor: pointer;
+    position: relative;
+}
+/* кастомний checkbox: невибраний */
+.checkboxInput {
+    position: absolute;
+    opacity: 0;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+}
+.checkboxBox {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+    color: transparent;
+    /* іконка прихована за замовчуванням */
+}
+.checkboxIcon {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+}
+.checkboxInput:checked~.checkboxBox {
+    background: #000;
+    color: #fff;
+    /* галочка стає білою через currentColor */
+}
+.checkboxInput:focus-visible~.checkboxBox {
+    outline: 2px solid #000;
+    outline-offset: 2px;
+}
+.checkboxInput:disabled~.checkboxBox {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.taskText {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #000;
+}
+.taskCompleted {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #000;
+    text-decoration: line-through;
+}
 /* велика рожева кнопка "Створити завдання" */
 .createButton {
     margin-top: 16px;
@@ -61,7 +155,7 @@
     border-radius: 999px;
     border: none;
 
-    background: #fef1db;
+    background: var(--color-scheme-accent);
     line-height: 1.6;
     color: #000;
 
@@ -70,15 +164,18 @@
     cursor: pointer;
     height: 42px;
 
-border-bottom: 4px solid #fef1db;
+border-bottom: 4px solid var(--color-scheme-accent-dark);
 }
 
-@media screen and (min-width: 1024px) {
+/* === Tablet (768-1440px) — динамічна висота === */
+@media screen and (min-width: 768px) and (max-width: 1440px) {
+    .tasks {
+        gap: 16px;
+    }
+}
+@media screen and (min-width: 1440px) {
     .title {
         font-size: 24px;
-    }
-    .button {
-        font-size: 16px;
     }
     .noTasksTitle {
         font-size: 16px;
@@ -86,5 +183,7 @@ border-bottom: 4px solid #fef1db;
     .noTasksText {
         font-size: 16px;
     }
-
+    .taskDate {
+        font-size: 12px;
+    }
 }

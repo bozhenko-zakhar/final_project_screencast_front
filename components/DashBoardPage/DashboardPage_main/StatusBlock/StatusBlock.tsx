@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import css from "./StatusBlock.module.css";
 import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
-import { fetchCurrentBabyWeek, fetchPrivateWeeks } from "@/lib/api/clientApi/weeks";
+import { getBabyStateInfo, fetchPrivateWeeks } from "@/lib/api/clientApi/weeks";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useParams } from "next/navigation";
 
@@ -13,7 +13,7 @@ const StatusBlock = () => {
 
   const { data: dataWeeks } = useQuery({
     queryKey: ["dataWeeks"],
-    queryFn: () => fetchCurrentBabyWeek({weekNumber: weekNumber}),
+    queryFn: () => getBabyStateInfo(+weekNumber),
   });
 
   const {

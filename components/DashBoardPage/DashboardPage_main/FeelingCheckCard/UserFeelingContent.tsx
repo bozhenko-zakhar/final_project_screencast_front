@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import styles from "./FeelingCheckCard.module.css";
-import { fetchCurrentMomWeek } from "@/lib/api/clientApi/weeks";
+import { getMomStateInfo } from "@/lib/api/clientApi/weeks";
 
 type UserFeelingContentProps = {
   weekNumber: string;
@@ -12,7 +12,7 @@ type UserFeelingContentProps = {
 const UserFeelingContent = ({ weekNumber }: UserFeelingContentProps) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["week-feelings", weekNumber],
-    queryFn: () => fetchCurrentMomWeek({weekNumber: weekNumber})
+    queryFn: () => getMomStateInfo(+weekNumber)
   });
 
   if (isLoading) {

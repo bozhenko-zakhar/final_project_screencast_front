@@ -7,6 +7,6 @@ export interface RegisterRequest {
   name: string;
   email: string;
   password: string;
-	dueDate: string;
-	gender: string
+	dueDate?: string;
+	gender?: string
 }

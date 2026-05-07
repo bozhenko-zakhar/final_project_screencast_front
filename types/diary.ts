@@ -41,4 +41,4 @@ export interface DiaryEntryDetail {
     id: string;
     title: string;
   }>;
-}
+}	
