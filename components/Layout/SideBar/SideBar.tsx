@@ -8,6 +8,7 @@ import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
 import UserBar from "../UserBar/UserBar";
 import { useAuthStore } from "@/lib/store/authStore";
 import css from "./SideBar.module.css";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   setBarInactive: () => void;
@@ -17,6 +18,8 @@ interface Props {
 const SideBar = ({ setBarInactive, isOpen }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   const user = useAuthStore(
     (state: ReturnType<typeof useAuthStore.getState>) => state.user,
   );
@@ -60,7 +63,14 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
       }
 
       clearUser();
+
+      queryClient.clear();
+      document.body.dataset.theme = "neutral";
+
       setIsConfirmationOpen(false);
+
+      router.refresh();
+
       router.push("/");
     } catch {
       setLogoutError("Не вдалося вийти. Спробуйте ще раз.");
