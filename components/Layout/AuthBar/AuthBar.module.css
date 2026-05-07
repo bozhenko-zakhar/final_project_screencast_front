@@ -26,8 +26,8 @@
 }
 
 .registerLink {
-	background-color: #ffdae0;
-	box-shadow: 0 4px 0 0 #ffcbd3;
+	background-color: var(--color-pastel-pink-light);
+	box-shadow: 0 4px 0 0 var(--color-pastel-pink);
 }
 
 .registerLink:hover {
@@ -37,7 +37,7 @@
 
 .registerLink:active {
 	transform: translateY(2px);
-	box-shadow: 0 2px 0 0 #ffcbd3;
+	box-shadow: 0 2px 0 0 var(--color-pastel-pink);
 }
 
 .loginLink {

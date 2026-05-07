@@ -13,7 +13,7 @@
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    background-color: #fce4ec;
+    background-color: var(--color-pastel-pink-light);
     animation: pulse 1.2s ease-in-out infinite;
 }
 
