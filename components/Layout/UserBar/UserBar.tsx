@@ -24,27 +24,33 @@ const UserBar = ({
   return (
     <div className={css.container}>
       <div className={css.identity}>
-        <Image
-          className={css.avatar}
-          src={imageSrc}
-          alt={name || "User avatar"}
-          width={40}
-          height={40}
-        />
+        <div className={css.userInfo}>
+          <Image
+            className={css.avatar}
+            src={imageSrc}
+            alt={name || "User avatar"}
+            width={40}
+            height={40}
+          />
 
-        <div>
-          <p className={css.name}>{name}</p>
-          <p className={css.email}>{email}</p>
+          <div className={css.textBlock}>
+            <p className={css.name}>{name}</p>
+            <p className={css.email}>{email}</p>
+          </div>
         </div>
-      </div>
 
-      <button
-        className={css.logoutButton}
-        onClick={onLogout}
-        disabled={isLoading}
-      >
-        {isLoading ? "Вихід..." : "Вихід"}
-      </button>
+        <button
+          type="button"
+          className={css.logoutButton}
+          onClick={onLogout}
+          disabled={isLoading}
+          aria-label="Logout"
+        >
+          <svg className={css.logoutIcon}>
+            <use href="/icons/sprite.svg#logout" />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 };
