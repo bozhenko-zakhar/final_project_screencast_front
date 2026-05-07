@@ -24,7 +24,6 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 	const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [logoutError, setLogoutError] = useState<string | null>(null);
-	//  const { user } = useAuthStore();
 
 	const userCurrentWeek = getCurrentWeek(user);
 
