@@ -7,6 +7,7 @@ import { getMe } from "@/lib/api/clientApi/users";
 import { useAuthStore } from "@/lib/store/authStore";
 // import { useWeekStore } from "@/lib/store/babyDataStore";
 import { User } from "@/types/user";
+import { setThemeByGender } from "@/lib/theme/setThemeByGender";
 
 type Props = {
   children: React.ReactNode;
@@ -22,6 +23,8 @@ export const AuthProvider = ({ children }: Props) => {
         const user: User = await getMe();
         setUser(user);
 
+        setThemeByGender(user.gender);
+
         document.body.dataset.theme =
           user.gender === "boy" || user.gender === "girl" ?
             user.gender
@@ -29,6 +32,8 @@ export const AuthProvider = ({ children }: Props) => {
       } catch (err) {
         console.warn("Not authenticated", err);
         clearUser();
+
+        setThemeByGender(null);
 
         document.body.dataset.theme = "neutral";
 
