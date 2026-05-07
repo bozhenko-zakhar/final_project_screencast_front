@@ -26,7 +26,7 @@ export const useDiaryStore = create<DiaryStore>((set, get) => ({
   fetchEntries: async () => {
     set({ isLoading: true, error: null });
     try {
-      const entries = await fetchDiaries();
+      const entries = await fetchDiaries() as DiaryEntryDetail[];
       set({ entries, isLoading: false });
     } catch {
       set({ error: "Failed to fetch diary entries", isLoading: false });
