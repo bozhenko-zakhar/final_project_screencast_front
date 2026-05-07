@@ -1,7 +1,7 @@
 "use client";
 
 import css from "./JourneyDetails.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -12,7 +12,15 @@ import GreetingBlock from "@/components/DashBoardPage/DashboardPage_main/Greetin
 import BabyMomToggle from "@/components/JourneyComponents/BabyMomToggle/BabyMomToggle";
 import WeekSelector from "@/components/JourneyComponents/WeekSelector/WeekSelector";
 
-import { getBabyStateInfo, getMomStateInfo } from "@/lib/api/clientApi/weeks";
+import {
+  fetchPrivateWeeks,
+  getBabyStateInfo,
+  getMomStateInfo,
+} from "@/lib/api/clientApi/weeks";
+import { redirect, useParams, useRouter } from "next/navigation";
+import { useAuthStore } from "@/lib/store/authStore";
+import { User } from "@/types/user";
+import { getCurrentWeek } from "@/lib/services/getCurrentWeek";
 
 type Props = {
   weekNumber: number;
@@ -20,9 +28,7 @@ type Props = {
 
 const JourneyDetails = ({ weekNumber }: Props) => {
   const [mode, setMode] = useState<"baby" | "mom">("baby");
-
   const userCurrentWeek = weekNumber;
-
   const [selectedWeek, setSelectedWeek] = useState<number>(userCurrentWeek);
 
   // Baby query
@@ -30,10 +36,11 @@ const JourneyDetails = ({ weekNumber }: Props) => {
     data: babyData,
     isLoading: babyLoading,
     isError: babyError,
+    // isFetching: babyFetching,
   } = useQuery({
     queryKey: ["baby", selectedWeek],
     queryFn: () => getBabyStateInfo(selectedWeek),
-    placeholderData: keepPreviousData,
+    // placeholderData: keepPreviousData,
   });
 
   // Mom query
@@ -41,17 +48,20 @@ const JourneyDetails = ({ weekNumber }: Props) => {
     data: momData,
     isLoading: momLoading,
     isError: momError,
+    // isFetching: momFetching,
   } = useQuery({
     queryKey: ["mom", selectedWeek],
     queryFn: () => getMomStateInfo(selectedWeek),
-    placeholderData: keepPreviousData,
+    // placeholderData: keepPreviousData,
   });
 
   const data = mode === "baby" ? babyData : momData;
 
-  if (babyLoading || momLoading) {
-    return <p>Loading, please wait...</p>;
-  }
+  // const isUpdating = babyFetching || momFetching;
+  
+  
+
+const isLoading = babyLoading || momLoading;
 
   if (babyError || momError) {
     toast.error("Failed to fetch data");
@@ -65,6 +75,7 @@ const JourneyDetails = ({ weekNumber }: Props) => {
 
   return (
     <>
+    <div className={css.journeyWrapper}>
       <Toaster position="top-right" />
 
       <GreetingBlock />
@@ -77,6 +88,9 @@ const JourneyDetails = ({ weekNumber }: Props) => {
 
       <section className={css.journeySection}>
         <BabyMomToggle mode={mode} setMode={setMode} />
+          {isLoading && (
+        <span className={css.loader}></span>
+      )}
 
         {mode === "baby" ? (
           <BabyDevelopment data={data} />
@@ -87,8 +101,11 @@ const JourneyDetails = ({ weekNumber }: Props) => {
           </div>
         )}
       </section>
+      </div>
     </>
   );
 };
 
 export default JourneyDetails;
+
+

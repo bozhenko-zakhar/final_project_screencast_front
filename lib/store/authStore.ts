@@ -14,6 +14,7 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     email: "demo@example.com",
     name: "Demo User",
     avatar: "DU",
+    dueDate: "2026-10-17",
   },
   setUser: (user: User) => {
     set(() => ({ user, isAuthenticated: true }));
