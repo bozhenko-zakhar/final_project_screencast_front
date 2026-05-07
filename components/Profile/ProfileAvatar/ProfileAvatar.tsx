@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuthStore } from "@/lib/store/authStore";
 import Image from "next/image";
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -16,10 +17,16 @@ interface ProfileAvatarProps {
 export default function ProfileAvatar({ user }: ProfileAvatarProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateUserAvatar,
-    onSuccess: () => {
+    onSuccess: (updatedAvatar) => {
+      setUser({
+        ...user,
+        avatar: updatedAvatar.url,
+      });
+
       toast.success("Фото профілю оновлено");
       router.refresh();
     },

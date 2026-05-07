@@ -1,90 +1,178 @@
 .tasks {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 /* заголовок + плюсик */
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* margin-bottom: 16px; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-bottom: 16px; */
 }
 
 .title {
-    font-size: 20px;
-    font-weight: 700;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 /* кругла кнопка з "+" справа */
 .iconButton {
-    width: 32px;
-    height: 32px;
-    border-radius: 999px;
-    border: 2px solid #000;
-    background-color: transparent;
-    font-size: 20px;
-    line-height: 1;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 2px solid #000;
+  background-color: transparent;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.iconButtonIcon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
 
 /* основний контент картки */
 .content {
-    display: flex;
-    flex-direction: column;
-    /* gap: 8px; */
+  display: flex;
+  flex-direction: column;
+  /* gap: 8px; */
 }
 
 .noTasksTitle {
-    font-weight: 700;
-    font-size: 14px;
-    margin: 0px;
-    line-height: 1.5;
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0px;
+  line-height: 1.5;
 }
 
 .noTasksText {
-    font-weight: 400;
-    font-size: 14px;
-    margin: 0px;
-    line-height: 1.5;
+  font-weight: 400;
+  font-size: 14px;
+  margin: 0px;
+  line-height: 1.5;
 }
-
-/* велика рожева кнопка "Створити завдання" */
-.createButton {
-    margin-top: 16px;
-    align-self: flex-start;
-
-    padding: 10px 24px;
-    border-radius: 999px;
-    border: none;
-
-    background: #fef1db;
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.item {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+.taskDate {
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
     line-height: 1.6;
     color: #000;
-
-    font-size: 14px;
-    font-weight: 500;
+    padding-left: 26px;
+}
+.taskLabel {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
     cursor: pointer;
-    height: 42px;
+    position: relative;
+}
+/* кастомний checkbox: невибраний */
+.checkboxInput {
+    position: absolute;
+    opacity: 0;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+}
+.checkboxBox {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+    color: transparent;
+    /* іконка прихована за замовчуванням */
+}
+.checkboxIcon {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+}
+.checkboxInput:checked~.checkboxBox {
+    background: #000;
+    color: #fff;
+    /* галочка стає білою через currentColor */
+}
+.checkboxInput:focus-visible~.checkboxBox {
+    outline: 2px solid #000;
+    outline-offset: 2px;
+}
+.checkboxInput:disabled~.checkboxBox {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.taskText {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #000;
+}
+.taskCompleted {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #000;
+    text-decoration: line-through;
+}
+/* велика рожева кнопка "Створити завдання" */
+.createButton {
+  margin-top: 16px;
+  align-self: flex-start;
 
-border-bottom: 4px solid #fef1db;
+  padding: 10px 24px;
+  border-radius: 999px;
+  border: none;
+
+  background: #fef1db;
+  line-height: 1.6;
+  color: #000;
+
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  height: 42px;
+
+  border-bottom: 4px solid #fef1db;
 }
 
-@media screen and (min-width: 1024px) {
-    .title {
-        font-size: 24px;
-    }
-    .button {
-        font-size: 16px;
-    }
-    .noTasksTitle {
-        font-size: 16px;
-    }
-    .noTasksText {
-        font-size: 16px;
-    }
-
+@media screen and (min-width: 1440px) {
+  .title {
+    font-size: 24px;
+  }
+  .button {
+    font-size: 16px;
+  }
+  .noTasksTitle {
+    font-size: 16px;
+  }
+  .noTasksText {
+    font-size: 16px;
+  }
 }

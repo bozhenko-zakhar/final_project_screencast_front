@@ -1,13 +1,13 @@
 "use client";
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import type { FieldProps } from "formik";
 import * as Yup from "yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUser } from "@/lib/api/clientApi/users";
 import type { User, UpdateUserPayload, FormValues } from "@/types/user";
 import css from "./ProfileEditForm.module.css";
 import { useRouter } from "next/navigation";
-import type { FieldProps } from "formik";
 import Select, {
   components,
   type SingleValue,
@@ -80,14 +80,31 @@ export default function ProfileEditForm({ user }: Props) {
       validationSchema={validationSchema}
       enableReinitialize
       onSubmit={(values, { resetForm }) => {
-        const payload: UpdateUserPayload = {
-          username: values.username,
-          email: values.email,
-          gender: values.gender || null,
-          dueDate: values.dueDate || null,
-        };
+        const payload: Partial<UpdateUserPayload> & {
+          name?: string;
+          date?: string | null;
+          newEmail?: string;
+        } = {};
 
-        mutate(payload, {
+        if (values.username !== user.name) {
+          payload.name = values.username;
+        }
+
+        if (
+          values.dueDate !== (user.dueDate ? user.dueDate.split("T")[0] : "")
+        ) {
+          payload.date = values.dueDate || null;
+        }
+
+        if (values.email !== user.email) {
+          payload.newEmail = values.email;
+        }
+
+        if (values.gender !== (user.gender || "")) {
+          payload.gender = values.gender || null;
+        }
+
+        mutate(payload as UpdateUserPayload, {
           onSuccess: async (updatedUser) => {
             queryClient.setQueryData(["user"], updatedUser);
 
@@ -119,6 +136,7 @@ export default function ProfileEditForm({ user }: Props) {
             <label className={css.label}>
               Імʼя
               <Field className={css.input} type="text" name="username" />
+
               <ErrorMessage
                 name="username"
                 component="p"
@@ -129,11 +147,17 @@ export default function ProfileEditForm({ user }: Props) {
             <label className={css.label}>
               Пошта
               <Field className={css.input} type="email" name="email" />
-              <ErrorMessage name="email" component="p" className={css.error} />
+
+              <ErrorMessage
+                name="email"
+                component="p"
+                className={css.error}
+              />
             </label>
 
             <label className={css.label}>
               Стать дитини
+
               <div className={css.inputWrapper}>
                 <Field name="gender">
                   {({ field, form }: FieldProps<string, FormValues>) => (
@@ -169,6 +193,7 @@ export default function ProfileEditForm({ user }: Props) {
 
             <label className={css.label}>
               Планова дата пологів
+
               <div className={css.inputWrapper}>
                 <Field name="dueDate">
                   {({ field, form }: FieldProps<string, FormValues>) => (
@@ -179,14 +204,18 @@ export default function ProfileEditForm({ user }: Props) {
                       disabled={isPending}
                       onChange={(date) => {
                         form.setFieldValue("dueDate", date);
-                        form.setFieldTouched("dueDate", true);
+                        form.setFieldTouched("dueDate", true, false);
                       }}
                     />
                   )}
                 </Field>
               </div>
 
-              <ErrorMessage name="dueDate" component="p" className={css.error} />
+              <ErrorMessage
+                name="dueDate"
+                component="p"
+                className={css.error}
+              />
             </label>
           </div>
 
@@ -200,7 +229,9 @@ export default function ProfileEditForm({ user }: Props) {
                 const gender = user?.gender;
 
                 document.body.dataset.theme =
-                  gender === "girl" || gender === "boy" ? gender : "neutral";
+                  gender === "girl" || gender === "boy"
+                    ? gender
+                    : "neutral";
               }}
               disabled={!dirty || isPending}
             >
