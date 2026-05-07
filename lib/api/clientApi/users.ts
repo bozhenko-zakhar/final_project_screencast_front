@@ -2,10 +2,10 @@ import type { User, UpdateUserPayload } from '@/types/user';
 import { nextServer } from '@/lib/api/api'
 
 
-// export async function getMe(): Promise<User> {
-//   const res = await nextServer.get<User>('/users/me');
-//   return res.data;
-// }
+export async function getMe(): Promise<User> {
+  const res = await nextServer.get<User>('/users/me');
+  return res.data;
+}
 
 
 export const updateUserAvatar = async (formData: FormData): Promise<User> => {

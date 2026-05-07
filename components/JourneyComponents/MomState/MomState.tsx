@@ -6,6 +6,7 @@ import sofaImage from "../../../app/(private routes)/journey/[weekNumber]/img/ch
 
 export default function MomState({data}) {
     // const data = momState[3];
+     if (!data) return null;
     return (
         <>
             <div className={css.container}>

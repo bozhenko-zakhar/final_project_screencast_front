@@ -38,7 +38,7 @@ const JourneyDetails = ({ weekNumber }: Props) => {
     isError: babyError,
     // isFetching: babyFetching,
   } = useQuery({
-    queryKey: ["baby", selectedWeek],
+    queryKey: ["baby", selectedWeek, mode],
     queryFn: () => getBabyStateInfo(selectedWeek),
     // placeholderData: keepPreviousData,
   });
@@ -50,7 +50,7 @@ const JourneyDetails = ({ weekNumber }: Props) => {
     isError: momError,
     // isFetching: momFetching,
   } = useQuery({
-    queryKey: ["mom", selectedWeek],
+    queryKey: ["mom", selectedWeek, mode],
     queryFn: () => getMomStateInfo(selectedWeek),
     // placeholderData: keepPreviousData,
   });
@@ -89,16 +89,17 @@ const isLoading = babyLoading || momLoading;
       <section className={css.journeySection}>
         <BabyMomToggle mode={mode} setMode={setMode} />
           {isLoading && (
-        <span className={css.loader}></span>
+        <span className={css.loader}>LOADING</span>
       )}
 
         {mode === "baby" ? (
-          <BabyDevelopment data={data} />
+          babyData ? <BabyDevelopment data={data} /> : null
         ) : (
+          momData ? (
           <div className={css.momBodyChange}>
             <MomState data={data} />
             <TasksReminderCard />
-          </div>
+          </div>) : null
         )}
       </section>
       </div>
