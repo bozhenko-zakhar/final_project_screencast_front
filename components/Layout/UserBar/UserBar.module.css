@@ -7,9 +7,10 @@
 
 .identity {
 	display: flex;
-	align-items: center;
 	justify-content: space-between;
-	gap: 12px;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
 }
 
 .userInfo {
@@ -51,32 +52,27 @@
 }
 
 .logoutButton {
+	width: 44px;
+	height: 44px;
+	border: 1px solid #e5e7eb;
+	background-color: transparent;
+	border-radius: 12px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-
-	width: 36px;
-	height: 36px;
-	min-width: 36px;
-	min-height: 36px;
-
-	border: none;
-	border-radius: 8px;
-
-	background: #ef4444;
-	color: #ffffff;
-
+	padding: 0;
 	cursor: pointer;
 	flex-shrink: 0;
-
 	transition:
 		background-color 180ms ease,
-		transform 180ms ease,
-		opacity 180ms ease;
+		border-color 180ms ease,
+		opacity 180ms ease,
+		transform 180ms ease;
 }
 
 .logoutButton:hover {
-	background: #dc2626;
+	background-color: #f9fafb;
+	border-color: #d1d5db;
 }
 
 .logoutButton:active {
@@ -86,11 +82,12 @@
 .logoutButton:disabled {
 	opacity: 0.7;
 	cursor: not-allowed;
+	transform: none;
 }
 
 .logoutIcon {
-	width: 18px;
-	height: 18px;
-	fill: currentColor;
+	width: 24px;
+	height: 24px;
+	fill: #111827;
 	flex-shrink: 0;
 }

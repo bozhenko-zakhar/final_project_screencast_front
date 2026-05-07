@@ -16,8 +16,6 @@ export const AuthProvider = ({ children }: Props) => {
   const setUser = useAuthStore((state) => state.setUser);
   const clearUser = useAuthStore((state) => state.clearUser);
 
-  const setBabyData = useWeekStore((state) => state.setData);
-
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -27,7 +25,7 @@ export const AuthProvider = ({ children }: Props) => {
         console.warn("Not authenticated", err);
         clearUser();
 
-        try {
+        /* try {
           const publicWeeks = await fetchPublicWeeks();
 
           setBabyData({
@@ -41,10 +39,10 @@ export const AuthProvider = ({ children }: Props) => {
           );
         }
 
-        return;
+        return; */
       }
 
-      try {
+      /* try {
         const weeks = await fetchPrivateWeeks();
 
         setBabyData({
@@ -53,11 +51,11 @@ export const AuthProvider = ({ children }: Props) => {
         });
       } catch (weeksErr) {
         console.error("Помилка при завантаженні приватних тижнів:", weeksErr);
-      }
+      } */
     };
 
     fetchUser();
-  }, [setUser, clearUser, setBabyData]);
+  }, [setUser, clearUser/*, setBabyData*/]);
 
   return children;
 };

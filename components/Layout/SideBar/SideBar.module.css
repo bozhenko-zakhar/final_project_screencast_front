@@ -91,7 +91,7 @@
 }
 
 .link:hover {
-	background-color: rgba(255, 180, 190, 0.12);
+	background-color: var(--color-scheme-foreground-alt);
 }
 
 .link.active {
@@ -111,9 +111,9 @@
 
 .registerButton {
 	width: 100%;
-	background-color: var(--color-scheme-foreground);
+	background-color: var(--color-scheme-foreground-alt);
 	border: none;
-	border-bottom: 4px solid var(--color-pastel-pink);
+	border-bottom: 4px solid var(--color-scheme-accent);
 	border-radius: 100px;
 	padding: 10px 24px;
 	font-family: 'Lato', sans-serif;

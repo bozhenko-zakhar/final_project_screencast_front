@@ -35,7 +35,7 @@
 }
 
 .interestingFact {
-  background-color: var(--color-scheme-foreground);
+  background-color: var(--color-scheme-foreground-alt);
   border-radius: 12px;
   padding: 12px;
 }
