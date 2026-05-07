@@ -2,7 +2,7 @@ import { BabyWeek } from "@/types/baby";
 import { nextServer } from "../api";
 import { MomWeek } from "@/types/mom";
 
-type PublicWeeksResponse = {
+export type PublicWeeksResponse = {
 	daysLeft: number,
 	babyState: BabyWeek
 }
@@ -37,11 +37,13 @@ export const getBabyStateInfo = async (weekNumber: number): Promise<BabyWeek> =>
 };
 
 export const fetchPublicWeeks = async (): Promise<PublicWeeksResponse> => {
+  console.log("-> Виклик fetchPublicWeeks на адресу /weeks/public");
   const res = await nextServer.get<PublicWeeksResponse>("/weeks/public");
   return res.data;
 };
 
 export const fetchPrivateWeeks = async (): Promise<PrivateWeeksResponse> => {
+  console.log("-> Виклик fetchPrivateWeeks на адресу /weeks/private");
   const res = await nextServer.get<PrivateWeeksResponse>("/weeks/private");
   return res.data;
 };
