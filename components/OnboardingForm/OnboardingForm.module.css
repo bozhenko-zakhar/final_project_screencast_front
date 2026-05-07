@@ -1,118 +1,166 @@
 .form {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    position: relative;
-    z-index: 1;
+    width: 100%;
+    max-width: 343px;
+    /* Стандарт для мобільних 375px з урахуванням padding */
+    gap: 24px;
 }
 
+/* Секція аватара */
 .avatarSection {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 32px;
+    gap: 12px;
+    margin-bottom: 8px;
 }
 
 .avatarPreview {
-    width: 110px;
-    height: 110px;
+    width: 164px;
+    height: 164px;
     border-radius: 50%;
-    background-color: #F3F4F6;
-    border: 1px solid #E5E7EB;
-    position: relative;
     overflow: hidden;
-    margin-bottom: 12px;
+    position: relative;
     cursor: pointer;
+    background-color: var(--color-neutral-lightest);
+    border: 1px solid var(--opacity-neutral-darkest-10);
 }
 
 .image {
     object-fit: cover;
 }
 
+.uploadBtn {
+    background: none;
+    border: none;
+    color: var(--color-neutral);
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+    font-family: var(--font-family);
+}
+
 .hiddenInput {
     display: none;
 }
 
-.uploadBtn {
-    background: none;
-    border: none;
-    color: #F8B4B4;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
+/* Групи введення */
 .inputGroup {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    gap: 8px;
 }
 
 .inputGroup label {
     font-size: 14px;
-    color: #4B5563;
-    margin-bottom: 8px;
     font-weight: 500;
+    color: var(--color-neutral-dark);
+    margin-left: 4px;
 }
 
 .inputGroup input,
 .inputGroup select {
     width: 100%;
-    padding: 16px;
-    background-color: #F9FAFB;
-    border: 1px solid transparent;
-    border-radius: 16px;
+    height: 48px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    color: var(--input-text);
     font-size: 16px;
-    color: #1F2937;
-    outline: none;
+    font-family: var(--font-family);
     transition: all 0.2s ease;
+    outline: none;
 }
 
 .inputGroup input:focus,
 .inputGroup select:focus {
-    border-color: #F8B4B4;
-    background-color: #FFFFFF;
+    border-color: var(--input-border-focus);
+    box-shadow: var(--input-shadow-focus);
 }
 
-.inputGroup select {
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%239CA3AF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-    background-repeat: no-repeat;
-    background-position: right 16px top 50%;
-    background-size: 12px auto;
-    cursor: pointer;
-}
-
+/* Помилки */
 .errorInput {
-    border-color: #EF4444 !important;
-    background-color: #FEF2F2 !important;
+    border-color: var(--input-border-error) !important;
 }
 
 .errorText {
-    color: #EF4444;
+    color: var(--input-border-error);
     font-size: 12px;
-    margin-top: 6px;
     margin-left: 4px;
 }
 
+/* Кнопка відправки */
 .submitBtn {
-    margin-top: 40px;
-    padding: 18px;
-    background-color: #F8B4B4;
-    color: white;
+    margin-top: 8px;
+    width: 100%;
+    height: 52px;
+    background-color: var(--color-pastel-pink);
+    color: var(--color-scheme-text);
     border: none;
-    border-radius: 16px;
+    border-radius: 26px;
+    /* Округла кнопка як у макеті */
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: opacity 0.2s;
-}
-
-.submitBtn:hover:not(:disabled) {
-    opacity: 0.9;
+    transition: opacity 0.2s ease;
 }
 
 .submitBtn:disabled {
-    background-color: #D1D5DB;
+    opacity: 0.6;
     cursor: not-allowed;
+}
+
+.submitBtn:active {
+    transform: scale(0.98);
+}
+
+@media (min-width: 768px) {
+    .form {
+        max-width: 400px;
+        /* Оптимальна ширина для читабельності на планшеті */
+        gap: 32px;
+        margin: 0 auto;
+        /* Центруємо форму в контейнері */
+    }
+
+    /* Аватар */
+    .avatarSection {
+        gap: 16px;
+        margin-bottom: 12px;
+    }
+
+    .uploadBtn {
+        font-size: 16px;
+    }
+
+    /* Поля введення */
+    .inputGroup {
+        gap: 10px;
+    }
+
+    .inputGroup label {
+        font-size: 16px;
+    }
+
+    .inputGroup input,
+    .inputGroup select {
+        height: 52px;
+        font-size: 16px;
+        padding: 0 20px;
+        /* Трохи більше внутрішнього простору */
+    }
+
+    /* Кнопка "Зберегти" */
+    .submitBtn {
+        height: 48px;
+        /* Оптимальна висота для планшетної кнопки */
+        font-size: 18px;
+        border-radius: 24px;
+        /* Половина висоти для округлості */
+        margin-top: 8px;
+        background-color: var(--color-pastel-pink);
+        /* Колір з вашого уточнення */
+    }
 }

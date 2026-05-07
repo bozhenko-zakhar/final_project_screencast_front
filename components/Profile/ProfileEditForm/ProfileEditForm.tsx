@@ -117,9 +117,15 @@ export default function ProfileEditForm({ user }: Props) {
             queryClient.setQueryData(["user"], updatedUser);
 
             document.body.dataset.theme =
+<<<<<<< HEAD
               updatedUser.gender === "girl" || updatedUser.gender === "boy"
                 ? updatedUser.gender
                 : "neutral";
+=======
+              updatedUser.gender === "girl" || updatedUser.gender === "boy" ?
+                updatedUser.gender
+              : "neutral";
+>>>>>>> origin/main
 
             toast.success("Профіль оновлено");
 
@@ -128,9 +134,8 @@ export default function ProfileEditForm({ user }: Props) {
                 username: updatedUser.name,
                 email: updatedUser.email,
                 gender: updatedUser.gender || "",
-                dueDate: updatedUser.dueDate
-                  ? updatedUser.dueDate.split("T")[0]
-                  : "",
+                dueDate:
+                  updatedUser.dueDate ? updatedUser.dueDate.split("T")[0] : "",
               },
             });
 
@@ -186,9 +191,9 @@ export default function ProfileEditForm({ user }: Props) {
                         form.setFieldValue("gender", gender);
 
                         document.body.dataset.theme =
-                          gender === "girl" || gender === "boy"
-                            ? gender
-                            : "neutral";
+                          gender === "girl" || gender === "boy" ?
+                            gender
+                          : "neutral";
                       }}
                       onBlur={() => form.setFieldTouched("gender", true)}
                       placeholder="Оберіть стать"
@@ -223,7 +228,10 @@ export default function ProfileEditForm({ user }: Props) {
                   )}
                 </Field>
               </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
               <ErrorMessage
                 name="dueDate"
                 component="p"

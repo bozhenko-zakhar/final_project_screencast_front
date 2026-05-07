@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -20,6 +20,7 @@ import type { CreateTaskPayload, Task } from '@/types/tasks';
 
 import AddTaskModal from '@/components/modals/AddTaskModal/AddTaskModal';
 import EmojiLoader from '@/components/EmojiLoader/EmojiLoader';
+import { Button } from '@/components/Button/Button';
 
 const TasksReminderCard = () => {
   const router = useRouter();
@@ -38,6 +39,12 @@ const TasksReminderCard = () => {
     queryFn: fetchTasks,
     enabled: isAuthenticated,
   });
+
+  useEffect(() => {
+    if (isError) {
+      toast.error('Не вдалося завантажити завдання', {id: 'tasks-fetch-error'});
+    }
+  }, [isError]);
 
   const createTaskMutation = useMutation({
     mutationFn: createTask,
@@ -89,7 +96,7 @@ const TasksReminderCard = () => {
 
   return (
     <section
-      className={`${cardStyles.card} ${cardStyles.cardFixedHeight} ${styles.tasks}`}
+      className={`${cardStyles.card} ${cardStyles.tasksHeight} ${styles.tasks}`}
     >
       <div className={styles.header}>
         <h2 className={styles.title}>Важливі завдання</h2>
@@ -100,29 +107,23 @@ const TasksReminderCard = () => {
           onClick={handleCreateTaskClick}
           aria-label="Створити завдання"
         >
-          +
+          <svg className={styles.iconButtonIcon} aria-hidden="true">
+            <use href="/sprite.svg#add_circle" />
+          </svg>
         </button>
       </div>
 
       <div className={styles.content}>
         {isLoading && <EmojiLoader />}
 
-        {!isLoading && isError && (
-          <p>Сталася помилка при завантаженні завдань.</p>
-        )}
-
         {!isLoading && !isError && !hasTasks && (
           <div className={styles.placeholder}>
             <p className={styles.noTasksTitle}>Наразі немає жодних завдань</p>
-            <p className={styles.noTasksText}>Створіть перше нове завдання!</p>
-
-            <button
-              type="button"
-              className={styles.createButton}
-              onClick={handleCreateTaskClick}
-            >
+            <p className={styles.noTasksText}>Створіть мершій нове завдання!</p>
+            
+            <Button className={styles.createButton} onClick={handleCreateTaskClick}>
               Створити завдання
-            </button>
+            </Button>
           </div>
         )}
 
@@ -135,19 +136,30 @@ const TasksReminderCard = () => {
 
               return (
                 <li key={task.id} className={styles.item}>
+                  <span className={styles.taskDate}>
+                    {new Date(task.date).toLocaleDateString('uk-UA', {
+                      day: '2-digit',
+                      month: '2-digit'
+                    })}
+                  </span>
                   <label className={styles.taskLabel}>
                     <input
                       type="checkbox"
+                      className={styles.checkboxInput}
                       checked={task.isCompleted}
                       disabled={isThisPending}
                       onChange={() => handleToggleTask(task)}
                     />
-
-                    <span
-                      className={
-                        task.isCompleted ? styles.taskCompleted : undefined
-                      }
-                    >
+                    <span className={styles.checkboxBox} aria-hidden="true">
+                      {isThisPending ? (
+                         <span className={styles.spinner} />
+                      ) : (
+                          <svg className={styles.checkboxIcon}>
+                            <use href="/sprite.svg#check" />
+                          </svg>
+                      )}   
+                    </span>
+                    <span className={task.isCompleted ? styles.taskCompleted : styles.taskText}>
                       {task.title}
                     </span>
                   </label>

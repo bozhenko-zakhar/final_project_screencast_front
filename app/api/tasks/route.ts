@@ -10,9 +10,9 @@ export async function GET() {
         Cookie: await getCookieHeader(),
       },
     });
-
-    return NextResponse.json(res.data, { status: res.status });
-  } catch (error) {
+    
+		return NextResponse.json(res.data, { status: res.status });
+	} catch (error) {
     return handleApiError(error);
   }
 }
