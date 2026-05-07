@@ -36,20 +36,34 @@ const ConfirmationModal = ({
           onClick={onCancel}
           aria-label="Закрити модальне вікно"
         >
-          ×
+          <svg className={css.closeIcon} aria-hidden="true">
+            <use href="/sprite.svg#close" />
+          </svg>
         </button>
 
         <h2 className={css.title}>
-          <span className={css.mobileLine}>Ви точно</span>
-          <span className={css.desktopSpace}> </span>
+          Ви точно
+          <span className={css.mobileBreak}>
+            <br />
+          </span>
 
-          <span className={css.mobileLine}>хочете</span>
-          <span className={css.desktopSpace}> </span>
+          <span className={css.tabletSpace}> </span>
+          хочете
 
-          <span className={css.mobileLine}>вийти?</span>
+          <span className={css.mobileBreak}>
+            <br />
+          </span>
+
+          <span className={css.desktopBreak}>
+            <br />
+          </span>
+
+          <span className={css.tabletSpace}> </span>
+          вийти?
         </h2>
 
         {description && <p className={css.text}>{description}</p>}
+
         {errorMessage && <p className={css.error}>{errorMessage}</p>}
 
         <div className={css.actions}>

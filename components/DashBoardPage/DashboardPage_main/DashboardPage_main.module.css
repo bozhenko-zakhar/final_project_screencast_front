@@ -63,19 +63,41 @@
     .cardFixedHeight {
         height: 499px;
         overflow-y: auto;
+
+        /* hide scrollbar */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
     }
-        .greetingHeight {
-            height: 45px;
-        }
-    
-        .tasksHeight {
-            height: 499px;
-            overflow-y: auto;
-        }
-    
-        .feelingHeight {
-            height: 210px;
-            overflow-y: auto;
-        }
-    
+
+    .cardFixedHeight::-webkit-scrollbar {
+        display: none;
+    }
+
+    .greetingHeight {
+        height: 45px;
+    }
+
+    .tasksHeight {
+        height: 499px;
+        overflow-y: auto;
+
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .tasksHeight::-webkit-scrollbar {
+        display: none;
+    }
+
+    .feelingHeight {
+        height: 210px;
+        overflow-y: auto;
+
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .feelingHeight::-webkit-scrollbar {
+        display: none;
+    }
 }

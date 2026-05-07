@@ -144,9 +144,8 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 			<ConfirmationModal
   isOpen={isConfirmationOpen}
   title="Ви впевнені, що хочете вийти?"
-  description="Після виходу потрібно буде знову увійти в обліковий запис."
-  confirmButtonText="Так, вийти"
-  cancelButtonText="Скасувати"
+  confirmButtonText="Так"
+  cancelButtonText="Ні"
   onCancel={() => {
     setLogoutError(null);
     setIsConfirmationOpen(false);
