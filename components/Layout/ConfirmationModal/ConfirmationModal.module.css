@@ -1,54 +1,49 @@
-.backdrop {
-	position: fixed;
-	inset: 0;
-	background: rgba(17, 24, 39, 0.5);
-	display: grid;
-	place-items: center;
-	padding: 16px;
-	z-index: 30;
-}
-
-.modal {
-	width: min(420px, 100%);
-	background: #fff;
-	border-radius: 12px;
-	padding: 20px;
+.wrapper {
+  padding: 24px;
 }
 
 .title {
-	margin: 0 0 8px;
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .text {
-	margin: 0 0 16px;
-	color: #4b5563;
+  margin: 0 0 16px;
+  color: #4b5563;
 }
 
 .error {
-	margin: 0 0 12px;
-	color: #dc2626;
-	font-size: 14px;
+  margin: 0 0 12px;
+  color: #dc2626;
+  font-size: 14px;
 }
 
 .actions {
-	display: flex;
-	gap: 10px;
-	justify-content: flex-end;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
 }
 
 .cancel,
 .confirm {
-	border: none;
-	border-radius: 8px;
-	padding: 8px 12px;
-	cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
 }
 
 .cancel {
-	background: #e5e7eb;
+  background: #e5e7eb;
 }
 
 .confirm {
-	background: #ef4444;
-	color: #fff;
+  background: #ef4444;
+  color: #fff;
+}
+
+.cancel:disabled,
+.confirm:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }

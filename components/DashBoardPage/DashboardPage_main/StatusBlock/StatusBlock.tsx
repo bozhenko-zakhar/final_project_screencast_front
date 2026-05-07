@@ -1,40 +1,23 @@
-import { useQuery } from "@tanstack/react-query";
+"use client";
 
 import css from "./StatusBlock.module.css";
 import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
-import { getBabyStateInfo, fetchPrivateWeeks } from "@/lib/api/clientApi/weeks";
-import { useAuthStore } from "@/lib/store/authStore";
-import { useParams } from "next/navigation";
-
-
+import { useWeekStore } from "@/lib/store/babyDataStore";
 
 const StatusBlock = () => {
-	const { weekNumber } = useParams<{weekNumber: string}>();
-
-  const { data: dataWeeks } = useQuery({
-    queryKey: ["dataWeeks"],
-    queryFn: () => getBabyStateInfo(+weekNumber),
-  });
-
-  const {
-    data: daysLeft,
-  } = useQuery({
-    queryKey: ["daysLeft"],
-    queryFn: fetchPrivateWeeks,
-    select: (response) => response?.daysLeft,
-  });
-
-  const daysDisplay = daysLeft !== undefined ? daysLeft : "...";
+  const weekNumber = useWeekStore((state) => state.babyState);
+  const daysLeft = useWeekStore((state) => state.daysLeft);
 
   return (
     <section className={css.daysCountWrapper}>
       <div className={`${cardStyles.card} ${css.weeks}`}>
         <p className={css.title}>Тиждень</p>
-        <h3 className={css.days}>{dataWeeks?.weekNumber}</h3>
+        <h3 className={css.days}>{weekNumber?.weekNumber}</h3>
       </div>
+
       <div className={`${cardStyles.card} ${css.weeks}`}>
         <p className={css.title}>Днів до зустрічі</p>
-        <h3 className={css.days}>~{daysDisplay}</h3>
+        <h3 className={css.days}>~{daysLeft}</h3>
       </div>
     </section>
   );

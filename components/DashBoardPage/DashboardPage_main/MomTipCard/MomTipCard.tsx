@@ -1,22 +1,17 @@
-"use client";
-
 import css from "./MomTipCard.module.css";
-
 import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
-import { useQuery } from "@tanstack/react-query";
-import { fetchPrivateWeeks } from "@/lib/api/clientApi/weeks";
+import { BabyWeek } from "@/types/baby";
+import { useWeekStore } from "@/lib/store/babyDataStore";
+
 
 const MomTipCard = () => {
-	const { data } = useQuery({
-    queryKey: ["babyWeek", "MomTipCard"], // через те, що запитів багато, ключі теж треба різні. Треба зробити так, щоби був тільки один запит на всю сторінку	
-    queryFn: fetchPrivateWeeks
-  });
+  const babyData = useWeekStore((state)=>state.babyState)
 
   return (
     <section className={`${cardStyles.card}  ${css.advicesForMom}`}>
       <div className={css.advicesForMomWrap}>
         <h3 className={css.babyContainerHeaderline}>Порада для мами </h3>
-        <p className={css.momDailyTips}>{data?.babyState?.momDailyTips[0]}</p>
+        <p className={css.momDailyTips}>{babyData?.momDailyTips?.[0]}</p>
       </div>
     </section>
   );
