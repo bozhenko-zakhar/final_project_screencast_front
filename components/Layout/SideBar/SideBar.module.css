@@ -91,7 +91,7 @@
 }
 
 .link:hover {
-	background-color: var(--color-scheme-foreground);
+	background-color: var(--color-scheme-foreground-alt);
 }
 
 .link.active {

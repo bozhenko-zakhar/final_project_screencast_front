@@ -83,8 +83,8 @@
 }
 
 body[data-theme='girl'] {
-  --color-scheme-foreground-alt: var(--color-pastel-pink-lighter);
-  --color-scheme-foreground: var(--color-pastel-pink-light);
+  --color-scheme-foreground: var(--color-pastel-pink-lighter);
+  --color-scheme-foreground-alt: var(--color-pastel-pink-light);
   --color-scheme-accent: var(--color-pastel-pink);
   --color-scheme-accent-dark: var(--color-pastel-pink-dark);
 
@@ -95,8 +95,8 @@ body[data-theme='girl'] {
 }
 
 body[data-theme='boy'] {
-  --color-scheme-foreground-alt: var(--color-french-pass-lighter);
-  --color-scheme-foreground: var(--color-french-pass-light);
+  --color-scheme-foreground: var(--color-french-pass-lighter);
+  --color-scheme-foreground-alt: var(--color-french-pass-light);
   --color-scheme-accent: var(--color-french-pass);
   --color-scheme-accent-dark: var(--color-french-pass-dark);
 
