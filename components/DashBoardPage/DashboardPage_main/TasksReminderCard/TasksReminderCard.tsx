@@ -20,6 +20,7 @@ import type { CreateTaskPayload, Task } from '@/types/tasks';
 
 import AddTaskModal from '@/components/modals/AddTaskModal/AddTaskModal';
 import EmojiLoader from '@/components/EmojiLoader/EmojiLoader';
+import { Button } from '@/components/Button/Button';
 
 const TasksReminderCard = () => {
   const router = useRouter();
@@ -118,15 +119,11 @@ const TasksReminderCard = () => {
         {!isLoading && !isError && !hasTasks && (
           <div className={styles.placeholder}>
             <p className={styles.noTasksTitle}>Наразі немає жодних завдань</p>
-            <p className={styles.noTasksText}>Створіть перше нове завдання!</p>
-
-            <button
-              type="button"
-              className={styles.createButton}
-              onClick={handleCreateTaskClick}
-            >
+            <p className={styles.noTasksText}>Створіть мершій нове завдання!</p>
+            
+            <Button className={styles.createButton} onClick={handleCreateTaskClick}>
               Створити завдання
-            </button>
+            </Button>
           </div>
         )}
 
