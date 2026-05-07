@@ -38,7 +38,9 @@ const UserBar = ({
         onClick={onLogout}
         disabled={isLoading}
       >
-        {isLoading ? "Вихід..." : "Вихід"}
+        <svg className={css.logoutIcon}>
+          <use href="/icons/sprite.svg#logout" />
+        </svg>
       </button>
     </div>
   );

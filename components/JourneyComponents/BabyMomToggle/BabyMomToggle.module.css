@@ -5,7 +5,7 @@
   /* min-width: 335px; */
   width: 100%;
   padding: 4px;
-  background-color: var(--color-scheme-foreground);
+  background-color: var(--color-scheme-foreground-alt);
   margin: 0 auto 16px auto;
 }
 
