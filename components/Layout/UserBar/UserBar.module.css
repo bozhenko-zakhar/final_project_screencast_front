@@ -46,9 +46,9 @@
 .logoutButton {
 	width: 44px;
 	height: 44px;
-	border: 1px solid #e5e7eb;
+	border: none;
 	background-color: transparent;
-	border-radius: 12px;
+
 	display: flex;
 	align-items: center;
 	justify-content: center;
