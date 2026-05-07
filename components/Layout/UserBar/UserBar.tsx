@@ -40,7 +40,7 @@ const UserBar = ({
           disabled={isLoading}
         >
           <svg className={css.logoutIcon}>
-            <use href="/icons/sprite.svg#logout" />
+            <use href="/sprite.svg#logout" />
           </svg>
         </button>
       </div>
