@@ -8,7 +8,7 @@
     display: flex;
     flex-direction: column;
     /* одна колонка */
-    gap: 16px;
+    column-gap: 16px;
 }
 .card {
     background-color: var(--color-scheme-foreground);
@@ -16,7 +16,13 @@
     padding: 24px 24px;
 }
 
-.leftColumn,
+.leftColumn {
+    display: flex;
+    flex-direction: column;
+
+    padding-top: 16px;
+    /* gap: 16px;  */
+}
 .rightColumn {
     display: flex;
     flex-direction: column;
@@ -29,12 +35,6 @@
         max-width: 768px;
         /* ширина tablet-фрейму */
     }
-
-    .leftColumn,
-    .rightColumn {
-        gap: 16px;
-        /* ?????*/
-    }
 }
 
 @media screen and (min-width: 1440px) {
@@ -44,7 +44,7 @@
 
         display: grid;
         grid-template-columns: 674px 422px;
-        gap: 32px;
+        column-gap: 32px;
         align-items: flex-start;
     }
     .greetingWrapper {
@@ -52,7 +52,7 @@
     }
 
     .leftColumn {
-        gap: 32px;
+        /* gap: 32px; */
     }
     .rightColumn {
         padding: 16px 32px 32px 0px;
