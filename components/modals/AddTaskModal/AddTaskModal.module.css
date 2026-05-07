@@ -6,15 +6,24 @@
 
 .closeButton {
   position: absolute;
-  top: 26px;
-  right: 26px;
+  top: 30px;
+  right: 30px;
   border: none;
   background: transparent;
   color: #000;
-  font-size: 34px;
-  line-height: 0.7;
   cursor: pointer;
   padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeIcon {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
 }
 
 .title {
@@ -25,7 +34,8 @@
   line-height: 1.2;
   letter-spacing: 0.01em;
   text-align: center;
-color: var(--color-scheme-text);}
+  color: var(--color-scheme-text);
+}
 
 .titleLine {
   display: block;
@@ -42,8 +52,6 @@ color: var(--color-scheme-text);}
   }
 
   .title {
-    margin-bottom: 34px;
-    font-size: 30px;
     white-space: nowrap;
   }
 
@@ -56,21 +64,19 @@ color: var(--color-scheme-text);}
   }
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 1440px) {
   .wrapper {
     padding: 64px;
     min-height: 175px;
   }
 
   .title {
-    margin-bottom: 22px;
-    font-size: 20px;
+    font-size: 48px;
     line-height: 1.15;
   }
 
   .closeButton {
-    top: 13px;
-    right: 13px;
-    font-size: 20px;
+    top: 34px;
+    right: 42px;
   }
 }
