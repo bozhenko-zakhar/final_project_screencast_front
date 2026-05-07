@@ -4,10 +4,8 @@
     justify-content: flex-start;
     gap: 12px;
     min-height: 34px;
-    /* padding: 24px 32px 0; */
 }
 .title {
-    margin-top: 16px;
     font-weight: 700;
     font-size: 24px;
     line-height: 1.4;
