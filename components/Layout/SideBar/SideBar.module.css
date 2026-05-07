@@ -95,7 +95,7 @@
 }
 
 .link.active {
-	background-color: var(--color-pastel-pink-lighter);
+	background-color: var(--color-scheme-foreground);
 }
 
 .bottom {
@@ -111,7 +111,7 @@
 
 .registerButton {
 	width: 100%;
-	background-color: var(--color-pastel-pink-light);
+	background-color: var(--color-scheme-foreground);
 	border: none;
 	border-bottom: 4px solid var(--color-pastel-pink);
 	border-radius: 100px;

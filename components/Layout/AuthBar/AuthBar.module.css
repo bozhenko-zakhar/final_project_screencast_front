@@ -26,7 +26,7 @@
 }
 
 .registerLink {
-	background-color: var(--color-pastel-pink-light);
+	background-color: var(--color-scheme-foreground);
 	box-shadow: 0 4px 0 0 var(--color-pastel-pink);
 }
 
