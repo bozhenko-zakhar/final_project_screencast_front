@@ -1,32 +1,38 @@
-export type MongoId = string | { $oid: string };
-
-export interface EmotionItem {
-  _id?: MongoId;
-  id?: MongoId;
-  title: string;
-}
-
-export interface DiaryEntryPayload {
+export interface DiaryEntry {
   title: string;
   description: string;
   emotions: string[];
-  date?: string;
+  date: string;
 }
 
 export interface BackendDiaryEntry {
-  _id?: MongoId;
-  id?: MongoId;
-  userId?: string;
+  _id: {
+    $oid: string;
+  };
+  userId: string;
   title: string;
   description: string;
-  emotions?: EmotionItem[] | string[];
-  date?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  emotions: Array<{
+    _id: {
+      $oid: string;
+    };
+    title: string;
+  }>;
+  date: string;
   __v?: number;
 }
 
 export interface DiaryListItem {
+  id: string;
+  title: string;
+  date: string;
+  emotions: Array<{
+    id: string;
+    title: string;
+  }>;
+}
+
+export interface DiaryEntryDetail {
   id: string;
   title: string;
   date: string;
@@ -35,12 +41,4 @@ export interface DiaryListItem {
     id: string;
     title: string;
   }>;
-}
-
-export type DiaryEntryDetail = DiaryListItem;
-
-export interface DiaryEntryFormValues {
-  title: string;
-  description: string;
-  emotions: string[];
-}
+}	

@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, AxiosError } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import { useLoadingStore } from "@/lib/store/loadingStore";
 
 let requestCounter = 0;

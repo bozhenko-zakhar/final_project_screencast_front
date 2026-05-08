@@ -3,18 +3,16 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-
+import css from "./DiaryEntryDetails.module.css";
+import { DiaryEntryDetail } from "@/types/diary";
+import { deleteDiaryEntry } from "@/lib/api/clientApi/diaries";
+import ConfirmationModal from "@/components/Layout/ConfirmationModal/ConfirmationModal";
 import AddDiaryEntryModal from "@/components/AddDiaryEntryModal/AddDiaryEntryModal";
 import { DiaryEntryForm } from "@/components/AddDiaryEntryForm/AddDiaryEntryForm";
-import ConfirmationModal from "@/components/Layout/ConfirmationModal/ConfirmationModal";
-import { deleteDiaryEntry } from "@/lib/api/clientApi/diaries";
-import type { DiaryEntryDetail } from "@/types/diary";
 
-import css from "./DiaryEntryDetails.module.css";
-
-type DiaryEntryDetailsProps = {
+interface DiaryEntryDetailsProps {
   entry: DiaryEntryDetail | null;
-};
+}
 
 const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -22,14 +20,9 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
   const queryClient = useQueryClient();
 
   const { mutate: deleteMutate, isPending: isDeleting } = useMutation({
-    mutationFn: deleteDiaryEntry,
+    mutationFn: (entryId: string) => deleteDiaryEntry(entryId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["diary"] });
-
-      if (entry?.id) {
-        queryClient.removeQueries({ queryKey: ["diaryEntry", entry.id] });
-      }
-
       toast.success("Запис видалено!");
       setIsDeleteModalOpen(false);
     },
@@ -56,6 +49,10 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
     deleteMutate(entry.id);
   };
 
+  const handleEdit = () => {
+    setIsEditModalOpen(true);
+  };
+
   return (
     <>
       <div className={css.container}>
@@ -64,20 +61,16 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
             <h2 className={css.title}>{entry.title}</h2>
             <p className={css.date}>{formattedDate}</p>
           </div>
-
           <div className={css.actions}>
-            <button
-              type="button"
-              className={css.editButton}
-              onClick={() => setIsEditModalOpen(true)}
+            <button 
+              className={css.editButton} 
+              onClick={handleEdit}
               disabled={isDeleting}
             >
               Редагувати
             </button>
-
-            <button
-              type="button"
-              className={css.deleteButton}
+            <button 
+              className={css.deleteButton} 
               onClick={() => setIsDeleteModalOpen(true)}
               disabled={isDeleting}
             >
@@ -86,7 +79,7 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
           </div>
         </div>
 
-        {entry.emotions.length > 0 && (
+        {entry.emotions && entry.emotions.length > 0 && (
           <div className={css.emotions}>
             {entry.emotions.map((emotion) => (
               <span key={emotion.id} className={css.emotionTag}>
@@ -101,29 +94,23 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
         </div>
       </div>
 
-      <ConfirmationModal
-        isOpen={isDeleteModalOpen}
-        title="Ви впевнені, що хочете видалити запис?"
-        description="Цю дію неможливо буде скасувати."
-        confirmButtonText="Видалити"
-        cancelButtonText="Скасувати"
-        onCancel={() => setIsDeleteModalOpen(false)}
-        onConfirm={handleDelete}
-        isLoading={isDeleting}
-      />
+  <ConfirmationModal
+  isOpen={isDeleteModalOpen}
+  title="Ви впевнені, що хочете видалити запис?"
+  description="Цю дію неможливо буде скасувати."
+  confirmButtonText="Видалити"
+  cancelButtonText="Скасувати"
+  onCancel={() => setIsDeleteModalOpen(false)}
+  onConfirm={handleDelete}
+  isLoading={isDeleting}
+/>
 
       {isEditModalOpen && (
-        <AddDiaryEntryModal
+        <AddDiaryEntryModal 
           title="Редагувати запис"
           onClose={() => setIsEditModalOpen(false)}
         >
-          <DiaryEntryForm
-            entryId={entry.id}
-            initialValues={{
-              title: entry.title,
-              description: entry.description,
-              emotions: entry.emotions.map((emotion) => emotion.id),
-            }}
+          <DiaryEntryForm 
             onClose={() => setIsEditModalOpen(false)}
           />
         </AddDiaryEntryModal>

@@ -31,8 +31,12 @@ export default function CalendarPicker({
   const initialDate = value ? new Date(value) : new Date();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [currentMonth, setCurrentMonth] = useState(initialDate.getMonth());
-  const [currentYear, setCurrentYear] = useState(initialDate.getFullYear());
+  const [currentMonth, setCurrentMonth] = useState(
+    initialDate.getMonth()
+  );
+  const [currentYear, setCurrentYear] = useState(
+    initialDate.getFullYear()
+  );
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -70,7 +74,9 @@ export default function CalendarPicker({
     }
 
     for (let day = 1; day <= lastDay.getDate(); day += 1) {
-      daysArray.push(new Date(currentYear, currentMonth, day));
+      daysArray.push(
+        new Date(currentYear, currentMonth, day)
+      );
     }
 
     return daysArray;
@@ -106,7 +112,10 @@ export default function CalendarPicker({
   const isDateDisabled = (date: Date) => {
     if (!minDate) return false;
 
-    return date < new Date(new Date(minDate).setHours(0, 0, 0, 0));
+    return (
+      date <
+      new Date(new Date(minDate).setHours(0, 0, 0, 0))
+    );
   };
 
   return (
@@ -114,23 +123,28 @@ export default function CalendarPicker({
       <button
         type="button"
         id={id}
-        className={clsx(styles.inputButton, error && styles.inputError)}
+        className={clsx(
+          styles.inputButton,
+          error && styles.inputError
+        )}
         onClick={() => setIsOpen((prev) => !prev)}
         disabled={disabled}
       >
         <span
           className={clsx(
-            formattedValue ? styles.inputValue : styles.placeholder
+            formattedValue
+              ? styles.inputValue
+              : styles.placeholder
           )}
         >
           {formattedValue || placeholder}
         </span>
 
-        <div className={styles.inputIcon}>
-          <svg width="20" height="20">
-            <use href="/sprite.svg#today" />
-          </svg>
-        </div>
+  <div className={styles.inputIcon}>
+  <svg width="20" height="20">
+    <use href="/sprite.svg#today" />
+  </svg>
+</div>
       </button>
 
       {isOpen && (
@@ -138,7 +152,10 @@ export default function CalendarPicker({
           <div className={styles.header}>
             <div className={styles.title}>
               <span>
-                {new Date(currentYear, currentMonth).toLocaleString("uk-UA", {
+                {new Date(
+                  currentYear,
+                  currentMonth
+                ).toLocaleString("uk-UA", {
                   month: "long",
                 })}
               </span>
@@ -176,10 +193,14 @@ export default function CalendarPicker({
           <div className={styles.daysGrid}>
             {days.map((date, index) => {
               if (!date) {
-                return <div key={index} className={styles.emptyDay} />;
+                return (
+                  <div key={index} className={styles.emptyDay} />
+                );
               }
 
-              const isoDate = date.toISOString().split("T")[0];
+              const isoDate = date
+                .toISOString()
+                .split("T")[0];
 
               const isSelected = value === isoDate;
               const disabledDate = isDateDisabled(date);

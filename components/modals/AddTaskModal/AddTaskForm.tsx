@@ -18,7 +18,9 @@ type AddTaskFormProps = {
 const getTodayDateString = () => new Date().toISOString().slice(0, 10);
 
 const validationSchema = Yup.object({
-  name: Yup.string().trim().required("Введіть назву завдання"),
+  name: Yup.string()
+    .trim()
+    .required("Введіть назву завдання"),
 
   date: Yup.string()
     .required("Оберіть дату")
@@ -53,18 +55,9 @@ export default function AddTaskForm({
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
       enableReinitialize
-      validateOnMount
     >
-      {({
-        isSubmitting: isFormikSubmitting,
-        values,
-        setFieldValue,
-        setFieldTouched,
-        dirty,
-        isValid,
-      }) => {
-        const isLoading = isSubmitting || isFormikSubmitting;
-        const isSaveDisabled = isLoading || !dirty || !isValid;
+      {({ isSubmitting: isFormikSubmitting, values, setFieldValue, setFieldTouched }) => {
+        const isDisabled = isSubmitting || isFormikSubmitting;
 
         return (
           <Form className={styles.form}>
@@ -79,7 +72,7 @@ export default function AddTaskForm({
                 type="text"
                 className={styles.input}
                 placeholder="Введіть завдання"
-                disabled={isLoading}
+                disabled={isDisabled}
               />
 
               <ErrorMessage
@@ -101,7 +94,7 @@ export default function AddTaskForm({
                     value={field.value || values.date}
                     minDate={getTodayDateString()}
                     placeholder="Оберіть дату"
-                    disabled={isLoading}
+                    disabled={isDisabled}
                     onChange={(date) => {
                       setFieldValue("date", date);
                       setFieldTouched("date", true, false);
@@ -120,9 +113,9 @@ export default function AddTaskForm({
             <button
               type="submit"
               className={styles.button}
-              disabled={isSaveDisabled}
+              disabled={isDisabled}
             >
-              {isLoading ? "Збереження..." : "Зберегти"}
+              {isDisabled ? "Збереження..." : "Зберегти"}
             </button>
           </Form>
         );

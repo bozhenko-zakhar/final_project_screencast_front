@@ -1,129 +1,56 @@
+
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import toast from "react-hot-toast";
-import * as Yup from "yup";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
-import {
-  fetchEmotions,
-  getEmotionId,
-  type Emotion,
-} from "@/lib/api/clientApi/emotions";
-import {
-  createDiaryEntry,
-  updateDiaryEntry,
-} from "@/lib/api/clientApi/diaries";
-import type { DiaryEntryFormValues } from "@/types/diary";
+import * as Yup from "yup";
+import toast from "react-hot-toast";
+
+import { Emotion, fetchEmotions } from "@/lib/api/clientApi/emotions";
+import { createDiaryEntry } from "@/lib/api/clientApi/diaries";
 
 import css from "./AddDiaryEntryForm.module.css";
 
-type AddDiaryEntryFormProps = {
-  onClose: () => void;
-  entryId?: string;
-  initialValues?: DiaryEntryFormValues;
-};
-
-const defaultInitialValues: DiaryEntryFormValues = {
-  title: "",
-  emotions: [],
-  description: "",
-};
-
-const validationSchema = Yup.object({
-  title: Yup.string()
-    .trim()
-    .min(2, "Мінімум 2 символи")
-    .max(100, "Максимум 100 символів")
-    .required("Обов'язкове поле"),
-
-  emotions: Yup.array()
-    .of(Yup.string().required())
-    .min(1, "Оберіть хоча б одну категорію")
-    .required("Обов'язкове поле"),
-
-  description: Yup.string()
-    .trim()
-    .min(2, "Мінімум 2 символи")
-    .max(1000, "Максимум 1000 символів")
-    .required("Обов'язкове поле"),
-});
-
-export const DiaryEntryForm = ({
-  onClose,
-  entryId,
-  initialValues = defaultInitialValues,
-}: AddDiaryEntryFormProps) => {
+export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
   const queryClient = useQueryClient();
-  const isEditMode = Boolean(entryId);
 
-  const { data: emotions = [], isLoading: isEmotionsLoading } = useQuery({
+    const { data: emotions = [] } = useQuery({
     queryKey: ["emotions"],
     queryFn: fetchEmotions,
-  });
-
+    });
+    
   const { mutate, isPending } = useMutation({
-    mutationFn: async (values: DiaryEntryFormValues) => {
-      const payload = {
-        title: values.title.trim(),
-        description: values.description.trim(),
-        emotions: values.emotions,
-      };
-
-      if (entryId) {
-        return updateDiaryEntry({ entryId, payload });
-      }
-
-      return createDiaryEntry(payload);
-    },
-
-    onSuccess: async (updatedEntry) => {
-      await queryClient.invalidateQueries({ queryKey: ["diary"] });
-
-      if (entryId) {
-        queryClient.setQueryData(["diaryEntry", entryId], updatedEntry);
-      }
-
-      toast.success(isEditMode ? "Запис оновлено!" : "Запис збережено!");
+    mutationFn: createDiaryEntry,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["diary"] });
+      toast.success("Збережено!");
       onClose();
     },
-
-    onError: (error) => {
-      console.error("MUTATION ERROR:", error);
-
-      toast.error(
-        isEditMode
-          ? "Помилка при редагуванні запису"
-          : "Помилка при створенні запису"
-      );
-    },
+    onError: () => toast.error("Помилка запиту"),
   });
 
   return (
-    <Formik<DiaryEntryFormValues>
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      enableReinitialize
+    <Formik
+      initialValues={{ title: "", emotions: [], description: "" }}
+      validationSchema={Yup.object({
+        title: Yup.string().min(1).required("Обов'язкове поле"),
+        description: Yup.string().min(1).max(1000).required("Обов'язкове поле"),
+        emotions: Yup.array().min(1, "Оберіть хоча б одну категорію").required("Обов'язково"),
+      })}
       onSubmit={(values) => {
-        mutate(values);
+        mutate({
+          ...values,
+          date: new Date().toISOString().split('T')[0],
+        });
       }}
     >
-      {({ values, errors, touched }) => (
+      {({ values, errors }) => (
         <Form className={css.form}>
           <div className={css.field}>
-            <label className={css.label} htmlFor="diary-title">
-              Заголовок
-            </label>
-
-            <Field
-              id="diary-title"
-              name="title"
-              className={css.input}
-              placeholder="Введіть заголовок запису"
-              aria-invalid={Boolean(touched.title && errors.title)}
-            />
-
-            <ErrorMessage name="title" component="div" className={css.error} />
+            <label className={css.label}>Заголовок</label>
+            <Field name="title" className={css.input} placeholder="Введіть заголовок запису" aria-invalid={!!errors.title} />
+            <ErrorMessage name="title" component="div" className={css.error}  />
           </div>
 
 					<div className={css.field}>
