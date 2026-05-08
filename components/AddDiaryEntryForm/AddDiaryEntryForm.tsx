@@ -126,102 +126,65 @@ export const DiaryEntryForm = ({
             <ErrorMessage name="title" component="div" className={css.error} />
           </div>
 
-          <div className={css.field}>
-            <label className={css.label} htmlFor="category-toggle">
-              Категорії
-            </label>
+					<div className={css.field}>
+					<label className={css.label}>Категорії</label>
+					
+					<input type="checkbox" id="category-toggle" className={css.toggleCheckbox} />
+					
+					<div className={css.selectWrapper}>
+						<label 
+							htmlFor="category-toggle" 
+							className={css.customSelect}
+							aria-invalid={!!errors.emotions}
+						>
+							<div className={css.selectedTags}>
+								{values.emotions.length > 0 ? (
+									values.emotions.map((emoValue: string) => {
+										const emoLabel = emotions.find(e => e._id.$oid === emoValue)?.title;
+										return <span key={emoValue} className={css.tag}>{emoLabel}</span>;
+									})
+								) : (
+									<span className={css.placeholder}>Оберіть категорію</span>
+								)}
+							</div>
+							<span className={css.arrow}></span>
+						</label>
 
-            <input
-              type="checkbox"
-              id="category-toggle"
-              className={css.toggleCheckbox}
-            />
+						<div className={css.optionsList}>
+							{emotions.map((emo: Emotion) => (
+								<label key={emo._id.$oid} className={css.optionItem}>
+									<Field
+										type="checkbox"
+										name="emotions"
+										value={emo._id.$oid} // Передаємо ID в Formik
+										className={css.hiddenCheckbox}
+									/>
+									<div className={css.customCheckbox}></div>
+									<span className={css.optionText}>{emo.title}</span>
+								</label>
+							))}
+						</div>
+					</div>
 
-            <div className={css.selectWrapper}>
-              <label
-                htmlFor="category-toggle"
-                className={css.customSelect}
-                aria-invalid={Boolean(touched.emotions && errors.emotions)}
-              >
-                <div className={css.selectedTags}>
-                  {values.emotions.length > 0 ? (
-                    values.emotions.map((emotionId) => {
-                      const emotionTitle = emotions.find(
-                        (emotion: Emotion) =>
-                          getEmotionId(emotion) === emotionId
-                      )?.title;
+					<ErrorMessage name="emotions" component="div" className={css.error} />
+					</div>
 
-                      return (
-                        <span key={emotionId} className={css.tag}>
-                          {emotionTitle || emotionId}
-                        </span>
-                      );
-                    })
-                  ) : (
-                    <span className={css.placeholder}>
-                      {isEmotionsLoading
-                        ? "Завантаження категорій..."
-                        : "Оберіть категорію"}
-                    </span>
-                  )}
-                </div>
+					<div className={css.field}>
+						<label className={css.label}>Запис</label>
+						<Field 
+							as="textarea" 
+							name="description" 
+							className={css.textarea} 
+							placeholder="Запишіть, як ви себе відчуваєте"
+							aria-invalid={!!errors.description}      
+						/>
+						<ErrorMessage name="description" component="div" className={css.error} />
+					</div>
 
-                <span className={css.arrow} aria-hidden="true" />
-              </label>
-
-              <div className={css.optionsList}>
-                {emotions.map((emotion: Emotion) => {
-                  const emotionId = getEmotionId(emotion);
-
-                  return (
-                    <label key={emotionId} className={css.optionItem}>
-                      <Field
-                        type="checkbox"
-                        name="emotions"
-                        value={emotionId}
-                        className={css.hiddenCheckbox}
-                      />
-
-                      <span className={css.customCheckbox} aria-hidden="true" />
-                      <span className={css.optionText}>{emotion.title}</span>
-                    </label>
-                  );
-                })}
-              </div>
-            </div>
-
-            <ErrorMessage
-              name="emotions"
-              component="div"
-              className={css.error}
-            />
-          </div>
-
-          <div className={css.field}>
-            <label className={css.label} htmlFor="diary-description">
-              Запис
-            </label>
-
-            <Field
-              id="diary-description"
-              as="textarea"
-              name="description"
-              className={css.textarea}
-              placeholder="Запишіть, як ви себе відчуваєте"
-              aria-invalid={Boolean(touched.description && errors.description)}
-            />
-
-            <ErrorMessage
-              name="description"
-              component="div"
-              className={css.error}
-            />
-          </div>
-
-          <button type="submit" disabled={isPending} className={css.submitBtn}>
-            {isPending ? "Збереження..." : "Зберегти"}
-          </button>
-        </Form>
+					<button type="submit" disabled={isPending} className={css.submitBtn}>
+						Зберегти       
+					</button>
+				</Form>
       )}
     </Formik>
   );

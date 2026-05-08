@@ -3,10 +3,11 @@
 import { useEffect } from "react";
 
 import { getMe } from "@/lib/api/clientApi/users";
-import { fetchPrivateWeeks, fetchPublicWeeks } from "@/lib/api/clientApi/weeks";
+// import { fetchPrivateWeeks, fetchPublicWeeks } from "@/lib/api/clientApi/weeks";
 import { useAuthStore } from "@/lib/store/authStore";
-import { useWeekStore } from "@/lib/store/babyDataStore";
+// import { useWeekStore } from "@/lib/store/babyDataStore";
 import { User } from "@/types/user";
+import { setThemeByGender } from "@/lib/theme/setThemeByGender";
 
 type Props = {
   children: React.ReactNode;
@@ -21,9 +22,20 @@ export const AuthProvider = ({ children }: Props) => {
       try {
         const user: User = await getMe();
         setUser(user);
+
+        setThemeByGender(user.gender);
+
+        document.body.dataset.theme =
+          user.gender === "boy" || user.gender === "girl" ?
+            user.gender
+          : "neutral";
       } catch (err) {
         console.warn("Not authenticated", err);
         clearUser();
+
+        setThemeByGender(null);
+
+        document.body.dataset.theme = "neutral";
 
         /* try {
           const publicWeeks = await fetchPublicWeeks();
@@ -55,7 +67,7 @@ export const AuthProvider = ({ children }: Props) => {
     };
 
     fetchUser();
-  }, [setUser, clearUser/*, setBabyData*/]);
+  }, [setUser, clearUser /*, setBabyData*/]);
 
   return children;
 };

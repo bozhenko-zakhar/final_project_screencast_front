@@ -9,6 +9,7 @@ import { useAuthStore } from '@/lib/store/authStore';
 import { nextServer } from '@/lib/api/api'; 
 import { getMe } from '@/lib/api/clientApi/users';
 import styles from './OnboardingForm.module.css';
+import css from '../Button/Button.module.css';
 
 export default function OnboardingForm() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function OnboardingForm() {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const [name, setName] = useState('');
+  const [name] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [gender, setGender] = useState('unknown');
 
@@ -108,40 +109,30 @@ export default function OnboardingForm() {
         
         <button 
           type="button" 
-          className={styles.uploadBtn}
+          className={css.button}
           onClick={() => fileInputRef.current?.click()}
         >
           Завантажити фото
         </button>
       </div>
-
-      <div className={styles.inputGroup}>
-        <label>{"Ім'я"}</label>
-        <input
-          type="text"
-          placeholder="Введіть ваше ім'я"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            if (errors.name) setErrors({ ...errors, name: '' });
-          }}
-          className={errors.name ? styles.errorInput : ''}
-        />
-        {errors.name && <span className={styles.errorText}>{errors.name}</span>}
-      </div>
-
       
-
       <div className={styles.inputGroup}>
         <label>Стать дитини</label>
-        <select
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-        >
-          <option value="boy">Хлопчик</option>
-          <option value="girl">Дівчинка</option>
-          <option value="unknown">Ще не знаю</option>
-        </select>
+           <div className={styles.selectWrapper}>
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              className={styles.customSelect}
+              >
+            <option value="boy">Хлопчик</option>
+            <option value="girl">Дівчинка</option>
+            <option value="unknown">Ще не знаю</option>
+            </select>
+
+          <svg width="12" height="7" className={styles.selectIcon}>
+            <use href="/sprite.svg#arrow-down" />
+          </svg>
+          </div>
       </div>
 
       <div className={styles.inputGroup}>
