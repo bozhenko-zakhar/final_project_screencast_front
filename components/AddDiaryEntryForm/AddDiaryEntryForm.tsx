@@ -80,16 +80,16 @@ export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
 
 						<ul className={css.optionsList}>
 							{emotions.map((emo: Emotion) => (
-								<li key={emo._id} className={css.optionItem}>
+								<li key={`${emo._id}`} className={css.optionItem}>
 									<Field
 										id={emo._id}
 										type="checkbox"
 										name="emotions"
-										value={emo._id} // Передаємо ID в Formik
+										value={`${emo._id}`} // Передаємо ID в Formik
 										// checked={true}
 										className={css.hiddenCheckbox}
 									/>
-									<label htmlFor={emo._id} className={css.customCheckbox}></label>
+									<label htmlFor={`${emo._id}`} className={css.customCheckbox}></label>
 									<span className={css.optionText}>{emo.title}</span>
 								</li>
 							))}
