@@ -22,8 +22,9 @@
 
 .inputButton:hover,
 .inputButton:focus {
-  border-color: var(--color-scheme-accent);
+  border-color: transparent;
   outline: none;
+  box-shadow: none;
 }
 
 .inputButton:disabled {

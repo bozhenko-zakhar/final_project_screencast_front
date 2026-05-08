@@ -71,10 +71,7 @@ export const DiaryEntryForm = ({
       };
 
       if (entryId) {
-        return updateDiaryEntry({
-          entryId,
-          payload,
-        });
+        return updateDiaryEntry({ entryId, payload });
       }
 
       return createDiaryEntry(payload);
@@ -85,10 +82,6 @@ export const DiaryEntryForm = ({
 
       if (entryId) {
         queryClient.setQueryData(["diaryEntry", entryId], updatedEntry);
-
-        await queryClient.invalidateQueries({
-          queryKey: ["diaryEntry", entryId],
-        });
       }
 
       toast.success(isEditMode ? "Запис оновлено!" : "Запис збережено!");
@@ -97,6 +90,7 @@ export const DiaryEntryForm = ({
 
     onError: (error) => {
       console.error("MUTATION ERROR:", error);
+
       toast.error(
         isEditMode
           ? "Помилка при редагуванні запису"
