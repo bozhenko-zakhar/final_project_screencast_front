@@ -43,7 +43,7 @@ const FeelingCheckCard = () => {
 
       {isModalOpen && (
         <DiaryEntryModal onClose={handleCloseModal} title="Новий запис">
-          <DiaryEntryForm onClose={handleCloseModal} />
+          <DiaryEntryForm currentId="0" type="create" onClose={handleCloseModal} />
         </DiaryEntryModal>
       )}
     </>
