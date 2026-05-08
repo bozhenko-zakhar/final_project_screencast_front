@@ -39,7 +39,7 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 
   const navItems = [
     { href: "/", label: "Мій день" },
-    { href: `/journey/10/${userCurrentWeek}`, label: "Подорож" },
+    { href: `/journey/${userCurrentWeek}`, label: "Подорож" },
     { href: "/diary", label: "Щоденник" },
     { href: "/profile", label: "Профіль" },
   ];
