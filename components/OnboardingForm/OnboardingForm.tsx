@@ -146,6 +146,9 @@ export default function OnboardingForm() {
           }}
           className={errors.dueDate ? styles.errorInput : ''}
         />
+        <svg width="24" height="24" className={styles.todayIcon}>
+          <use href="/sprite.svg#today" />
+        </svg>
         {errors.dueDate && <span className={styles.errorText}>{errors.dueDate}</span>}
       </div>
 

@@ -31,14 +31,36 @@
     display: none;
 }
 
-Групи введення
+/* Групи введення */
 .inputGroup {
+    position: relative;
     border: 2px solid var(--opacity-transparent);
     width: 100%;
     height: 37px;
     background-color: var(--opacity-neutral-darkest-5);
     font-size: 14px;
     transition: border 0.2s ease;
+}
+
+.inputGroup input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0;
+    /* Іконка є, але її не видно */
+}
+
+.todayIcon{
+    position: absolute;
+    right: 12px;
+    pointer-events: none;
+    transform: translateY(-125%);
+    fill: var(--opacity-neutral-darkest-60);
 }
 
 .inputGroup label {
@@ -140,9 +162,9 @@
         font-size: 16px;
     }
 
-    .inputGroup {
+    /* .inputGroup {
         gap: 24px;
-    }
+    } */
 
     .inputGroup label {
         font-size: 16px;
