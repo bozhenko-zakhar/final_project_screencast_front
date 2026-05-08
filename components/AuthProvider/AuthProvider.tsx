@@ -8,6 +8,7 @@ import { useAuthStore } from "@/lib/store/authStore";
 // import { useWeekStore } from "@/lib/store/babyDataStore";
 import { User } from "@/types/user";
 import { setThemeByGender } from "@/lib/theme/setThemeByGender";
+import { useDiaryStore } from "@/lib/store/diaryStore";
 
 type Props = {
   children: React.ReactNode;
@@ -20,6 +21,7 @@ export const AuthProvider = ({ children }: Props) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+
         const user: User = await getMe();
         setUser(user);
 

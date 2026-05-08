@@ -1,9 +1,7 @@
 import { nextServer } from "../api";
 
 export interface Emotion {
-  _id: {
-    $oid: string;
-  };
+  _id: string;
   title: string;
 }
 

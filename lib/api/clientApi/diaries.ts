@@ -17,23 +17,14 @@ const transformBackendEntry = (entry: BackendDiaryEntry): DiaryEntryDetail => ({
   })),
 });
 
-const transformToListItem = (entry: BackendDiaryEntry): DiaryListItem => ({
-  id: entry._id.$oid,
-  title: entry.title,
-  date: entry.date,
-  emotions: entry.emotions.map(emo => ({
-    id: emo._id.$oid,
-    title: emo.title,
-  })),
-});
-
-export const createDiaryEntry = async (payload: DiaryEntry): Promise<void> => {
-  await nextServer.post("/diary", payload);
+export const createDiaryEntry = async (payload: DiaryEntry): Promise<DiaryEntryDetail> => {
+  const response = await nextServer.post<BackendDiaryEntry>("/diaries", payload);
+  return transformBackendEntry(response.data);
 };
 
 export const fetchDiaries = async (): Promise<DiaryListItem[]> => {
-  const response = await nextServer.get<BackendDiaryEntry[]>("/diaries");
-  return response.data.map(transformToListItem);
+  const response = await nextServer.get("/diaries");
+  return response.data.data ;
 };
 
 export const getDiaryEntry = async (entryId: string): Promise<DiaryEntryDetail> => {

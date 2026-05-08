@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px;
-  background-color: var(--color-pastel-pink-lighter);
+  background-color: #fff4f6;
   border-radius: 8px;
 }
 
@@ -58,7 +58,7 @@
 }
 
 .error {
-  color: var(--color-red);
+  color: #d32f2f;
 }
 
 @media (max-width: 768px) {

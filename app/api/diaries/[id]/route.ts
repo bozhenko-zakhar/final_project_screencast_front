@@ -1,18 +1,28 @@
 import { NextResponse } from 'next/server';
-import { api } from '../api';
-import { cookies } from 'next/headers';
-import { logErrorResponse } from '../utils/utils';
+import { api } from '../../api';
+import { logErrorResponse } from '../../utils/utils';
 import { isAxiosError } from 'axios';
+import { getCookieHeader, handleApiError } from '../_utils';
+import { cookies } from 'next/headers';
 
-export async function GET() {
+type RouteContext = {
+	params: Promise<{
+		id: string;
+	}>;
+};
+
+export async function PATCH(request: Request, { params }: RouteContext) {
 	try {
 		const cookieStore = await cookies();
+		const { id } = await params;
+		const body = await request.json()
 
-		const res = await api.get('/diaries', {
+		const res = await api.patch(`/diaries/${id}`, body, {
 			headers: {
 				Cookie: cookieStore.toString(),
 			},
 		});
+
 		return NextResponse.json(res.data, { status: res.status });
 	} catch (error) {
 		if (isAxiosError(error)) {
@@ -27,19 +37,21 @@ export async function GET() {
 	}
 }
 
-export async function POST(request: Request) {
-	try {
-		const cookieStore = await cookies();
-		const body = await request.json();
 
-		const res = await api.post('/diaries', body, {
+export async function DELETE(request: Request, { params }: RouteContext) {
+  try {
+		const cookieStore = await cookies();
+		const { id } = await params;
+		console.log(id)
+
+		const res = await api.delete(`/diaries/${id}`, {
 			headers: {
 				Cookie: cookieStore.toString(),
 			},
 		});
-		return NextResponse.json(res.data, { status: res.status });
-	} catch (error) {
-		console.log(error)
+		
+    return NextResponse.json(res.data, { status: res.status });
+  } catch (error) {
 		if (isAxiosError(error)) {
 			logErrorResponse(error.response?.data);
 			return NextResponse.json(

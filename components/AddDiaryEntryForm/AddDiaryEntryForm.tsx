@@ -67,7 +67,8 @@ export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
 							<div className={css.selectedTags}>
 								{values.emotions.length > 0 ? (
 									values.emotions.map((emoValue: string) => {
-										const emoLabel = emotions.find(e => e._id.$oid === emoValue)?.title;
+										console.log(emoValue)
+										const emoLabel = emotions.find(e => e._id === emoValue)?.title;
 										return <span key={emoValue} className={css.tag}>{emoLabel}</span>;
 									})
 								) : (
@@ -77,20 +78,22 @@ export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
 							<span className={css.arrow}></span>
 						</label>
 
-						<div className={css.optionsList}>
+						<ul className={css.optionsList}>
 							{emotions.map((emo: Emotion) => (
-								<label key={emo._id.$oid} className={css.optionItem}>
+								<li key={`${emo._id}`} className={css.optionItem}>
 									<Field
+										id={emo._id}
 										type="checkbox"
 										name="emotions"
-										value={emo._id.$oid} // Передаємо ID в Formik
+										value={`${emo._id}`} // Передаємо ID в Formik
+										// checked={true}
 										className={css.hiddenCheckbox}
 									/>
-									<div className={css.customCheckbox}></div>
+									<label htmlFor={`${emo._id}`} className={css.customCheckbox}></label>
 									<span className={css.optionText}>{emo.title}</span>
-								</label>
+								</li>
 							))}
-						</div>
+						</ul>
 					</div>
 
 					<ErrorMessage name="emotions" component="div" className={css.error} />
