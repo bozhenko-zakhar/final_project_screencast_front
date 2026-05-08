@@ -6,7 +6,7 @@ const DiaryPage = async () => {
 	const queryClient = new QueryClient();
 
 	await queryClient.prefetchQuery({
-		queryKey: ['diaries'],
+		queryKey: ['diary'],
 		queryFn: fetchDiaries,
 	})
 

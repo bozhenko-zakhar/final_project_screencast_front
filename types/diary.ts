@@ -23,7 +23,7 @@ export interface BackendDiaryEntry {
 }
 
 export interface DiaryListItem {
-  id: string;
+  _id: string;
   title: string;
   date: string;
 	description: string;
@@ -34,7 +34,7 @@ export interface DiaryListItem {
 }
 
 export interface DiaryEntryDetail {
-  id: string;
+  _id: string;
   title: string;
   date: string;
   description: string;
