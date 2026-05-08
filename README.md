@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🌸 **Лелека — Pregnancy Monitoring Platform**
 
-## Getting Started
+«Лелека» — це full-stack веб-застосунок для моніторингу вагітності та підтримки майбутніх мам. Основна ідея проєкту — допомогти користувачу комфортно проходити період вагітності: слідкувати за розвитком плоду по тижнях, отримувати корисну інформацію, вести власний щоденник, створювати задачі та пам’ятки.
 
-First, run the development server:
+Після реєстрації користувач може вказати дату планових пологів, після чого система автоматично розраховує поточний тиждень вагітності та показує відповідний контент про розвиток малюка й зміни організму.
 
-```bash
+---
+
+🛠️ **Технології та архітектура**
+
+Front-end частина побудована на **React + Next.js 15 (App Router)** з використанням **TypeScript**, **Axios**, **Formik**, **Yup**, а також **HTML5** і **CSS Modules** для структури та стилізації інтерфейсу.
+
+У проєкті використовуються **Server Components** для серверних запитів і рендерингу даних ще до завантаження сторінки, а для інтерактивності окремо реалізовані **Client Components**. Це дозволило зробити застосунок швидшим, легшим та більш наближеним до сучасних production-підходів.
+
+Back-end реалізований окремим сервером на **Node.js + Express.js** із використанням **MongoDB** та **Mongoose**. Для авторизації реалізована система **JWT Authentication**: сервер генерує токен після логіну користувача, а клієнт використовує його для доступу до захищених API маршрутів. Також у проєкті використовувались **Swagger**, **CORS**, **Postman**, **Git/GitHub**, **ESLint**, **Vercel** та **Render**.
+
+---
+
+✨ **Основні можливості**
+
+* реєстрація та авторизація користувача;
+* моніторинг вагітності по тижнях;
+* інформація про розвиток плоду;
+* створення задач та пам’яток;
+* ведення особистого щоденника;
+* редагування профілю та даних про дитину;
+* взаємодія клієнта і сервера через REST API.
+
+---
+
+🚀 **Запуск проєкту**
+
+```bash id="3h4c9m"
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+📌 **Висновок**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Цей проєкт став для нас дуже хорошою практикою роботи з сучасним full-stack стеком та реальною архітектурою web-застосунків. Під час розробки ми навчились працювати з SSR, JWT-авторизацією, API, MongoDB, Server Components та побудовою повноцінної взаємодії між клієнтом і сервером.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Ми намагались зробити проєкт не тільки технічно цікавим, а й справді корисним та комфортним для користувача 💛
