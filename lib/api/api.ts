@@ -10,7 +10,7 @@ declare module "axios" {
 }
 
 export const nextServer = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL + "/api",
+  baseURL: "/api",
   withCredentials: true,
 });
 
@@ -23,19 +23,13 @@ nextServer.interceptors.request.use((config) => {
 
 nextServer.interceptors.response.use(
   (response: AxiosResponse) => {
-    const requestId = (
-      response.config as AxiosRequestConfig & {
-        metadata?: { requestId: string };
-      }
-    ).metadata?.requestId;
+    const requestId = response.config.metadata?.requestId;
     if (requestId) useLoadingStore.getState().removeRequest(requestId);
     return response;
   },
   (error: AxiosError) => {
-    const requestId = (
-      error.config as AxiosRequestConfig & { metadata?: { requestId: string } }
-    )?.metadata?.requestId;
+    const requestId = error.config?.metadata?.requestId;
     if (requestId) useLoadingStore.getState().removeRequest(requestId);
     return Promise.reject(error);
-  },
+  }
 );

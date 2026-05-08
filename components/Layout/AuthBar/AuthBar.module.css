@@ -22,22 +22,22 @@
 	white-space: nowrap;
 	margin-bottom: 4px;
 	cursor: pointer;
-	transition: filter 0.15s ease, transform 0.1s ease;
+	transition: filter 0.15s ease, transform 0.1s ease, background-color 0.15s ease;
 }
 
 .registerLink {
-	background-color: #ffdae0;
-	box-shadow: 0 4px 0 0 #ffcbd3;
+	background-color: var(--color-scheme-foreground-alt);
+	box-shadow: 0 4px 0 0 var(--color-scheme-accent);
 }
 
 .registerLink:hover {
-	filter: brightness(0.96);
 	text-decoration: none;
+	background-color: var(--color-scheme-foreground);
 }
 
 .registerLink:active {
 	transform: translateY(2px);
-	box-shadow: 0 2px 0 0 #ffcbd3;
+	box-shadow: 0 2px 0 0 var(--control-focus-border);
 }
 
 .loginLink {
@@ -46,7 +46,7 @@
 }
 
 .loginLink:hover {
-	filter: brightness(0.96);
+	background-color: var(--opacity-white-20);
 	text-decoration: none;
 }
 

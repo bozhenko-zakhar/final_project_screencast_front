@@ -5,7 +5,7 @@
 }
 
 .possibleFeelings {
-  background-color: #fff4f6;
+  background-color: var(--color-scheme-foreground);
   border-radius: 32px;
   padding: 24px;
 }
@@ -45,7 +45,7 @@
 }
 
 .adviceSection {
-  background-color: #fff4f6;
+  background-color: var(--color-scheme-foreground);
   border-radius: 32px;
   padding: 24px;
 }
@@ -98,9 +98,10 @@
 }
 
 @media screen and (min-width: 768px) {
-    .feelingsList {
-      max-width: 50%;
-    }
+  .feelingsList {
+    max-width: 50%;
+  }
+
   .icon {
     width: 24px;
   }
@@ -117,13 +118,13 @@
   .possibleFeelings {
     max-width: 650px;
     height: 194px;
-      overflow-y: auto;
+    overflow-y: auto;
   }
 
   .adviceSection {
     max-width: 650px;
     height: 322px;
-    overflow-y: auto; 
+    overflow-y: auto;
 
   }
 

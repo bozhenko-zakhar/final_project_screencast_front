@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuthStore } from "@/lib/store/authStore";
 import { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import type { FieldProps } from "formik";
@@ -65,6 +66,7 @@ const selectClassNames: ClassNamesConfig<GenderOption, false> = {
 export default function ProfileEditForm({ user }: Props) {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
 
   useEffect(() => {
     const gender = user?.gender;
@@ -114,6 +116,7 @@ export default function ProfileEditForm({ user }: Props) {
 
         mutate(payload as UpdateUserPayload, {
           onSuccess: async (updatedUser) => {
+            setUser(updatedUser);
             queryClient.setQueryData(["user"], updatedUser);
 
             document.body.dataset.theme =
@@ -133,7 +136,7 @@ export default function ProfileEditForm({ user }: Props) {
               },
             });
 
-            router.refresh();
+            // router.refresh();
           },
 
           onError: () => {
