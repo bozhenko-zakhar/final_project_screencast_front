@@ -1,0 +1,11 @@
+.is_desktop {
+	display: none;
+}
+
+
+
+@media (min-width: 1440px) {
+	.is_desktop {
+		display: block;
+	}
+}

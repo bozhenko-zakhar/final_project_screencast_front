@@ -11,9 +11,11 @@ import { Emotion, fetchEmotions } from "@/lib/api/clientApi/emotions";
 import { createDiaryEntry } from "@/lib/api/clientApi/diaries";
 
 import css from "./AddDiaryEntryForm.module.css";
+import { useState } from "react";
 
 export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
   const queryClient = useQueryClient();
+	const [selectedEmo, setSelectedEmo] = useState<Emotion[]>();
 
     const { data: emotions = [] } = useQuery({
     queryKey: ["emotions"],
@@ -65,8 +67,8 @@ export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
 							aria-invalid={!!errors.emotions}
 						>
 							<div className={css.selectedTags}>
-								{values.emotions.length > 0 ? (
-									values.emotions.map((emoValue: string) => {
+								{selectedEmo?.length > 0 ? (
+									selectedEmo?.map((emoValue: string) => {
 										const emoLabel = emotions.find(e => e._id.$oid === emoValue)?.title;
 										return <span key={emoValue} className={css.tag}>{emoLabel}</span>;
 									})
@@ -80,13 +82,9 @@ export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
 						<div className={css.optionsList}>
 							{emotions.map((emo: Emotion) => (
 								<label key={emo._id.$oid} className={css.optionItem}>
-									<Field
-										type="checkbox"
-										name="emotions"
-										value={emo._id.$oid} // Передаємо ID в Formik
-										className={css.hiddenCheckbox}
-									/>
-									<div className={css.customCheckbox}></div>
+									<input onClick={(e) => {
+										setSelectedEmo([emo])
+									}} type="checkbox"/>
 									<span className={css.optionText}>{emo.title}</span>
 								</label>
 							))}

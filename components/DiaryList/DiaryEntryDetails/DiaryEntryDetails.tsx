@@ -9,6 +9,7 @@ import { deleteDiaryEntry } from "@/lib/api/clientApi/diaries";
 import ConfirmationModal from "@/components/Layout/ConfirmationModal/ConfirmationModal";
 import AddDiaryEntryModal from "@/components/AddDiaryEntryModal/AddDiaryEntryModal";
 import { DiaryEntryForm } from "@/components/AddDiaryEntryForm/AddDiaryEntryForm";
+import { useDiaryStore } from "@/lib/store/diaryStore";
 
 interface DiaryEntryDetailsProps {
   entry: DiaryEntryDetail | null;
@@ -17,10 +18,11 @@ interface DiaryEntryDetailsProps {
 const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+	const currentDiary = useDiaryStore(state => state.currentDiary);
   const queryClient = useQueryClient();
 
   const { mutate: deleteMutate, isPending: isDeleting } = useMutation({
-    mutationFn: (entryId: string) => deleteDiaryEntry(entryId),
+    mutationFn: () => deleteDiaryEntry(currentDiary?.id ?? "1"),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["diary"] });
       toast.success("Запис видалено!");
@@ -46,7 +48,7 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
   });
 
   const handleDelete = () => {
-    deleteMutate(entry.id);
+    deleteMutate();
   };
 
   const handleEdit = () => {
@@ -94,16 +96,16 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
         </div>
       </div>
 
-  <ConfirmationModal
-  isOpen={isDeleteModalOpen}
-  title="Ви впевнені, що хочете видалити запис?"
-  description="Цю дію неможливо буде скасувати."
-  confirmButtonText="Видалити"
-  cancelButtonText="Скасувати"
-  onCancel={() => setIsDeleteModalOpen(false)}
-  onConfirm={handleDelete}
-  isLoading={isDeleting}
-/>
+			<ConfirmationModal
+			isOpen={isDeleteModalOpen}
+			title="Ви впевнені, що хочете видалити запис?"
+			description="Цю дію неможливо буде скасувати."
+			confirmButtonText="Видалити"
+			cancelButtonText="Скасувати"
+			onCancel={() => setIsDeleteModalOpen(false)}
+			onConfirm={handleDelete}
+			isLoading={isDeleting}
+		/>
 
       {isEditModalOpen && (
         <AddDiaryEntryModal 

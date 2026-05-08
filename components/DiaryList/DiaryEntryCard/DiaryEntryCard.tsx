@@ -1,26 +1,18 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { DiaryListItem } from "@/types/diary";
+import { DiaryEntryDetail, DiaryListItem } from "@/types/diary";
 import css from "./DiaryEntryCard.module.css";
 
 interface DiaryEntryCardProps {
-  entry: DiaryListItem;
-  onSelectEntry?: (entryId: string) => void;
+  entry: DiaryEntryDetail;
+  updateEditionalDiary: () => void;
 }
 
-const DiaryEntryCard = ({ entry, onSelectEntry }: DiaryEntryCardProps) => {
-  const router = useRouter();
-  const isMobile = useMediaQuery("(max-width: 768px)");
+const DiaryEntryCard = ({ entry, updateEditionalDiary }: DiaryEntryCardProps) => {
 
-  const handleCardClick = () => {
-    if (isMobile) {
-      router.push(`/diary/${entry.id}`);
-    } else {
-      onSelectEntry?.(entry.id);
-    }
-  };
+  // const handleCardClick = () => {
+  //   onSelectEntry?.(entry.id);
+  // };
 
   const formattedDate = new Date(entry.date).toLocaleDateString("uk-UA", {
     day: "2-digit",
@@ -29,7 +21,7 @@ const DiaryEntryCard = ({ entry, onSelectEntry }: DiaryEntryCardProps) => {
   });
 
   return (
-    <div className={css.card} onClick={handleCardClick} role="button" tabIndex={0}>
+    <div className={css.card} onClick={updateEditionalDiary} role="button" tabIndex={0}>
       <div className={css.content}>
         <h3 className={css.title}>{entry.title}</h3>
         <p className={css.date}>{formattedDate}</p>

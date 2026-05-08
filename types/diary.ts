@@ -26,6 +26,7 @@ export interface DiaryListItem {
   id: string;
   title: string;
   date: string;
+	description: string;
   emotions: Array<{
     id: string;
     title: string;

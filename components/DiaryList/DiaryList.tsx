@@ -7,16 +7,17 @@ import { fetchDiaries } from "@/lib/api/clientApi/diaries";
 import AddDiaryEntryModal from "@/components/AddDiaryEntryModal/AddDiaryEntryModal";
 import { DiaryEntryForm } from "@/components/AddDiaryEntryForm/AddDiaryEntryForm";
 import DiaryEntryCard from "@/components/DiaryList/DiaryEntryCard/DiaryEntryCard";
+import { DiaryListItem } from "@/types/diary";
+import { useDiaryStore } from "@/lib/store/diaryStore";
 
-const DiaryList = ({ onSelectEntry }: { onSelectEntry?: (entryId: string) => void }) => {
+const DiaryList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+	const setDiary = useDiaryStore(state => state.setDiary);
   
   const { data: entries, isLoading, error } = useQuery({
     queryKey: ["diary"],
     queryFn: fetchDiaries,
   });
-
-	console.log(entries)
 
   const handleAddEntry = () => {
     setIsModalOpen(true);
@@ -50,7 +51,7 @@ const DiaryList = ({ onSelectEntry }: { onSelectEntry?: (entryId: string) => voi
             <li key={entry.id}>
               <DiaryEntryCard 
                 entry={entry} 
-                onSelectEntry={onSelectEntry}
+                updateEditionalDiary={() => setDiary(entry)}
               />
             </li>
           ))}
