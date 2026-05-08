@@ -1,3 +1,4 @@
+
 .wrapper {
   position: relative;
   padding: 64px 20px;
@@ -82,6 +83,7 @@
   font-size: 14px;
   font-weight: 400;
   color: var(--color-neutral-darkest);
+  outline: none;
 
   transition:
     background-color 180ms ease,
@@ -97,12 +99,12 @@
   border-bottom-color: var(--color-scheme-accent-dark);
 }
 
-.cancel:hover,
-.cancel:focus {
+.cancel:hover:not(:disabled),
+.cancel:focus:not(:disabled) {
   background-color: var(--color-scheme-foreground-alt);
 }
 
-.cancel:active {
+.cancel:active:not(:disabled) {
   background-color: var(--color-neutral-light);
   transform: translateY(1px);
 }
@@ -122,12 +124,12 @@
   border-bottom-color: var(--color-neutral-lighter);
 }
 
-.confirm:hover,
-.confirm:focus {
+.confirm:hover:not(:disabled),
+.confirm:focus:not(:disabled) {
   background-color: var(--color-white);
 }
 
-.confirm:active {
+.confirm:active:not(:disabled) {
   background-color: var(--color-neutral-light);
   border-bottom-color: var(--color-neutral);
   transform: translateY(1px);
