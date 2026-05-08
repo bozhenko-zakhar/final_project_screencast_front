@@ -7,37 +7,44 @@ import { cookies } from 'next/headers';
 
 type RouteContext = {
 	params: Promise<{
-		diaryId: string;
+		id: string;
 	}>;
 };
 
 export async function PATCH(request: Request, { params }: RouteContext) {
 	try {
-		const { diaryId } = await params;
-		const body = await request.json();
+		const cookieStore = await cookies();
+		const { id } = await params;
+		const body = await request.json()
 
-		const res = await api.patch(`/diaries/${diaryId}`, body, {
+		const res = await api.patch(`/diaries/${id}`, body, {
 			headers: {
-				Cookie: await getCookieHeader(),
+				Cookie: cookieStore.toString(),
 			},
 		});
 
 		return NextResponse.json(res.data, { status: res.status });
 	} catch (error) {
-		return handleApiError(error);
+		if (isAxiosError(error)) {
+			logErrorResponse(error.response?.data);
+			return NextResponse.json(
+				{ error: error.message, response: error.response?.data },
+				{ status: error.status }
+			);
+		}
+		logErrorResponse({ message: (error as Error).message });
+		return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
 	}
 }
-
 
 
 export async function DELETE(request: Request, { params }: RouteContext) {
   try {
 		const cookieStore = await cookies();
-		
-		const { diaryId } = await params;
-		console.log(diaryId + "123132123")
+		const { id } = await params;
+		console.log(id)
 
-		const res = await api.delete(`/diaries/${diaryId}`, {
+		const res = await api.delete(`/diaries/${id}`, {
 			headers: {
 				Cookie: cookieStore.toString(),
 			},

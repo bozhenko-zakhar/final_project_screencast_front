@@ -22,7 +22,7 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
   const queryClient = useQueryClient();
 
   const { mutate: deleteMutate, isPending: isDeleting } = useMutation({
-    mutationFn: () => deleteDiaryEntry("69fdf7f2f0acce73296c1d6b"),
+    mutationFn: async (id: string) => deleteDiaryEntry(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["diary"] });
       toast.success("Запис видалено!");
@@ -103,7 +103,7 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
 			confirmButtonText="Видалити"
 			cancelButtonText="Скасувати"
 			onCancel={() => setIsDeleteModalOpen(false)}
-			onConfirm={() => handleDelete("69fdf7f2f0acce73296c1d6b")}
+			onConfirm={() => handleDelete(entry.id)}
 			isLoading={isDeleting}
 		/>
 
