@@ -9,7 +9,7 @@ import { deleteDiaryEntry } from "@/lib/api/clientApi/diaries";
 import ConfirmationModal from "@/components/Layout/ConfirmationModal/ConfirmationModal";
 import AddDiaryEntryModal from "@/components/AddDiaryEntryModal/AddDiaryEntryModal";
 import { DiaryEntryForm } from "@/components/AddDiaryEntryForm/AddDiaryEntryForm";
-import { useDiaryStore } from "@/lib/store/diaryStore";
+// import { useDiaryStore } from "@/lib/store/diaryStore";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -20,7 +20,7 @@ interface DiaryEntryDetailsProps {
 const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-	const currentDiary = useDiaryStore(state => state.currentDiary);
+  // const currentDiary = useDiaryStore(state => state.currentDiary);
   const queryClient = useQueryClient();
 	const [diary, setDiaryy] = useState();
 
@@ -81,15 +81,15 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
             <p className={css.date}>{formattedDate}</p>
           </div>
           <div className={css.actions}>
-            <button 
-              className={css.editButton} 
+            <button
+              className={css.editButton}
               onClick={handleEdit}
               disabled={isDeleting}
             >
               Редагувати
             </button>
-            <button 
-              className={css.deleteButton} 
+            <button
+              className={css.deleteButton}
               onClick={() => setIsDeleteModalOpen(true)}
               disabled={isDeleting}
             >

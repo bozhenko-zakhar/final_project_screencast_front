@@ -12,7 +12,7 @@
 }
 
 .modal {
-    background-color: var(--color-white);
+    background-color: var(--color-scheme-background);
     position: relative;
     border-radius: 40px;
     padding: 48px 20px;
@@ -53,6 +53,8 @@
     width: 32px;
     height: 32px;
 }
+
+
 
 @media (min-width: 768px) {
 

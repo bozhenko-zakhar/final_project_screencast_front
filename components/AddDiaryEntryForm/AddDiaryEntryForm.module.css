@@ -15,16 +15,16 @@
     color: #000;
     margin-bottom: 8px;
 }
-customCheckbox
-.input,
+
+customCheckbox .input,
 .textarea {
     width: 100%;
-    background: var(--opacity-neutral-darkest-50);
+    background: var(--opacity-neutral-darkest-5);
 }
 
 .input {
     font-family: "Lato", sans-serif;
-
+    background: var(--opacity-neutral-darkest-5);
     border: 2px solid rgba(255, 255, 255, 0);
     border-radius: 12px;
     padding: 8px 12px;
@@ -80,20 +80,20 @@ customCheckbox
 
 .input[aria-invalid="true"],
 .textarea[aria-invalid="true"] {
-    border: 2px solid #ffcbd3;
+    border: 2px solid var(--opacity-transparent);
     border-radius: 12px;
 }
 
 .submitBtn {
     border: none;
     cursor: pointer;
-    border-bottom: 4px solid #ffcbd3;
+    border-bottom: 4px solid var(--color-scheme-accent);
     border-radius: 100px;
     padding: 10px 24px;
     width: 294px;
     height: 42px;
 
-    background: #ffdae0;
+    background: var(--color-scheme-foreground-alt);
 
     font-family: "Lato", sans-serif;
     font-weight: 500;
@@ -108,9 +108,9 @@ customCheckbox
 }
 
 .submitBtn:disabled {
-    background: #ffdae0;
+    background: var(--color-scheme-foreground-alt);
     opacity: 0.3;
-    border-bottom: 4px solid #ffcbd3;
+    border-bottom: 4px solid var(--color-scheme-accent);
     cursor: not-allowed;
 }
 
@@ -131,7 +131,7 @@ customCheckbox
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    background: #f2f2f2;
+    background: var(--color-neutral-lightest);
     cursor: pointer;
 
     border: 1px solid rgba(255, 255, 255, 0);
@@ -199,7 +199,7 @@ customCheckbox
     left: 0;
     width: 295px;
     height: 220px;
-    background: #f2f2f2;
+    background: var(--color-neutral-lightest);
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 0 0 12px 12px;
     overflow-y: scroll;
@@ -225,7 +225,7 @@ customCheckbox
 }
 
 .optionsList::-webkit-scrollbar-thumb {
-    background-color: #ffcbd3;
+    background-color: var(--color-scheme-accent);
     border-radius: 4px;
     width: 10px;
     height: 56px;
@@ -266,7 +266,7 @@ customCheckbox
     background: rgba(0, 0, 0, 0.05);
 }
 
- 
+
 .hiddenCheckbox:checked+.customCheckbox {
     background-color: transparent;
     border-color: transparent;
