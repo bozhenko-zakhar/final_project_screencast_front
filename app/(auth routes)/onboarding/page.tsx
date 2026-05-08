@@ -8,8 +8,8 @@ export default function OnboardingPage() {
       <Image 
         src="/Plant.jpg" 
         alt="Plant Decoration" 
-        width={720} 
-        height={900} 
+        width={200} 
+        height={300}
         className={styles.plantImage}
         priority
       />

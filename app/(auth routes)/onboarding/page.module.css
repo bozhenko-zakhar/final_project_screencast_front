@@ -41,10 +41,6 @@
     height: 86px;
 }
 
-.titleLine {
-    display: block;
-}
-
 }
 
 @media (min-width: 1440px) {
@@ -54,7 +50,13 @@
             justify-content: center;
         }
     
-        .plantImage {
+    .title {
+            font-weight: 700;
+            font-size: 48px;
+            height: 174px;
+            
+    }
+    .plantImage {
             display: block;
             position: absolute;
             top: 0;
