@@ -47,6 +47,8 @@ export default function RegisterForm() {
   </svg>
 </div>
 
+
+
       <div className={css.center}>
         <Formik
           initialValues={initialValues}
