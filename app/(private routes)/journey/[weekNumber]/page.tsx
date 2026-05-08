@@ -2,15 +2,18 @@ import { QueryClient, dehydrate, HydrationBoundary } from "@tanstack/react-query
 import JourneyDetails from "./JourneyDetails.client";
 import { getBabyStateInfo, getMomStateInfo } from "@/lib/api/clientApi/weeks";
 import { getServerBabyState, getServerMomState } from "@/lib/api/serverApi/weeks";
+import { getCurrentWeek } from "@/lib/services/getCurrentWeek";
 
 export default async function Page({
   params,
 }: {
   params: Promise<{ weekNumber: string }>;
 }) {
+ 
   const { weekNumber: weekParam } = await params;
 
   const weekNumber = Number(weekParam);
+
 
   const queryClient = new QueryClient();
 

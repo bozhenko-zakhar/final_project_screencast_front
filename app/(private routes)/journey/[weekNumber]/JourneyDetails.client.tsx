@@ -12,7 +12,15 @@ import GreetingBlock from "@/components/DashBoardPage/DashboardPage_main/Greetin
 import BabyMomToggle from "@/components/JourneyComponents/BabyMomToggle/BabyMomToggle";
 import WeekSelector from "@/components/JourneyComponents/WeekSelector/WeekSelector";
 
-import { getBabyStateInfo, getMomStateInfo } from "@/lib/api/clientApi/weeks";
+import {
+  fetchPrivateWeeks,
+  getBabyStateInfo,
+  getMomStateInfo,
+} from "@/lib/api/clientApi/weeks";
+import { redirect, useParams, useRouter } from "next/navigation";
+import { useAuthStore } from "@/lib/store/authStore";
+import { User } from "@/types/user";
+import { getCurrentWeek } from "@/lib/services/getCurrentWeek";
 
 type Props = {
   weekNumber: number;
@@ -26,20 +34,22 @@ const JourneyDetails = ({ weekNumber }: Props) => {
     data: babyData,
     isLoading: babyLoading,
     isError: babyError,
+    // isFetching: babyFetching,
   } = useQuery({
-    queryKey: ["baby", selectedWeek],
+    queryKey: ["baby", selectedWeek, mode],
     queryFn: () => getBabyStateInfo(selectedWeek),
-    placeholderData: keepPreviousData,
+    // placeholderData: keepPreviousData,
   });
 
   const {
     data: momData,
     isLoading: momLoading,
     isError: momError,
+    // isFetching: momFetching,
   } = useQuery({
-    queryKey: ["mom", selectedWeek],
+    queryKey: ["mom", selectedWeek, mode],
     queryFn: () => getMomStateInfo(selectedWeek),
-    placeholderData: keepPreviousData,
+    // placeholderData: keepPreviousData,
   });
 
   const hasError = babyError || momError;
@@ -83,14 +93,18 @@ const JourneyDetails = ({ weekNumber }: Props) => {
         {mode === "baby" ? (
           <BabyDevelopment data={babyData} />
         ) : (
+          momData ? (
           <div className={css.momBodyChange}>
             <MomState data={momData} />
             <TasksReminderCard />
-          </div>
+          </div>) : null
         )}
       </section>
+      </div>
     </>
   );
 };
 
 export default JourneyDetails;
+
+

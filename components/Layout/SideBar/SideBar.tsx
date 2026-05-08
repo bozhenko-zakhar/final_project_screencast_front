@@ -9,6 +9,7 @@ import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
 import UserBar from "../UserBar/UserBar";
 import { useAuthStore } from "@/lib/store/authStore";
 import css from "./SideBar.module.css";
+import { getCurrentWeek } from "@/lib/services/getCurrentWeek";
 
 interface Props {
   setBarInactive: () => void;
