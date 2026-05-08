@@ -1,6 +1,4 @@
-import { User } from "@/types/user";
-
-export const getCurrentWeek = (user: User) => {
+export const getCurrentWeek = (user: any) => {
   if (!user?.dueDate) {
     return {
       currentWeek: 1,
