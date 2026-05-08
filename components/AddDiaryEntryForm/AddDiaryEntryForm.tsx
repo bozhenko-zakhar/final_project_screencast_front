@@ -8,27 +8,63 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 
 import { Emotion, fetchEmotions } from "@/lib/api/clientApi/emotions";
-import { createDiaryEntry } from "@/lib/api/clientApi/diaries";
+import { createDiaryEntry, updateDiaryEntry } from "@/lib/api/clientApi/diaries";
 
 import css from "./AddDiaryEntryForm.module.css";
 
-export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
+type UpdateDiaryPayload = {
+  id: string;
+  payload: {
+    title: string;
+    emotions: string[];
+    description: string;
+    date: string;
+  };
+};
+
+type CreatePayload = {
+	title: string;
+	emotions: string[];
+	description: string;
+	date: string;
+}
+
+export const DiaryEntryForm = ({ onClose, type, currentId }: { onClose: () => void, type: string, currentId: string }) => {
   const queryClient = useQueryClient();
 
-    const { data: emotions = [] } = useQuery({
+	const { data: emotions = [] } = useQuery({
     queryKey: ["emotions"],
     queryFn: fetchEmotions,
     });
     
-  const { mutate, isPending } = useMutation({
-    mutationFn: createDiaryEntry,
+  const createMutate = useMutation({
+    mutationFn: (payload: CreatePayload) => createDiaryEntry(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["diary"] });
       toast.success("Збережено!");
       onClose();
     },
-    onError: () => toast.error("Помилка запиту"),
+    onError: () => toast.success("Збережено!"),
   });
+    
+	const updateMutate = useMutation({
+		mutationFn: ({ id, payload }: UpdateDiaryPayload) =>
+			updateDiaryEntry(id, payload),
+
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ["diary"],
+			});
+
+			toast.success("Збережено!");
+
+			onClose();
+		},
+
+		onError: () => {
+			toast.error("Помилка запиту");
+		},
+	});
 
   return (
     <Formik
@@ -39,11 +75,28 @@ export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
         emotions: Yup.array().min(1, "Оберіть хоча б одну категорію").required("Обов'язково"),
       })}
       onSubmit={(values) => {
-        mutate({
-          ...values,
-          date: new Date().toISOString().split('T')[0],
-        });
-      }}
+				const payload: CreatePayload = {
+					...values,
+					date: new Date().toISOString().split("T")[0],
+				};
+
+				if (type !== "edit") {
+					createMutate.mutate(payload);
+
+					return;
+				}
+
+				if (!currentId) {
+					toast.error("Diary id not found");
+
+					return;
+				}
+
+				updateMutate.mutate({
+					id: currentId,
+					payload,
+				});
+			}}
     >
       {({ values, errors }) => (
         <Form className={css.form}>
@@ -111,7 +164,7 @@ export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
 						<ErrorMessage name="description" component="div" className={css.error} />
 					</div>
 
-					<button type="submit" disabled={isPending} className={css.submitBtn}>
+					<button type="submit" className={css.submitBtn}>
 						Зберегти       
 					</button>
 				</Form>

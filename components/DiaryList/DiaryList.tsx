@@ -2,40 +2,44 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
+
 import css from "./DiaryList.module.css";
+
 import { fetchDiaries } from "@/lib/api/clientApi/diaries";
+
 import AddDiaryEntryModal from "@/components/AddDiaryEntryModal/AddDiaryEntryModal";
 import { DiaryEntryForm } from "@/components/AddDiaryEntryForm/AddDiaryEntryForm";
 import DiaryEntryCard from "@/components/DiaryList/DiaryEntryCard/DiaryEntryCard";
-// import { DiaryListItem } from "@/types/diary";
-import { useDiaryStore } from "@/lib/store/diaryStore";
 
 const DiaryList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const setDiary = useDiaryStore((state) => state.setDiary);
 
-  const {
-    data: entries,
-    isLoading,
-    error,
-  } = useQuery({
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const currentDiaryId = searchParams.get("diaryId");
+
+  const { data: entries, isLoading, error } = useQuery({
     queryKey: ["diary"],
     queryFn: fetchDiaries,
   });
 
-  const handleAddEntry = () => {
-    setIsModalOpen(true);
-  };
+	console.log(entries)
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleSelectDiary = (id: string) => {
+    const params = new URLSearchParams(searchParams);
+
+    params.set("diaryId", id);
+
+    router.push(`/diary?${params.toString()}`);
   };
 
   return (
     <div className={css.container}>
       <div className={css.header}>
         <h2 className={css.title}>Ваші записи</h2>
-        <button className={css.addButton} onClick={handleAddEntry}>
+        <button className={css.addButton} onClick={() => setIsModalOpen(true)}>
           Новий запис
           <svg
             width="24"
@@ -60,19 +64,22 @@ const DiaryList = () => {
         <div className={css.empty}>Наразі записи у щоденнику відстні</div>
       : <ul className={css.list}>
           {entries?.map((entry) => (
-            <li key={entry.id}>
-              <DiaryEntryCard
-                entry={entry}
-                updateEditionalDiary={() => setDiary(entry)}
-              />
-            </li>
-          ))}
+						<DiaryEntryCard
+							key={entry._id}
+							entry={entry}
+							isActive={currentDiaryId === entry._id}
+							updateEditionalDiary={() => handleSelectDiary(entry._id)}
+						/>
+					))}
         </ul>
       }
 
       {isModalOpen && (
-        <AddDiaryEntryModal title="Новий запис" onClose={handleCloseModal}>
-          <DiaryEntryForm onClose={handleCloseModal} />
+        <AddDiaryEntryModal
+          title="Новий запис"
+          onClose={() => setIsModalOpen(false)}
+        >
+          <DiaryEntryForm type="0" currentId="0" onClose={() => setIsModalOpen(false)} />
         </AddDiaryEntryModal>
       )}
     </div>

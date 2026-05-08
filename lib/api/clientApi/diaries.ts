@@ -7,7 +7,7 @@ import {
 } from "@/types/diary";
 
 const transformBackendEntry = (entry: BackendDiaryEntry): DiaryEntryDetail => ({
-  id: entry._id.$oid,
+  _id: entry._id.$oid,
   title: entry.title,
   date: entry.date,
   description: entry.description,

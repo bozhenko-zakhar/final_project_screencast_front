@@ -1,3 +1,5 @@
+
+
 "use client";
 
 import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from "formik";
@@ -55,9 +57,18 @@ export default function AddTaskForm({
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
       enableReinitialize
+      validateOnMount
     >
-      {({ isSubmitting: isFormikSubmitting, values, setFieldValue, setFieldTouched }) => {
-        const isDisabled = isSubmitting || isFormikSubmitting;
+      {({
+        isSubmitting: isFormikSubmitting,
+        values,
+        setFieldValue,
+        setFieldTouched,
+        dirty,
+        isValid,
+      }) => {
+        const isLoading = isSubmitting || isFormikSubmitting;
+        const isDisabled = isLoading || !dirty || !isValid;
 
         return (
           <Form className={styles.form}>
@@ -72,7 +83,7 @@ export default function AddTaskForm({
                 type="text"
                 className={styles.input}
                 placeholder="Введіть завдання"
-                disabled={isDisabled}
+                disabled={isLoading}
               />
 
               <ErrorMessage
@@ -94,7 +105,7 @@ export default function AddTaskForm({
                     value={field.value || values.date}
                     minDate={getTodayDateString()}
                     placeholder="Оберіть дату"
-                    disabled={isDisabled}
+                    disabled={isLoading}
                     onChange={(date) => {
                       setFieldValue("date", date);
                       setFieldTouched("date", true, false);
@@ -115,7 +126,7 @@ export default function AddTaskForm({
               className={styles.button}
               disabled={isDisabled}
             >
-              {isDisabled ? "Збереження..." : "Зберегти"}
+              {isLoading ? "Збереження..." : "Зберегти"}
             </button>
           </Form>
         );

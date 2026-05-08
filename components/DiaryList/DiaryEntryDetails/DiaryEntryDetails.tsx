@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import css from "./DiaryEntryDetails.module.css";
@@ -11,6 +11,8 @@ import AddDiaryEntryModal from "@/components/AddDiaryEntryModal/AddDiaryEntryMod
 import { DiaryEntryForm } from "@/components/AddDiaryEntryForm/AddDiaryEntryForm";
 // import { useDiaryStore } from "@/lib/store/diaryStore";
 
+import { useRouter, useSearchParams } from "next/navigation";
+
 interface DiaryEntryDetailsProps {
   entry: DiaryEntryDetail | null;
 }
@@ -20,18 +22,33 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   // const currentDiary = useDiaryStore(state => state.currentDiary);
   const queryClient = useQueryClient();
+	const [diary, setDiaryy] = useState();
+
+	const router = useRouter();
+	const searchParams = useSearchParams();
 
   const { mutate: deleteMutate, isPending: isDeleting } = useMutation({
     mutationFn: async (id: string) => deleteDiaryEntry(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["diary"] });
-      toast.success("Запис видалено!");
-      setIsDeleteModalOpen(false);
-    },
+			queryClient.invalidateQueries({
+				queryKey: ["diary"],
+			});
+
+			const params = new URLSearchParams(searchParams);
+
+			params.delete("diaryId");
+
+			router.push(`/diary?${params.toString()}`);
+
+			toast.success("Запис видалено!");
+
+			setIsDeleteModalOpen(false);
+		},
     onError: () => {
       toast.error("Помилка при видаленні запису");
     },
   });
+
 
   if (!entry) {
     return (
@@ -96,23 +113,27 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
         </div>
       </div>
 
-      <ConfirmationModal
-        isOpen={isDeleteModalOpen}
-        title="Ви впевнені, що хочете видалити запис?"
-        description="Цю дію неможливо буде скасувати."
-        confirmButtonText="Видалити"
-        cancelButtonText="Скасувати"
-        onCancel={() => setIsDeleteModalOpen(false)}
-        onConfirm={() => handleDelete(entry.id)}
-        isLoading={isDeleting}
-      />
+			<ConfirmationModal
+			isOpen={isDeleteModalOpen}
+			title="Ви впевнені, що хочете видалити запис?"
+			description="Цю дію неможливо буде скасувати."
+			confirmButtonText="Видалити"
+			cancelButtonText="Скасувати"
+			onCancel={() => setIsDeleteModalOpen(false)}
+			onConfirm={() => handleDelete(entry._id)}
+			isLoading={isDeleting}
+		/>
 
       {isEditModalOpen && (
         <AddDiaryEntryModal
           title="Редагувати запис"
           onClose={() => setIsEditModalOpen(false)}
         >
-          <DiaryEntryForm onClose={() => setIsEditModalOpen(false)} />
+          <DiaryEntryForm
+						currentId={entry._id}
+						type={"edit"}
+            onClose={() => setIsEditModalOpen(false)}
+          />
         </AddDiaryEntryModal>
       )}
     </>

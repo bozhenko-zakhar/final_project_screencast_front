@@ -1,10 +1,26 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
+
 import DiaryEntryDetails from "@/components/DiaryList/DiaryEntryDetails/DiaryEntryDetails";
-import { useDiaryStore } from "@/lib/store/diaryStore";
+
+import { fetchDiaries } from "@/lib/api/clientApi/diaries";
 
 export default function DiaryDetailsDefault() {
-  const currentDiary = useDiaryStore(state => state.currentDiary);
+  const searchParams = useSearchParams();
+
+  const diaryId = searchParams.get("diaryId");
+
+  const { data: diaries } = useQuery({
+    queryKey: ["diary"],
+    queryFn: fetchDiaries,
+  });
+
+  const currentDiary =
+    diaries?.find((item) => item._id === diaryId) ?? null;
+
+		console.log(currentDiary)
 
   if (!currentDiary) {
     return (
