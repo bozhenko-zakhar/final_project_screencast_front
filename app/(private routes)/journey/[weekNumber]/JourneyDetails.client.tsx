@@ -55,6 +55,8 @@ const JourneyDetails = ({ weekNumber }: Props) => {
     window.history.replaceState(null, "", `/journey/${week}`);
   };
 
+  const isLoading = babyLoading || momLoading;
+
   if (babyLoading || momLoading) {
     return <p>Loading, please wait...</p>;
   }
@@ -79,6 +81,11 @@ const JourneyDetails = ({ weekNumber }: Props) => {
           setBabyMode={() => setMode("baby")}
           setMomMode={() => setMode("mom")}
         />
+
+                  {isLoading && (
+        <span className={css.loader}>LOADING</span>
+      )}
+
 
         {mode === "baby" ? (
           <BabyDevelopment data={babyData} />
