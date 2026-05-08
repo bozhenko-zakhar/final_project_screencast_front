@@ -2,8 +2,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 343px;
-    /* Стандарт для мобільних 375px з урахуванням padding */
+    max-width: 335px;
     gap: 24px;
 }
 
@@ -12,63 +11,77 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
+    gap: 24px;
 }
 
 .avatarPreview {
     width: 164px;
     height: 164px;
-    border-radius: 50%;
+    border-radius: 100%;
     overflow: hidden;
     position: relative;
     cursor: pointer;
-    background-color: var(--color-neutral-lightest);
-    border: 1px solid var(--opacity-neutral-darkest-10);
 }
 
 .image {
     object-fit: cover;
 }
 
-.uploadBtn {
-    background: none;
-    border: none;
-    color: var(--color-neutral);
-    font-size: 14px;
-    text-decoration: underline;
-    cursor: pointer;
-    font-family: var(--font-family);
-}
-
 .hiddenInput {
     display: none;
 }
 
-/* Групи введення */
+Групи введення
 .inputGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    border: 2px solid var(--opacity-transparent);
+    width: 100%;
+    height: 37px;
+    background-color: var(--opacity-neutral-darkest-5);
+    font-size: 14px;
+    transition: border 0.2s ease;
 }
 
 .inputGroup label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+    font-family: var(--font-family);
+    font-weight: 400;
     font-size: 14px;
-    font-weight: 500;
-    color: var(--color-neutral-dark);
-    margin-left: 4px;
+    line-height: 150%;
+    color: var(--color-scheme-text);
+}
+
+.selectWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.customSelect {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.selectIcon {
+    position: absolute;
+    right: 18px;
+    pointer-events: none;
+    fill: var(--opacity-neutral-darkest-60);
 }
 
 .inputGroup input,
 .inputGroup select {
     width: 100%;
-    height: 48px;
-    padding: 12px 16px;
+    height: 40px;
+    padding: 8px 12px;
     border-radius: 12px;
     border: 1px solid var(--input-border);
     background-color: var(--input-bg);
     color: var(--input-text);
-    font-size: 16px;
+    font-size: 14px;
     font-family: var(--font-family);
     transition: all 0.2s ease;
     outline: none;
@@ -76,8 +89,8 @@
 
 .inputGroup input:focus,
 .inputGroup select:focus {
-    border-color: var(--input-border-focus);
-    box-shadow: var(--input-shadow-focus);
+    outline: none;
+    border: 2px solid var(--color-scheme-accent);
 }
 
 /* Помилки */
@@ -95,14 +108,15 @@
 .submitBtn {
     margin-top: 8px;
     width: 100%;
-    height: 52px;
-    background-color: var(--color-pastel-pink);
+    height: 40px;
+    background: var(--color-scheme-foreground-alt);
     color: var(--color-scheme-text);
     border: none;
-    border-radius: 26px;
-    /* Округла кнопка як у макеті */
-    font-size: 16px;
-    font-weight: 600;
+    border-radius: 100px;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 160%;
     cursor: pointer;
     transition: opacity 0.2s ease;
 }
@@ -118,49 +132,27 @@
 
 @media (min-width: 768px) {
     .form {
-        max-width: 400px;
-        /* Оптимальна ширина для читабельності на планшеті */
-        gap: 32px;
-        margin: 0 auto;
-        /* Центруємо форму в контейнері */
-    }
-
-    /* Аватар */
-    .avatarSection {
-        gap: 16px;
-        margin-bottom: 12px;
+        max-width: 480px;
+        width: 100%
     }
 
     .uploadBtn {
         font-size: 16px;
     }
 
-    /* Поля введення */
     .inputGroup {
-        gap: 10px;
+        gap: 24px;
     }
 
     .inputGroup label {
         font-size: 16px;
     }
 
-    .inputGroup input,
-    .inputGroup select {
-        height: 52px;
-        font-size: 16px;
-        padding: 0 20px;
-        /* Трохи більше внутрішнього простору */
-    }
-
-    /* Кнопка "Зберегти" */
     .submitBtn {
-        height: 48px;
-        /* Оптимальна висота для планшетної кнопки */
-        font-size: 18px;
-        border-radius: 24px;
-        /* Половина висоти для округлості */
-        margin-top: 8px;
-        background-color: var(--color-pastel-pink);
-        /* Колір з вашого уточнення */
+        width: auto;
     }
+}
+
+@media (min-width: 1440px) {
+    
 }
