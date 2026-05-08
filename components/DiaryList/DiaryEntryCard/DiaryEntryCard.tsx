@@ -6,9 +6,14 @@ import css from "./DiaryEntryCard.module.css";
 interface DiaryEntryCardProps {
   entry: DiaryEntryDetail;
   updateEditionalDiary: () => void;
+  isActive: boolean;
 }
 
-const DiaryEntryCard = ({ entry, updateEditionalDiary }: DiaryEntryCardProps) => {
+const DiaryEntryCard = ({
+  entry,
+  updateEditionalDiary,
+  isActive,
+}: DiaryEntryCardProps) => {
 
   // const handleCardClick = () => {
   //   onSelectEntry?.(entry.id);
@@ -21,7 +26,7 @@ const DiaryEntryCard = ({ entry, updateEditionalDiary }: DiaryEntryCardProps) =>
   });
 
   return (
-    <div className={css.card} onClick={updateEditionalDiary} role="button" tabIndex={0}>
+    <div className={`${css.card} ${isActive ? css.active : ""}`} onClick={updateEditionalDiary} role="button" tabIndex={0}>
       <div className={css.content}>
         <h3 className={css.title}>{entry.title}</h3>
         <p className={css.date}>{formattedDate}</p>
