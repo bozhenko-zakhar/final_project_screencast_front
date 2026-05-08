@@ -15,7 +15,7 @@
     color: #000;
     margin-bottom: 8px;
 }
-
+customCheckbox
 .input,
 .textarea {
     width: 100%;
@@ -266,7 +266,7 @@
     background: rgba(0, 0, 0, 0.05);
 }
 
-customCheckbox  
+ 
 .hiddenCheckbox:checked+.customCheckbox {
     background-color: transparent;
     border-color: transparent;

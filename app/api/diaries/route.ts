@@ -29,6 +29,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
 	try {
+		const cookieStore = await cookies();
 		const body = await request.json();
 
 		const res = await api.post('/diaries', body, {
@@ -36,9 +37,9 @@ export async function POST(request: Request) {
 				Cookie: cookieStore.toString(),
 			},
 		});
-
 		return NextResponse.json(res.data, { status: res.status });
 	} catch (error) {
+		console.log(error)
 		if (isAxiosError(error)) {
 			logErrorResponse(error.response?.data);
 			return NextResponse.json(

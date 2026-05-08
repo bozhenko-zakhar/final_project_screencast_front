@@ -3,6 +3,7 @@ import { api } from '../../api';
 import { logErrorResponse } from '../../utils/utils';
 import { isAxiosError } from 'axios';
 import { getCookieHeader, handleApiError } from '../_utils';
+import { cookies } from 'next/headers';
 
 type RouteContext = {
 	params: Promise<{
@@ -31,11 +32,14 @@ export async function PATCH(request: Request, { params }: RouteContext) {
 
 export async function DELETE(request: Request, { params }: RouteContext) {
   try {
+		const cookieStore = await cookies();
+		
 		const { diaryId } = await params;
+		console.log(diaryId + "123132123")
 
 		const res = await api.delete(`/diaries/${diaryId}`, {
 			headers: {
-				Cookie: await getCookieHeader(),
+				Cookie: cookieStore.toString(),
 			},
 		});
 		

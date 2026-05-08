@@ -11,11 +11,9 @@ import { Emotion, fetchEmotions } from "@/lib/api/clientApi/emotions";
 import { createDiaryEntry } from "@/lib/api/clientApi/diaries";
 
 import css from "./AddDiaryEntryForm.module.css";
-import { useState } from "react";
 
 export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
   const queryClient = useQueryClient();
-	const [selectedEmo, setSelectedEmo] = useState<Emotion[]>();
 
     const { data: emotions = [] } = useQuery({
     queryKey: ["emotions"],
@@ -67,9 +65,10 @@ export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
 							aria-invalid={!!errors.emotions}
 						>
 							<div className={css.selectedTags}>
-								{selectedEmo?.length > 0 ? (
-									selectedEmo?.map((emoValue: string) => {
-										const emoLabel = emotions.find(e => e._id.$oid === emoValue)?.title;
+								{values.emotions.length > 0 ? (
+									values.emotions.map((emoValue: string) => {
+										console.log(emoValue)
+										const emoLabel = emotions.find(e => e._id === emoValue)?.title;
 										return <span key={emoValue} className={css.tag}>{emoLabel}</span>;
 									})
 								) : (
@@ -79,16 +78,22 @@ export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
 							<span className={css.arrow}></span>
 						</label>
 
-						<div className={css.optionsList}>
+						<ul className={css.optionsList}>
 							{emotions.map((emo: Emotion) => (
-								<label key={emo._id.$oid} className={css.optionItem}>
-									<input onClick={(e) => {
-										setSelectedEmo([emo])
-									}} type="checkbox"/>
+								<li key={emo._id} className={css.optionItem}>
+									<Field
+										id={emo._id}
+										type="checkbox"
+										name="emotions"
+										value={emo._id} // Передаємо ID в Formik
+										// checked={true}
+										className={css.hiddenCheckbox}
+									/>
+									<label htmlFor={emo._id} className={css.customCheckbox}></label>
 									<span className={css.optionText}>{emo.title}</span>
-								</label>
+								</li>
 							))}
-						</div>
+						</ul>
 					</div>
 
 					<ErrorMessage name="emotions" component="div" className={css.error} />
