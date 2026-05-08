@@ -1,26 +1,30 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, type MouseEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+
 import css from "./AddDiaryEntryModal.module.css";
 
-interface ModalProps {
-  children: React.ReactNode;
+type AddDiaryEntryModalProps = {
+  children: ReactNode;
   onClose: () => void;
   title?: string;
-}
+};
 
-export default function DiaryEntryModal({ children, onClose, title }: ModalProps) {
-
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
+export default function AddDiaryEntryModal({
+  children,
+  onClose,
+  title,
+}: AddDiaryEntryModalProps) {
+  const handleBackdropClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget) {
       onClose();
     }
   };
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
         onClose();
       }
     };
@@ -35,17 +39,30 @@ export default function DiaryEntryModal({ children, onClose, title }: ModalProps
   }, [onClose]);
 
   return createPortal(
-    <div className={css.backdrop} onClick={handleBackdropClick} role="dialog" aria-modal="true">
+    <div
+      className={css.backdrop}
+      onClick={handleBackdropClick}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="diary-modal-title"
+    >
       <div className={css.modal}>
         <div className={css.header}>
-          <h2 className={css.title}>{title}</h2>
-          <button className={css.closeBtn} onClick={onClose} aria-label="Закрити">
+          <h2 id="diary-modal-title" className={css.title}>
+            {title}
+          </h2>
+
+          <button
+            type="button"
+            className={css.closeBtn}
+            onClick={onClose}
+            aria-label="Закрити модальне вікно"
+          >
             &times;
           </button>
         </div>
-        <div className={css.content}>
-          {children}
-        </div>
+
+        <div className={css.content}>{children}</div>
       </div>
     </div>,
     document.body
