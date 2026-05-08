@@ -1,12 +1,12 @@
 "use client";
 
-import { useSelectedDiaryEntry } from "@/lib/store/diaryStore";
 import DiaryEntryDetails from "@/components/DiaryList/DiaryEntryDetails/DiaryEntryDetails";
+import { useDiaryStore } from "@/lib/store/diaryStore";
 
 export default function DiaryDetailsDefault() {
-  const entry = useSelectedDiaryEntry();
+  const currentDiary = useDiaryStore(state => state.currentDiary);
 
-  if (!entry) {
+  if (!currentDiary) {
     return (
       <div className="p-6 text-gray-500">
         Select diary entry
@@ -14,5 +14,5 @@ export default function DiaryDetailsDefault() {
     );
   }
 
-  return <DiaryEntryDetails entry={entry} />;
+  return <DiaryEntryDetails entry={currentDiary} />;
 }
