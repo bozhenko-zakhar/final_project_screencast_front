@@ -173,17 +173,6 @@ export default function RegisterForm() {
             </Form>
           )}
         </Formik>
-
-        <form>
-          <input
-            onChange={(e) => setDueDate(e.target.value)}
-            placeholder="dueDate"
-          />
-          <input
-            onChange={(e) => setGender(e.target.value)}
-            placeholder="gender"
-          />
-        </form>
       </div>
     </div>
   );
