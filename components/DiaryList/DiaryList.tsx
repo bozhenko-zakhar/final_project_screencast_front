@@ -71,7 +71,7 @@ const DiaryList = () => {
           title="Новий запис"
           onClose={() => setIsModalOpen(false)}
         >
-          <DiaryEntryForm onClose={() => setIsModalOpen(false)} />
+          <DiaryEntryForm type="0" currentId="0" onClose={() => setIsModalOpen(false)} />
         </AddDiaryEntryModal>
       )}
     </div>
