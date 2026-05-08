@@ -1,115 +1,231 @@
-
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-
-import * as Yup from "yup";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import toast from "react-hot-toast";
+import * as Yup from "yup";
 
-import { Emotion, fetchEmotions } from "@/lib/api/clientApi/emotions";
-import { createDiaryEntry } from "@/lib/api/clientApi/diaries";
+import {
+  fetchEmotions,
+  getEmotionId,
+  type Emotion,
+} from "@/lib/api/clientApi/emotions";
+import {
+  createDiaryEntry,
+  updateDiaryEntry,
+} from "@/lib/api/clientApi/diaries";
+import type { DiaryEntryFormValues } from "@/types/diary";
 
 import css from "./AddDiaryEntryForm.module.css";
 
-export const DiaryEntryForm = ({ onClose }: { onClose: () => void }) => {
-  const queryClient = useQueryClient();
+type AddDiaryEntryFormProps = {
+  onClose: () => void;
+  entryId?: string;
+  initialValues?: DiaryEntryFormValues;
+};
 
-    const { data: emotions = [] } = useQuery({
+const defaultInitialValues: DiaryEntryFormValues = {
+  title: "",
+  emotions: [],
+  description: "",
+};
+
+const validationSchema = Yup.object({
+  title: Yup.string()
+    .trim()
+    .min(2, "Мінімум 2 символи")
+    .max(100, "Максимум 100 символів")
+    .required("Обов'язкове поле"),
+
+  emotions: Yup.array()
+    .of(Yup.string().required())
+    .min(1, "Оберіть хоча б одну категорію")
+    .required("Обов'язкове поле"),
+
+  description: Yup.string()
+    .trim()
+    .min(2, "Мінімум 2 символи")
+    .max(1000, "Максимум 1000 символів")
+    .required("Обов'язкове поле"),
+});
+
+export const DiaryEntryForm = ({
+  onClose,
+  entryId,
+  initialValues = defaultInitialValues,
+}: AddDiaryEntryFormProps) => {
+  const queryClient = useQueryClient();
+  const isEditMode = Boolean(entryId);
+
+  const { data: emotions = [], isLoading: isEmotionsLoading } = useQuery({
     queryKey: ["emotions"],
     queryFn: fetchEmotions,
-    });
-    
+  });
+
   const { mutate, isPending } = useMutation({
-    mutationFn: createDiaryEntry,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["diary"] });
-      toast.success("Збережено!");
+    mutationFn: async (values: DiaryEntryFormValues) => {
+      const payload = {
+        title: values.title.trim(),
+        description: values.description.trim(),
+        emotions: values.emotions,
+      };
+
+      if (entryId) {
+        return updateDiaryEntry({
+          entryId,
+          payload,
+        });
+      }
+
+      return createDiaryEntry(payload);
+    },
+
+    onSuccess: async (updatedEntry) => {
+      await queryClient.invalidateQueries({ queryKey: ["diary"] });
+
+      if (entryId) {
+        queryClient.setQueryData(["diaryEntry", entryId], updatedEntry);
+
+        await queryClient.invalidateQueries({
+          queryKey: ["diaryEntry", entryId],
+        });
+      }
+
+      toast.success(isEditMode ? "Запис оновлено!" : "Запис збережено!");
       onClose();
     },
-    onError: () => toast.error("Помилка запиту"),
+
+    onError: (error) => {
+      console.error("MUTATION ERROR:", error);
+      toast.error(
+        isEditMode
+          ? "Помилка при редагуванні запису"
+          : "Помилка при створенні запису"
+      );
+    },
   });
 
   return (
-    <Formik
-      initialValues={{ title: "", emotions: [], description: "" }}
-      validationSchema={Yup.object({
-        title: Yup.string().min(1).required("Обов'язкове поле"),
-        description: Yup.string().min(1).max(1000).required("Обов'язкове поле"),
-        emotions: Yup.array().min(1, "Оберіть хоча б одну категорію").required("Обов'язково"),
-      })}
+    <Formik<DiaryEntryFormValues>
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      enableReinitialize
       onSubmit={(values) => {
-        mutate({
-          ...values,
-          date: new Date().toISOString().split('T')[0],
-        });
+        mutate(values);
       }}
     >
-      {({ values, errors }) => (
+      {({ values, errors, touched }) => (
         <Form className={css.form}>
           <div className={css.field}>
-            <label className={css.label}>Заголовок</label>
-            <Field name="title" className={css.input} placeholder="Введіть заголовок запису" aria-invalid={!!errors.title} />
-            <ErrorMessage name="title" component="div" className={css.error}  />
+            <label className={css.label} htmlFor="diary-title">
+              Заголовок
+            </label>
+
+            <Field
+              id="diary-title"
+              name="title"
+              className={css.input}
+              placeholder="Введіть заголовок запису"
+              aria-invalid={Boolean(touched.title && errors.title)}
+            />
+
+            <ErrorMessage name="title" component="div" className={css.error} />
           </div>
 
-        <div className={css.field}>
-  <label className={css.label}>Категорії</label>
-  
-  <input type="checkbox" id="category-toggle" className={css.toggleCheckbox} />
-  
-  <div className={css.selectWrapper}>
-    <label 
-      htmlFor="category-toggle" 
-      className={css.customSelect}
-      aria-invalid={!!errors.emotions}
-    >
-      <div className={css.selectedTags}>
-        {values.emotions.length > 0 ? (
-          values.emotions.map((emoValue: string) => {
-            const emoLabel = emotions.find(e => e._id.$oid === emoValue)?.title;
-            return <span key={emoValue} className={css.tag}>{emoLabel}</span>;
-          })
-        ) : (
-          <span className={css.placeholder}>Оберіть категорію</span>
-        )}
-      </div>
-      <span className={css.arrow}></span>
-    </label>
+          <div className={css.field}>
+            <label className={css.label} htmlFor="category-toggle">
+              Категорії
+            </label>
 
-    <div className={css.optionsList}>
-      {emotions.map((emo: Emotion) => (
-        <label key={emo._id.$oid} className={css.optionItem}>
-          <Field
-            type="checkbox"
-            name="emotions"
-            value={emo._id.$oid} // Передаємо ID в Formik
-            className={css.hiddenCheckbox}
-          />
-          <div className={css.customCheckbox}></div>
-          <span className={css.optionText}>{emo.title}</span>
-        </label>
-      ))}
-    </div>
-  </div>
+            <input
+              type="checkbox"
+              id="category-toggle"
+              className={css.toggleCheckbox}
+            />
 
-   <ErrorMessage name="emotions" component="div" className={css.error} />
-</div>
+            <div className={css.selectWrapper}>
+              <label
+                htmlFor="category-toggle"
+                className={css.customSelect}
+                aria-invalid={Boolean(touched.emotions && errors.emotions)}
+              >
+                <div className={css.selectedTags}>
+                  {values.emotions.length > 0 ? (
+                    values.emotions.map((emotionId) => {
+                      const emotionTitle = emotions.find(
+                        (emotion: Emotion) =>
+                          getEmotionId(emotion) === emotionId
+                      )?.title;
+
+                      return (
+                        <span key={emotionId} className={css.tag}>
+                          {emotionTitle || emotionId}
+                        </span>
+                      );
+                    })
+                  ) : (
+                    <span className={css.placeholder}>
+                      {isEmotionsLoading
+                        ? "Завантаження категорій..."
+                        : "Оберіть категорію"}
+                    </span>
+                  )}
+                </div>
+
+                <span className={css.arrow} aria-hidden="true" />
+              </label>
+
+              <div className={css.optionsList}>
+                {emotions.map((emotion: Emotion) => {
+                  const emotionId = getEmotionId(emotion);
+
+                  return (
+                    <label key={emotionId} className={css.optionItem}>
+                      <Field
+                        type="checkbox"
+                        name="emotions"
+                        value={emotionId}
+                        className={css.hiddenCheckbox}
+                      />
+
+                      <span className={css.customCheckbox} aria-hidden="true" />
+                      <span className={css.optionText}>{emotion.title}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+
+            <ErrorMessage
+              name="emotions"
+              component="div"
+              className={css.error}
+            />
+          </div>
 
           <div className={css.field}>
-            <label className={css.label}>Запис</label>
-            <Field 
-              as="textarea" 
-              name="description" 
-              className={css.textarea} 
+            <label className={css.label} htmlFor="diary-description">
+              Запис
+            </label>
+
+            <Field
+              id="diary-description"
+              as="textarea"
+              name="description"
+              className={css.textarea}
               placeholder="Запишіть, як ви себе відчуваєте"
-              aria-invalid={!!errors.description}      
+              aria-invalid={Boolean(touched.description && errors.description)}
             />
-            <ErrorMessage name="description" component="div" className={css.error} />
+
+            <ErrorMessage
+              name="description"
+              component="div"
+              className={css.error}
+            />
           </div>
 
           <button type="submit" disabled={isPending} className={css.submitBtn}>
-               Зберегти       
+            {isPending ? "Збереження..." : "Зберегти"}
           </button>
         </Form>
       )}
