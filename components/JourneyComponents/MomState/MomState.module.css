@@ -20,6 +20,7 @@
 
 .feelingsList {
   list-style-type: none;
+  display: flex;
   gap: 8px;
   margin-bottom: 8px;
 }
@@ -32,7 +33,7 @@
   font-size: 12px;
   line-height: 160%;
   text-align: center;
-  display: inline-block;
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-basis: calc((100% - 16px) / 3);
@@ -97,6 +98,9 @@
 }
 
 @media screen and (min-width: 768px) {
+  .feelingsList {
+    max-width: 50%;
+  }
 
   .icon {
     width: 24px;
@@ -113,12 +117,15 @@
 
   .possibleFeelings {
     max-width: 650px;
+    height: 194px;
     overflow-y: auto;
   }
 
   .adviceSection {
     max-width: 650px;
+    height: 322px;
     overflow-y: auto;
+
   }
 
   .feelingsHeader {
