@@ -74,7 +74,7 @@ export default function RegisterForm() {
 
               setUser(user);
               resetForm();
-              router.push('/');
+              router.push('/onboarding');
             } catch (error: unknown) {
               if (isAxiosError(error)) {
                 toast.error(
