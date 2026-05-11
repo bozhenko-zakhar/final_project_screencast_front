@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+
+	justify-content: center;
+
+  padding: 24px;
+	background: var(--color-scheme-foreground);
+	border-radius: 32px;
+	min-height: 727px;
+}
+
+.empty_text {
+	margin-top: 24px;
+	font-family: var(--main-font);
+	font-weight: 700;
+	font-size: 18px;
+	letter-spacing: 0.01em;
+	color: var(--color-scheme-text);
+}

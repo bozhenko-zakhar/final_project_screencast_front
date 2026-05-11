@@ -17,6 +17,7 @@
     align-items: center;
     text-align: center;
     line-height: 1.2;
+		font-family: var(--accent-font);
     font-weight: 700;
     font-size: 36px;
     letter-spacing: 0.01em;

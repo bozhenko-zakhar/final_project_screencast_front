@@ -43,31 +43,24 @@ export default function OnboardingForm() {
     }
   };
 
-  const validate = () => {
-    const newErrors: { [key: string]: string } = {};
-
-    if (!dueDate) {
-      newErrors.dueDate = 'Будь ласка, вкажіть дату';
-    }
-
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (!validate()) return;
-
+		
     setIsLoading(true);
 
     try {
       // update user data
-      await nextServer.patch('/users/me', {
-        date: dueDate,
-        gender: gender === 'unknown' ? null : gender,
-      });
+			if (dueDate) {
+				await nextServer.patch('/users/me', {
+					date: dueDate
+				});
+			}
+			
+			if (gender) {
+				await nextServer.patch('/users/me', {
+					gender: gender === 'unknown' ? null : gender,
+				});
+			}
 
       // update avatar
       if (avatarFile) {

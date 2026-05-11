@@ -3,6 +3,20 @@
 	height: 100%;
 }
 
+.greeting_container {
+	margin-bottom: 54px;
+}
+
+.is_desktop {
+	display: none;
+}
+
+@media (min-width: 768px) {
+	.greeting_container {
+		margin-bottom: 32px;
+	}
+}
+
 .children_container {
 	width: 100%;
 	height: 727px;	
@@ -26,13 +40,7 @@
 	.diary_container {
 		gap: 32px
 	}
-}
-
-.is_desktop {
-	display: none;
-}
-
-@media (min-width: 1440px) {
+	
 	.is_desktop {
 		display: block;
 	}

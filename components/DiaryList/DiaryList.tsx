@@ -2,9 +2,6 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter, useSearchParams } from "next/navigation";
-
-import css from "./DiaryList.module.css";
 
 import { fetchDiaries } from "@/lib/api/clientApi/diaries";
 
@@ -12,28 +9,15 @@ import AddDiaryEntryModal from "@/components/AddDiaryEntryModal/AddDiaryEntryMod
 import { DiaryEntryForm } from "@/components/AddDiaryEntryForm/AddDiaryEntryForm";
 import DiaryEntryCard from "@/components/DiaryList/DiaryEntryCard/DiaryEntryCard";
 
+import css from "./DiaryList.module.css";
+
 const DiaryList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const currentDiaryId = searchParams.get("diaryId");
 
   const { data: entries, isLoading, error } = useQuery({
     queryKey: ["diary"],
     queryFn: fetchDiaries,
   });
-
-	console.log(entries)
-
-  const handleSelectDiary = (id: string) => {
-    const params = new URLSearchParams(searchParams);
-
-    params.set("diaryId", id);
-
-    router.push(`/diary?${params.toString()}`);
-  };
 
   return (
     <div className={css.container}>
@@ -67,8 +51,6 @@ const DiaryList = () => {
 						<DiaryEntryCard
 							key={entry._id}
 							entry={entry}
-							isActive={currentDiaryId === entry._id}
-							updateEditionalDiary={() => handleSelectDiary(entry._id)}
 						/>
 					))}
         </ul>

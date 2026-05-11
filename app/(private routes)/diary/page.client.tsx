@@ -1,8 +1,4 @@
-"use client";
-
 import css from "./page.client.module.css";
-
-import GreetingBlock from "@/components/DashBoardPage/DashboardPage_main/GreetingBlock/GreetingBlock";
 import DiaryList from "@/components/DiaryList/DiaryList";
 
 const DiariesClient = () => {

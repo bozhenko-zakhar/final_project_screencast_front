@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,6 +10,7 @@ import { Emotion, fetchEmotions } from "@/lib/api/clientApi/emotions";
 import { createDiaryEntry, updateDiaryEntry } from "@/lib/api/clientApi/diaries";
 
 import css from "./AddDiaryEntryForm.module.css";
+import { DiaryEntry } from "@/types/diary";
 
 type UpdateDiaryPayload = {
   id: string;
@@ -38,13 +38,13 @@ export const DiaryEntryForm = ({ onClose, type, currentId }: { onClose: () => vo
     });
     
   const createMutate = useMutation({
-    mutationFn: (payload: CreatePayload) => createDiaryEntry(payload),
+    mutationFn: createDiaryEntry,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["diary"] });
       toast.success("Збережено!");
       onClose();
     },
-    onError: () => toast.success("Збережено!"),
+    onError: () => toast.error("Помилка створення запису!"),
   });
     
 	const updateMutate = useMutation({
@@ -66,6 +66,10 @@ export const DiaryEntryForm = ({ onClose, type, currentId }: { onClose: () => vo
 		},
 	});
 
+	async function handleCreateDiary(payload: CreatePayload) {
+    await createMutate.mutateAsync(payload);
+	}
+
   return (
     <Formik
       initialValues={{ title: "", emotions: [], description: "" }}
@@ -75,13 +79,13 @@ export const DiaryEntryForm = ({ onClose, type, currentId }: { onClose: () => vo
         emotions: Yup.array().min(1, "Оберіть хоча б одну категорію").required("Обов'язково"),
       })}
       onSubmit={(values) => {
-				const payload: CreatePayload = {
+				const payload: DiaryEntry = {
 					...values,
 					date: new Date().toISOString().split("T")[0],
 				};
 
 				if (type !== "edit") {
-					createMutate.mutate(payload);
+					handleCreateDiary(payload);
 
 					return;
 				}
@@ -120,7 +124,6 @@ export const DiaryEntryForm = ({ onClose, type, currentId }: { onClose: () => vo
 							<div className={css.selectedTags}>
 								{values.emotions.length > 0 ? (
 									values.emotions.map((emoValue: string) => {
-										console.log(emoValue)
 										const emoLabel = emotions.find(e => e._id === emoValue)?.title;
 										return <span key={emoValue} className={css.tag}>{emoLabel}</span>;
 									})

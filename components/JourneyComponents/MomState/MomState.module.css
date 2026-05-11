@@ -11,6 +11,7 @@
 }
 
 .feelingsHeader {
+	font-family: var(--accent-font);
   font-weight: 700;
   font-size: 18px;
   line-height: 140%;
@@ -28,6 +29,7 @@
   padding: 4px 10px;
   background-color: #0000000d;
   border-radius: 100px;
+	font-family: var(--main-font);
   font-weight: 600;
   font-size: 12px;
   line-height: 160%;
@@ -38,7 +40,12 @@
   flex-basis: calc((100% - 16px) / 3);
 }
 
+.feeling:not(:last-child) {
+	margin-right: 8px;
+}
+
 .feelingDescr {
+	font-family: var(--main-font);
   font-size: 14px;
   line-height: 150%;
 }
@@ -50,6 +57,7 @@
 }
 
 .adviceHeader {
+	font-family: var(--accent-font);
   font-weight: 700;
   font-size: 18px;
   line-height: 140%;
@@ -79,12 +87,14 @@
 }
 
 .adviceType {
+	font-family: var(--main-font);
   font-weight: 700;
   font-size: 14px;
   line-height: 160%;
 }
 
 .adviceDescr {
+	font-family: var(--main-font);
   font-size: 14px;
   line-height: 150%;
 }
