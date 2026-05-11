@@ -15,6 +15,7 @@
 }
 
 .avatar {
+    flex-shrink: 0;
     width: 132px;
     height: 132px;
     border-radius: 50%;
