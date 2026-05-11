@@ -11,8 +11,6 @@ export default async function Home() {
 
   const token = cookieStore.get("accessToken");
 
-	// const isAuthenticated = useAuthStore(state => state.isAuthenticated);
-
   const queryClient = new QueryClient();
 
 	await queryClient.prefetchQuery({
@@ -23,7 +21,7 @@ export default async function Home() {
   return (
     <LehlehkaLayout>
 			<HydrationBoundary state={dehydrate(queryClient)}>
-				<DashboardPage />
+				<DashboardPage token={token?.toString() ?? ""}/>
 			</HydrationBoundary>
     </LehlehkaLayout>
   );

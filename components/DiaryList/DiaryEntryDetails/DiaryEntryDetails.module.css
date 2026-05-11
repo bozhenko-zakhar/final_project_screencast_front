@@ -8,7 +8,14 @@
 	min-height: 727px;
 }
 
+@media (min-width: 1440px) {
+	.container {
+		min-height: 727px;
+	}
+}
+
 .placeholder {
+	font-family: var(--main-font);
   text-align: center;
   color: #999;
   padding: 40px 16px;
@@ -30,7 +37,7 @@
 }
 
 .title {
-	font-family: var(--second-family);
+	font-family: var(--accent-font);
 	font-weight: 700;
 	font-size: 18px;
 	letter-spacing: 0.01em;
@@ -57,6 +64,7 @@
 }
 
 .date {
+	font-family: var(--main-font);
 	color: var(--color-scheme-text);
 }
 
@@ -65,43 +73,6 @@
   align-items: center;
 	gap: 8px;
 	height: 40px;
-}
-
-.editButton,
-.deleteButton {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-.editButton {
-  background-color: #4a90e2;
-  color: white;
-}
-
-.editButton:hover:not(:disabled) {
-  background-color: #357abd;
-}
-
-.deleteButton {
-  background-color: #f5f5f5;
-  color: #d32f2f;
-  border: 1px solid #e0e0e0;
-}
-
-.deleteButton:hover:not(:disabled) {
-  background-color: #ffebee;
-  border-color: #d32f2f;
-}
-
-.editButton:disabled,
-.deleteButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 .emotions {
@@ -117,6 +88,7 @@
 	border-radius: 100px;
 	padding-block: 2px;
 	padding-inline: 12px;
+	font-family: var(--main-font);
 	font-size: 16px;
 	font-weight: 400;
 	line-height: 1.5;
@@ -127,6 +99,7 @@
 }
 
 .description {
+	font-family: var(--main-font);
   white-space: pre-wrap;
   word-break: break-word;
 	line-height: 1.5;

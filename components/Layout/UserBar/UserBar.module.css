@@ -36,6 +36,7 @@
 
 .name {
 	margin: 0;
+	font-family: var(--main-font);
 	font-size: 14px;
 	font-weight: 700;
 	line-height: 1.2;
@@ -45,6 +46,7 @@
 
 .email {
 	margin: 2px 0 0;
+	font-family: var(--main-font);
 	font-size: 14px;
 	line-height: 1.2;
 	color: #6b7280;

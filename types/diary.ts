@@ -6,6 +6,7 @@ export interface DiaryEntry {
 }
 
 export interface BackendDiaryEntry {
+	data: DiaryEntry;
   _id: {
     $oid: string;
   };

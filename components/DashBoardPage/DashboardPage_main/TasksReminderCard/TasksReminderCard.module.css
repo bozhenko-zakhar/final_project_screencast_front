@@ -14,7 +14,7 @@
 .title {
   font-size: 20px;
   font-weight: 700;
-  font-family: var(--second-family);
+  font-family: var(--accent-font);
   letter-spacing: 1px;
   line-height: 1.4;
   color: var(--color-scheme-text);
@@ -49,6 +49,7 @@
 }
 
 .noTasksTitle {
+	font-family: var(--main-font);
   font-weight: 700;
   font-size: 14px;
   margin-bottom: 4px;
@@ -75,7 +76,7 @@
     gap: 0;
 }
 .taskDate {
-    font-family: 'Lato', sans-serif;
+    font-family: var(--main-font);
     font-size: 10px;
     font-weight: 400;
     line-height: 1.6;
@@ -149,14 +150,14 @@
     cursor: not-allowed;
 }
 .taskText {
-    font-family: 'Lato', sans-serif;
+    font-family: var(--main-font);
     font-size: 12px;
     font-weight: 400;
     line-height: 1.5;
     color: #000;
 }
 .taskCompleted {
-    font-family: 'Lato', sans-serif;
+    font-family: var(--main-font);
     font-size: 12px;
     font-weight: 400;
     line-height: 1.5;

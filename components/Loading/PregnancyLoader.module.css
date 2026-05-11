@@ -2,6 +2,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
+		font-family: var(--main-font);
     font-size: 14px;
 }
 
@@ -25,6 +26,7 @@
 }
 
 .loaderEmoji {
+		font-family: var(--main-font);
     font-size: 18px;
 }
 
@@ -46,5 +48,6 @@
 }
 
 .loaderText {
+		font-family: var(--main-font);
     color: #444;
 }

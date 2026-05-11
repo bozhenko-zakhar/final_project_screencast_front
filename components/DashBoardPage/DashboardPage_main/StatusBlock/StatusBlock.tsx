@@ -2,21 +2,19 @@
 
 import css from "./StatusBlock.module.css";
 import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
-import { useWeekStore } from "@/lib/store/babyDataStore";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useAuthStore } from "@/lib/store/authStore";
 import { fetchPrivateWeeks, fetchPublicWeeks } from "@/lib/api/clientApi/weeks";
 
-const StatusBlock = () => {
-	const isAuthenticated = useAuthStore(state => state.isAuthenticated);
-	
+type Props = {
+	token: string
+}
+
+const StatusBlock = ({token}: Props) => {
   const {
-    data: babyData,
-    // isLoading: babyLoading,
-    // isError: babyError,
+    data: babyData
   } = useQuery({
     queryKey: ["baby"],
-    queryFn: isAuthenticated ? fetchPrivateWeeks : fetchPublicWeeks,
+    queryFn: token ? fetchPrivateWeeks : fetchPublicWeeks,
     placeholderData: keepPreviousData,
   });
 

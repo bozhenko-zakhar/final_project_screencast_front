@@ -28,12 +28,14 @@
 }
 
 .title {
+	font-family: var(--accent-font);
   margin: 0;
   font-size: 24px;
   font-weight: 600;
 }
 
 .addButton {
+	font-family: var(--main-font);
   background: none;
   border: none;
   color: black;
@@ -84,7 +86,6 @@
   }
 
   .title {
-    font-family: var(--second-family);
     font-weight: 700;
     font-size: 18px;
     line-height: 140%;
@@ -93,7 +94,6 @@
   }
 
   .addButton {
-    font-family: var(--font-family);
     font-weight: 500;
     font-size: 14px;
     line-height: 160%;
@@ -108,7 +108,6 @@
   }
 
   .title {
-    font-family: var(--second-family);
     font-weight: 700;
     font-size: 18px;
     line-height: 140%;
@@ -117,7 +116,6 @@
   }
 
   .addButton {
-    font-family: var(--font-family);
     font-weight: 500;
     font-size: 14px;
     line-height: 160%;

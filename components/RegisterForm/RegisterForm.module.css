@@ -40,11 +40,11 @@
 }
 
 .title {
+	font-family: var(--accent-font);
   font-size: 48px;
   margin-bottom: 32px;
   color: #000;
   font-weight: 700;
-  font-family: Comfortaa;
 }
 
 .fieldWrapper {
@@ -55,6 +55,7 @@
 
 .label {
   text-align: left;
+	font-family: var(--main-font);
   font-size: 16px;
   margin-bottom: 8px;
 }
@@ -67,6 +68,7 @@
   border: 2px;
   background-color: rgba(0, 0, 0, 0.05);
   text-align: left;
+	font-family: var(--main-font);
   font-size: 16px;
   outline: none;
   margin-bottom: 16px;
@@ -76,6 +78,7 @@
   text-align: left;
   border: 1px solid transparent;
   color: rgba(0, 0, 0, 0.6);
+	font-family: var(--main-font);
   font-size: 16px;
   outline: none;
   transition: 0.2s;
@@ -86,6 +89,7 @@
 }
 
 .inputError::placeholder {
+	font-family: var(--main-font);
   color: var(--color-scheme-red);
 }
 
@@ -96,11 +100,11 @@
   bottom: -18px;
   color: var(--color-scheme-red);
   text-align: left;
+	font-family: var(--main-font);
   font-size: 12px;
   margin-top: 8px;
    min-height: 16px;
   margin-bottom: 16px;
-  font-family: inherit;
 }
 
 .btn {
@@ -112,6 +116,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: 0.3s;
+	font-family: var(--main-font);
   font-size: 16px;
   margin-bottom: 24px;
   border: none;
@@ -133,6 +138,7 @@
 }
 
 .register {
+	font-family: var(--main-font);
   font-size: 16px;
   color: #000;
 }

@@ -12,6 +12,10 @@ export async function register(credentials: RegisterRequest): Promise<User> {
   return res.data;
 }
 
+export async function logout() {
+	nextServer.post('/auth/logout')
+};
+
 export async function refreshSession() {
   const res = await nextServer.post('/auth/refresh');
   return res.data;

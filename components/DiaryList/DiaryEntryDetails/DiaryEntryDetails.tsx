@@ -1,35 +1,40 @@
 "use client";
 
+// npm installs
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-import { DiaryEntryDetail } from "@/types/diary";
-
-import { deleteDiaryEntry } from "@/lib/api/clientApi/diaries";
-
+// components
 import ConfirmationModal from "@/components/Layout/ConfirmationModal/ConfirmationModal";
 import AddDiaryEntryModal from "@/components/AddDiaryEntryModal/AddDiaryEntryModal";
 import { DiaryEntryForm } from "@/components/AddDiaryEntryForm/AddDiaryEntryForm";
 
+// lib directory
 import { useDiaryStore } from "@/lib/store/diaryStore";
+import { deleteDiaryEntry, fetchDiaries } from "@/lib/api/clientApi/diaries";
 
 import css from "./DiaryEntryDetails.module.css";
 
 interface DiaryEntryDetailsProps {
-  entry: DiaryEntryDetail | null;
+  entryId: string;
 }
 
-const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
+const DiaryEntryDetails = ({ entryId }: DiaryEntryDetailsProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const setDiaryEditing = useDiaryStore(state => state.setDiaryEditing);
-  const queryClient = useQueryClient();
+
+  const { data: diaries } = useQuery({
+    queryKey: ["diary"],
+    queryFn: fetchDiaries,
+  });
+
+  const currentDiary = diaries?.find((item) => item._id === entryId) ?? null;
 
 	const router = useRouter();
-	const searchParams = useSearchParams();
-
+  const queryClient = useQueryClient();
   const { mutate: deleteMutate, isPending: isDeleting } = useMutation({
     mutationFn: async (id: string) => deleteDiaryEntry(id),
     onSuccess: () => {
@@ -37,11 +42,7 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
 				queryKey: ["diary"],
 			});
 
-			const params = new URLSearchParams(searchParams);
-
-			params.delete("diaryId");
-
-			router.push(`/diary?${params.toString()}`);
+			router.push("/diary");
 
 			toast.success("Запис видалено!");
 
@@ -53,7 +54,7 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
   });
 
 
-  if (!entry) {
+  if (!currentDiary) {
     return (
       <div className={css.container}>
         <div className={css.placeholder}>Наразі записи у щоденнику відстні</div>
@@ -61,7 +62,7 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
     );
   }
 
-  const formattedDate = new Date(entry.date).toLocaleDateString("uk-UA", {
+  const formattedDate = new Date(currentDiary.date).toLocaleDateString("uk-UA", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -80,7 +81,7 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
       <div className={css.container}>
         <div className={css.header}>
           <div>
-            <h2 className={css.title}>{entry.title}</h2>
+            <h2 className={css.title}>{currentDiary.title}</h2>
 						<button
               className={css.icon_container}
               onClick={handleEdit}
@@ -106,12 +107,12 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
         </div>
 
         <div className={css.content}>
-          <p className={css.description}>{entry.description}</p>
+          <p className={css.description}>{currentDiary.description}</p>
         </div>
 
-        {entry.emotions && entry.emotions.length > 0 && (
+        {currentDiary.emotions && currentDiary.emotions.length > 0 && (
           <div className={css.emotions}>
-            {entry.emotions.map((emotion) => (
+            {currentDiary.emotions.map((emotion) => (
               <span key={emotion.id} className={css.emotionTag}>
                 {emotion.title}
               </span>
@@ -121,20 +122,20 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
       </div>
 
 			<ConfirmationModal
-			isOpen={isDeleteModalOpen}
-			title="Ви впевнені, що хочете видалити запис?"
-			description="Цю дію неможливо буде скасувати."
-			confirmButtonText="Видалити"
-			cancelButtonText="Скасувати"
-			onCancel={() => {
-				setIsDeleteModalOpen(false);
-			}} 
-			onConfirm={() => {
- 				handleDelete(entry._id); 
-				setDiaryEditing(false);
-			}}
-			isLoading={isDeleting}
-		/>
+				isOpen={isDeleteModalOpen}
+				title="Ви впевнені, що хочете видалити запис?"
+				description="Цю дію неможливо буде скасувати."
+				confirmButtonText="Видалити"
+				cancelButtonText="Скасувати"
+				onCancel={() => {
+					setIsDeleteModalOpen(false);
+				}} 
+				onConfirm={() => {
+					handleDelete(currentDiary._id); 
+					setDiaryEditing(false);
+				}}
+				isLoading={isDeleting}
+			/>
 
       {isEditModalOpen && (
         <AddDiaryEntryModal
@@ -142,7 +143,7 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
           onClose={() => setIsEditModalOpen(false)}
         >
           <DiaryEntryForm
-						currentId={entry._id}
+						currentId={currentDiary._id}
 						type={"edit"}
             onClose={() => setIsEditModalOpen(false)}
           />

@@ -15,6 +15,7 @@
   border: none;
   background-color: transparent;
   flex-basis: calc(100% / 2);
+	font-family: var(--main-font);
   font-weight: 400;
   font-size: 14px;
   line-height: 150%;
