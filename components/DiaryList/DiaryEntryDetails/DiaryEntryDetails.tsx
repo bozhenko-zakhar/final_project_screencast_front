@@ -2,16 +2,20 @@
 
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
-import css from "./DiaryEntryDetails.module.css";
+
 import { DiaryEntryDetail } from "@/types/diary";
+
 import { deleteDiaryEntry } from "@/lib/api/clientApi/diaries";
+
 import ConfirmationModal from "@/components/Layout/ConfirmationModal/ConfirmationModal";
 import AddDiaryEntryModal from "@/components/AddDiaryEntryModal/AddDiaryEntryModal";
 import { DiaryEntryForm } from "@/components/AddDiaryEntryForm/AddDiaryEntryForm";
-// import { useDiaryStore } from "@/lib/store/diaryStore";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useDiaryStore } from "@/lib/store/diaryStore";
+
+import css from "./DiaryEntryDetails.module.css";
 
 interface DiaryEntryDetailsProps {
   entry: DiaryEntryDetail | null;
@@ -20,9 +24,8 @@ interface DiaryEntryDetailsProps {
 const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  // const currentDiary = useDiaryStore(state => state.currentDiary);
+  const setDiaryEditing = useDiaryStore(state => state.setDiaryEditing);
   const queryClient = useQueryClient();
-	const [diary, setDiaryy] = useState();
 
 	const router = useRouter();
 	const searchParams = useSearchParams();
@@ -123,8 +126,13 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
 			description="Цю дію неможливо буде скасувати."
 			confirmButtonText="Видалити"
 			cancelButtonText="Скасувати"
-			onCancel={() => setIsDeleteModalOpen(false)}
-			onConfirm={() => handleDelete(entry._id)}
+			onCancel={() => {
+				setIsDeleteModalOpen(false);
+			}} 
+			onConfirm={() => {
+ 				handleDelete(entry._id); 
+				setDiaryEditing(false);
+			}}
 			isLoading={isDeleting}
 		/>
 

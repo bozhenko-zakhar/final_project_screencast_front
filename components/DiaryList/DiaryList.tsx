@@ -4,13 +4,13 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import css from "./DiaryList.module.css";
-
 import { fetchDiaries } from "@/lib/api/clientApi/diaries";
 
 import AddDiaryEntryModal from "@/components/AddDiaryEntryModal/AddDiaryEntryModal";
 import { DiaryEntryForm } from "@/components/AddDiaryEntryForm/AddDiaryEntryForm";
 import DiaryEntryCard from "@/components/DiaryList/DiaryEntryCard/DiaryEntryCard";
+
+import css from "./DiaryList.module.css";
 
 const DiaryList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
