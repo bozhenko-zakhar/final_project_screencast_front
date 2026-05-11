@@ -12,7 +12,9 @@ export default function DiaryLayout({
 }: DiaryLayoutProps) {
   return (
 		<>
-      <GreetingBlock />
+			<div className={css.greeting_container}>
+      	<GreetingBlock />
+			</div>
 			<div className={css.diary_container}>
 				
 				<div className={css.children_container}>

@@ -5,7 +5,19 @@
   padding: 16px;
   background-color: var(--color-scheme-foreground);
   border-radius: 8px;
+
+	max-height: 727px;
+	overflow-y: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
 }
+
+@media (min-width: 1440px) {
+	.container {
+		height: 727px;
+	}
+}
+
 
 .header {
   display: flex;

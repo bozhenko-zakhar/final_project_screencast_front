@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  /* gap: 8px; */
+  padding: 24px;
+	background: var(--color-scheme-foreground);
+	border-radius: 32px;
+	min-height: 727px;
+}
+
+.empty_text {
+	font-family: var(--main-font);
+	font-weight: 700;
+	font-size: 18px;
+	letter-spacing: 0.01em;
+	color: var(--color-scheme-text);
+}

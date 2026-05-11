@@ -7,6 +7,8 @@ import DiaryEntryDetails from "@/components/DiaryList/DiaryEntryDetails/DiaryEnt
 
 import { fetchDiaries } from "@/lib/api/clientApi/diaries";
 
+import css from "./default.module.css"
+
 export default function DiaryDetailsDefault() {
   const searchParams = useSearchParams();
 
@@ -24,8 +26,11 @@ export default function DiaryDetailsDefault() {
 
   if (!currentDiary) {
     return (
-      <div className="p-6 text-gray-500">
-        Select diary entry
+			
+      <div className={css.container}>
+				<div className={css.empty_text}>
+					Select diary entry
+				</div>
       </div>
     );
   }
