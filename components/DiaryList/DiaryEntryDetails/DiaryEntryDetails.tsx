@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import css from "./DiaryEntryDetails.module.css";
@@ -78,24 +78,32 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
         <div className={css.header}>
           <div>
             <h2 className={css.title}>{entry.title}</h2>
-            <p className={css.date}>{formattedDate}</p>
+						<button
+              className={css.icon_container}
+              onClick={handleEdit}
+              disabled={isDeleting}>
+							<svg className={css.icon}>
+								<use href="/sprite.svg#edit_square"></use>
+							</svg>
+						</button>
           </div>
           <div className={css.actions}>
-            <button
-              className={css.editButton}
-              onClick={handleEdit}
-              disabled={isDeleting}
-            >
-              Редагувати
-            </button>
-            <button
-              className={css.deleteButton}
+            <p className={css.date}>{formattedDate}</p>
+						
+						<button
+              className={css.icon_container}
               onClick={() => setIsDeleteModalOpen(true)}
               disabled={isDeleting}
-            >
-              Видалити
-            </button>
+							>
+							<svg className={css.icon}>
+								<use href="/sprite.svg#delete_forever"></use>
+							</svg>
+						</button>
           </div>
+        </div>
+
+        <div className={css.content}>
+          <p className={css.description}>{entry.description}</p>
         </div>
 
         {entry.emotions && entry.emotions.length > 0 && (
@@ -107,10 +115,6 @@ const DiaryEntryDetails = ({ entry }: DiaryEntryDetailsProps) => {
             ))}
           </div>
         )}
-
-        <div className={css.content}>
-          <p className={css.description}>{entry.description}</p>
-        </div>
       </div>
 
 			<ConfirmationModal

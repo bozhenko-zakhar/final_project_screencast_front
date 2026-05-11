@@ -1,3 +1,4 @@
+import GreetingBlock from "@/components/DashBoardPage/DashboardPage_main/GreetingBlock/GreetingBlock";
 import css from "./layout.module.css"
 
 interface DiaryLayoutProps {
@@ -10,14 +11,18 @@ export default function DiaryLayout({
   details,
 }: DiaryLayoutProps) {
   return (
-    <div className="flex h-full">
-      <div className="flex-1">
-        {children}
-      </div>
+		<>
+      <GreetingBlock />
+			<div className={css.diary_container}>
+				
+				<div className={css.children_container}>
+					{children}
+				</div>
 
-      <aside className={`w-[400px] border-l ${css.is_desktop}`}>
-        {details}
-      </aside>
-    </div>
+				<aside className={`${css.details_container} ${css.is_desktop}`}>
+					{details}
+				</aside>
+			</div>
+		</>
   );
 }

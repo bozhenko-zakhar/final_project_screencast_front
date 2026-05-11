@@ -8,10 +8,6 @@ import DiaryList from "@/components/DiaryList/DiaryList";
 const DiariesClient = () => {
   return (
     <div className={css.container}>
-      <div className={css.greetingSection}>
-        <GreetingBlock />
-      </div>
-
       <div className={css.listSection}>
         <DiaryList />
       </div>
