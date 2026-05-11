@@ -1,7 +1,7 @@
 .card {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   padding: 16px;
   background-color: #fff4f6;
   border: 1px solid #e0e0e0;
@@ -18,21 +18,25 @@
 
 .content {
   display: flex;
-  flex-direction: column;
+	justify-content: space-between;
+  flex-direction: row;
   gap: 8px;
 }
 
 .title {
-  margin: 0;
-  font-size: 16px;
+  font-size: 18px;
+	line-height: 1.6;
   font-weight: 600;
   color: #333;
+	font-family: "Lato", sans-serif;
 }
 
 .date {
-  margin: 0;
-  font-size: 12px;
-  color: #999;
+  /* font-size: 18px; */
+	line-height: 1.6;
+  font-weight: 400;
+  color: #333;
+	font-family: "Lato", sans-serif;
 }
 
 .emotions {
@@ -42,10 +46,14 @@
 }
 
 .emotionTag {
-  display: inline-block;
-  padding: 4px 12px;
-  background-color: #f5f5f5;
-  border-radius: 16px;
-  font-size: 12px;
-  color: #666;
+	background: var(--color-scheme-foreground);
+	border: 1px solid var(--opacity-transparent);
+	border-radius: 100px;
+	padding-block: 2px;
+	padding-inline: 12px;
+
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.5;
+	color: var(--color-scheme-text);
 }

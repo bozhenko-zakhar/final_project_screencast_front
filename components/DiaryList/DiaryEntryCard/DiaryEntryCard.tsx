@@ -1,6 +1,6 @@
 "use client";
 
-import { DiaryEntryDetail, DiaryListItem } from "@/types/diary";
+import { DiaryEntryDetail } from "@/types/diary";
 import css from "./DiaryEntryCard.module.css";
 
 interface DiaryEntryCardProps {
