@@ -1,73 +1,85 @@
 'use client';
 
-import { useState, useRef, ChangeEvent } from 'react';
+import { useState, useRef, type ChangeEvent, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import toast from 'react-hot-toast'; 
+import toast from 'react-hot-toast';
 import axios from 'axios';
+
 import { useAuthStore } from '@/lib/store/authStore';
-import { nextServer } from '@/lib/api/api'; 
+import { nextServer } from '@/lib/api/api';
 import { getMe } from '@/lib/api/clientApi/users';
+
+import CalendarPicker from '@/components/CalendarPicker/CalendarPicker';
+
 import styles from './OnboardingForm.module.css';
+import css from '../Button/Button.module.css';
 
 export default function OnboardingForm() {
   const router = useRouter();
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const { setUser } = useAuthStore();
+
   const [isLoading, setIsLoading] = useState(false);
+
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const [name, setName] = useState('');
+
   const [dueDate, setDueDate] = useState('');
+
   const [gender, setGender] = useState('unknown');
 
   const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (file) {
       setAvatarFile(file);
       setAvatarPreview(URL.createObjectURL(file));
     }
   };
 
-  const validate = () => {
-    const newErrors: { [key: string]: string } = {};
-    if (!name.trim()) newErrors.name = "Ім'я є обов'язковим";
-    if (!dueDate) newErrors.dueDate = "Будь ласка, вкажіть дату";
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-  e.preventDefault();
-
-    if (!validate()) return;
+  const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+		
     setIsLoading(true);
 
     try {
-      const formData = new FormData();
-      formData.append('username', name); 
-      formData.append('dueDate', dueDate);
-      formData.append('gender', gender);
+      // update user data
+			if (dueDate) {
+				await nextServer.patch('/users/me', {
+					date: dueDate
+				});
+			}
+			
+			if (gender) {
+				await nextServer.patch('/users/me', {
+					gender: gender === 'unknown' ? null : gender,
+				});
+			}
+
+      // update avatar
       if (avatarFile) {
-        formData.append('avatar', avatarFile);
+        const avatarData = new FormData();
+
+        avatarData.append('avatar', avatarFile);
+
+        await nextServer.patch('/users/me/avatar', avatarData);
       }
 
-      await nextServer.patch('/users/me', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
       const updatedUser = await getMe();
+
       if (updatedUser) {
         setUser(updatedUser);
       }
-      
-      toast.success('Дані збережено успішно!');
-      router.push('/');
 
+      toast.success('Дані збережено успішно!');
+
+      router.push('/');
     } catch (error: unknown) {
       let errorMsg = 'Виникла помилка під час збереження даних';
 
@@ -76,7 +88,7 @@ export default function OnboardingForm() {
       } else if (error instanceof Error) {
         errorMsg = error.message;
       }
-      
+
       toast.error(errorMsg);
     } finally {
       setIsLoading(false);
@@ -85,30 +97,41 @@ export default function OnboardingForm() {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-
       <div className={styles.avatarSection}>
-        <div 
-          className={styles.avatarPreview} 
+        <div
+          className={styles.avatarPreview}
           onClick={() => fileInputRef.current?.click()}
         >
           {avatarPreview ? (
-            <Image src={avatarPreview} alt="Avatar" fill className={styles.image} />
+            <Image
+              src={avatarPreview}
+              alt="Avatar"
+              fill
+              sizes="164px"
+              className={styles.image}
+            />
           ) : (
-            <Image src="/Avatar-def.jpg" alt="Default Avatar" fill className={styles.image} />
+            <Image
+              src="/Avatar-def.jpg"
+              alt="Default Avatar"
+              fill
+              sizes="164px"
+              className={styles.image}
+            />
           )}
         </div>
-        
-        <input 
-          type="file" 
+
+        <input
+          type="file"
           accept="image/*"
           ref={fileInputRef}
           onChange={handleAvatarChange}
           className={styles.hiddenInput}
         />
-        
-        <button 
-          type="button" 
-          className={styles.uploadBtn}
+
+        <button
+          type="button"
+          className={css.button}
           onClick={() => fileInputRef.current?.click()}
         >
           Завантажити фото
@@ -116,50 +139,51 @@ export default function OnboardingForm() {
       </div>
 
       <div className={styles.inputGroup}>
-        <label>{"Ім'я"}</label>
-        <input
-          type="text"
-          placeholder="Введіть ваше ім'я"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            if (errors.name) setErrors({ ...errors, name: '' });
-          }}
-          className={errors.name ? styles.errorInput : ''}
-        />
-        {errors.name && <span className={styles.errorText}>{errors.name}</span>}
-      </div>
-
-      
-
-      <div className={styles.inputGroup}>
         <label>Стать дитини</label>
-        <select
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-        >
-          <option value="boy">Хлопчик</option>
-          <option value="girl">Дівчинка</option>
-          <option value="unknown">Ще не знаю</option>
-        </select>
+
+        <div className={styles.selectWrapper}>
+          <select
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            className={styles.customSelect}
+          >
+            <option value="boy">Хлопчик</option>
+
+            <option value="girl">Дівчинка</option>
+            <option value="unknown">Ще не знаю</option>
+          </select>
+
+          <svg width="12" height="7" className={styles.selectIcon}>
+            <use href="/sprite.svg#arrow-down" />
+          </svg>
+        </div>
       </div>
 
       <div className={styles.inputGroup}>
         <label>Планова дата пологів</label>
-        <input
-          type="date"
+
+        <CalendarPicker
           value={dueDate}
-          onChange={(e) => {
-            setDueDate(e.target.value);
-            if (errors.dueDate) setErrors({ ...errors, dueDate: '' });
+          placeholder="дд.мм.рррр"
+          error={Boolean(errors.dueDate)}
+          onChange={(date) => {
+            setDueDate(date);
+
+            if (errors.dueDate) {
+              setErrors({ ...errors, dueDate: '' });
+            }
           }}
-          className={errors.dueDate ? styles.errorInput : ''}
         />
-        {errors.dueDate && <span className={styles.errorText}>{errors.dueDate}</span>}
+
+        {errors.dueDate && (
+          <span className={styles.errorText}>
+            {errors.dueDate}
+          </span>
+        )}
       </div>
 
-      <button 
-        type="submit" 
+      <button
+        type="submit"
         className={styles.submitBtn}
         disabled={isLoading}
       >

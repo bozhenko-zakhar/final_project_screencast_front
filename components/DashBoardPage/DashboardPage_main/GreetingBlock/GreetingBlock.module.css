@@ -4,16 +4,14 @@
     justify-content: flex-start;
     gap: 12px;
     min-height: 34px;
-    /* padding: 24px 32px 0; */
 }
 .title {
-    margin-top: 16px;
     font-weight: 700;
     font-size: 24px;
     line-height: 1.4;
     letter-spacing: 1px;
     color: #000;
-    font-family: var(--second-family);
+    font-family: var(--main-font);
 }
 @media screen and (min-width: 1440px){
     .greeting {

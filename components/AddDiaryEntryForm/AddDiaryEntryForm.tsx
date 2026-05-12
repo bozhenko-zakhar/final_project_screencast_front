@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -9,25 +8,68 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 
 import { Emotion, fetchEmotions } from "@/lib/api/clientApi/emotions";
-import { DiaryEntryDetail } from "@/types/diary";
-import { useDiaryStore } from "@/lib/store/diaryStore";
+import { createDiaryEntry, updateDiaryEntry } from "@/lib/api/clientApi/diaries";
 
 import css from "./AddDiaryEntryForm.module.css";
+import { DiaryEntry } from "@/types/diary";
 
-interface DiaryEntryFormProps {
-  onClose: () => void;
-  initialData?: DiaryEntryDetail;
+type UpdateDiaryPayload = {
+  id: string;
+  payload: {
+    title: string;
+    emotions: string[];
+    description: string;
+    date: string;
+  };
+};
+
+type CreatePayload = {
+	title: string;
+	emotions: string[];
+	description: string;
+	date: string;
 }
 
-export const DiaryEntryForm = ({ onClose, initialData }: DiaryEntryFormProps) => {
-  const { createEntry, updateEntry } = useDiaryStore();
-  const [isPending, setIsPending] = useState(false);
-  const isEditing = !!initialData;
+export const DiaryEntryForm = ({ onClose, type, currentId }: { onClose: () => void, type: string, currentId: string }) => {
+  const queryClient = useQueryClient();
 
-  const { data: emotions = [] } = useQuery({
+	const { data: emotions = [] } = useQuery({
     queryKey: ["emotions"],
     queryFn: fetchEmotions,
+    });
+    
+  const createMutate = useMutation({
+    mutationFn: createDiaryEntry,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["diary"] });
+      toast.success("Збережено!");
+      onClose();
+    },
+    onError: () => toast.error("Помилка створення запису!"),
   });
+    
+	const updateMutate = useMutation({
+		mutationFn: ({ id, payload }: UpdateDiaryPayload) =>
+			updateDiaryEntry(id, payload),
+
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ["diary"],
+			});
+
+			toast.success("Збережено!");
+
+			onClose();
+		},
+
+		onError: () => {
+			toast.error("Помилка запиту");
+		},
+	});
+
+	async function handleCreateDiary(payload: CreatePayload) {
+    await createMutate.mutateAsync(payload);
+	}
 
   const initialValues = {
     title: initialData?.title || "",
@@ -43,30 +85,29 @@ export const DiaryEntryForm = ({ onClose, initialData }: DiaryEntryFormProps) =>
         description: Yup.string().min(1).max(1000).required("Обов'язкове поле"),
         emotions: Yup.array().min(1, "Оберіть хоча б одну категорію").required("Обов'язково"),
       })}
-      onSubmit={async (values) => {
-        setIsPending(true);
-        try {
-          if (isEditing && initialData) {
-            await updateEntry(initialData.id, {
-              title: values.title,
-              description: values.description,
-              emotions: values.emotions,
-            });
-            toast.success("Оновлено!");
-          } else {
-            await createEntry({
-              ...values,
-              date: new Date().toISOString().split('T')[0],
-            });
-            toast.success("Збережено!");
-          }
-          onClose();
-        } catch {
-          toast.error("Помилка запиту");
-        } finally {
-          setIsPending(false);
-        }
-      }}
+      onSubmit={(values) => {
+				const payload: DiaryEntry = {
+					...values,
+					date: new Date().toISOString().split("T")[0],
+				};
+
+				if (type !== "edit") {
+					handleCreateDiary(payload);
+
+					return;
+				}
+
+				if (!currentId) {
+					toast.error("Diary id not found");
+
+					return;
+				}
+
+				updateMutate.mutate({
+					id: currentId,
+					payload,
+				});
+			}}
     >
       {({ values, errors }) => (
         <Form className={css.form}>
@@ -76,71 +117,67 @@ export const DiaryEntryForm = ({ onClose, initialData }: DiaryEntryFormProps) =>
             <ErrorMessage name="title" component="div" className={css.error}  />
           </div>
 
-        <div className={css.field}>
-  <label className={css.label}>Категорії</label>
-  
-  <input type="checkbox" id="category-toggle" className={css.toggleCheckbox} />
-  
-  <div className={css.selectWrapper}>
-    <label 
-      htmlFor="category-toggle" 
-      className={css.customSelect}
-      aria-invalid={!!errors.emotions}
-    >
-      <div className={css.selectedTags}>
-        {values.emotions.length > 0 ? (
-          values.emotions.map((emoValue: string) => {
-            const emoLabel = emotions.find(e => e._id.$oid === emoValue)?.title;
-            return <span key={emoValue} className={css.tag}>{emoLabel}</span>;
-          })
-        ) : (
-          <span className={css.placeholder}>Оберіть категорію</span>
-        )}
-      </div>
-      <span className={css.arrow}></span>
-    </label>
+					<div className={css.field}>
+					<label className={css.label}>Категорії</label>
+					
+					<input type="checkbox" id="category-toggle" className={css.toggleCheckbox} />
+					
+					<div className={css.selectWrapper}>
+						<label 
+							htmlFor="category-toggle" 
+							className={css.customSelect}
+							aria-invalid={!!errors.emotions}
+						>
+							<div className={css.selectedTags}>
+								{values.emotions.length > 0 ? (
+									values.emotions.map((emoValue: string) => {
+										const emoLabel = emotions.find(e => e._id === emoValue)?.title;
+										return <span key={emoValue} className={css.tag}>{emoLabel}</span>;
+									})
+								) : (
+									<span className={css.placeholder}>Оберіть категорію</span>
+								)}
+							</div>
+							<span className={css.arrow}></span>
+						</label>
 
-    <div className={css.optionsList}>
-      {emotions.map((emo: Emotion) => (
-        <label key={emo._id.$oid} className={css.optionItem}>
-          <Field
-            type="checkbox"
-            name="emotions"
-            value={emo._id.$oid} // Передаємо ID в Formik
-            className={css.hiddenCheckbox}
-          />
-          <div className={css.customCheckbox}></div>
-          <span className={css.optionText}>{emo.title}</span>
-        </label>
-      ))}
-    </div>
-  </div>
+						<ul className={css.optionsList}>
+							{emotions.map((emo: Emotion) => (
+								<li key={`${emo._id}`} className={css.optionItem}>
+									<Field
+										id={emo._id}
+										type="checkbox"
+										name="emotions"
+										value={`${emo._id}`} // Передаємо ID в Formik
+										// checked={true}
+										className={css.hiddenCheckbox}
+									/>
+									<label htmlFor={`${emo._id}`} className={css.customCheckbox}></label>
+									<span className={css.optionText}>{emo.title}</span>
+								</li>
+							))}
+						</ul>
+					</div>
 
-   <ErrorMessage name="emotions" component="div" className={css.error} />
-</div>
+					<ErrorMessage name="emotions" component="div" className={css.error} />
+					</div>
 
-          <div className={css.field}>
-            <label className={css.label}>Запис</label>
-            <Field 
-              as="textarea" 
-              name="description" 
-              className={css.textarea} 
-              placeholder="Запишіть, як ви себе відчуваєте"
-              aria-invalid={!!errors.description}      
-            />
-            <ErrorMessage name="description" component="div" className={css.error} />
-          </div>
+					<div className={css.field}>
+						<label className={css.label}>Запис</label>
+						<Field 
+							as="textarea" 
+							name="description" 
+							className={css.textarea} 
+							placeholder="Запишіть, як ви себе відчуваєте"
+							aria-invalid={!!errors.description}      
+						/>
+						<ErrorMessage name="description" component="div" className={css.error} />
+					</div>
 
-          <button type="submit" disabled={isPending} className={css.submitBtn}>
-            {isPending 
-              ? isEditing 
-                ? "Оновлення..." 
-                : "Збереження..." 
-              : isEditing 
-              ? "Оновити" 
-              : "Зберегти"}
-          </button>
-        </Form>
+					<button type="submit" className={css.submitBtn}>
+						Зберегти       
+					</button>
+				</Form>
       )}
     </Formik>
   );

@@ -2,6 +2,8 @@
   width: 100%;
   max-width: 335px;
   box-sizing: border-box;
+
+  margin-top: 16px;
 }
 
 .aboutBabyContainer {
@@ -15,7 +17,7 @@
   line-height: 140%;
   letter-spacing: 0.01em;
   margin-bottom: 16px;
-  font-family: var(--second-family);
+  font-family: var(--accent-font);
 }
 
 .babyDescriptionContainer {
@@ -34,14 +36,14 @@
 }
 
 .titlesOfBabyToday {
-  font-family: var(--font-family);
+  font-family: var(--main-font);
   font-weight: 700;
   font-size: 16px;
   line-height: 150%;
 }
 
 .babyDescriptionText {
-  font-family: var(--font-family);
+  font-family: var(--main-font);
   font-weight: 400;
   font-size: 16px;
   line-height: 150%;
@@ -57,6 +59,7 @@
 @media screen and (min-width: 768px) {
   .descriptionAboutBaby {
     max-width: 704px;
+    margin-top: 32px;
   }
 
   .babyDescriptionContainer {

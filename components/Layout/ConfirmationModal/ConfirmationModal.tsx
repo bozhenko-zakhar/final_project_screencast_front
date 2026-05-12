@@ -1,7 +1,6 @@
 'use client';
 
 import Modal from '@/components/modals/Modal/Modal';
-
 import css from './ConfirmationModal.module.css';
 
 type ConfirmationModalProps = {
@@ -18,7 +17,6 @@ type ConfirmationModalProps = {
 
 const ConfirmationModal = ({
   isOpen,
-  title,
   confirmButtonText,
   cancelButtonText,
   onConfirm,
@@ -32,7 +30,37 @@ const ConfirmationModal = ({
   return (
     <Modal onClose={onCancel}>
       <div className={css.wrapper}>
-        <h2 className={css.title}>{title}</h2>
+        <button
+          type="button"
+          className={css.closeButton}
+          onClick={onCancel}
+          aria-label="Закрити модальне вікно"
+        >
+          <svg className={css.closeIcon} aria-hidden="true">
+            <use href="/sprite.svg#close" />
+          </svg>
+        </button>
+
+        <h2 className={css.title}>
+          Ви точно
+          <span className={css.mobileBreak}>
+            <br />
+          </span>
+
+          <span className={css.tabletSpace}> </span>
+          хочете
+
+          <span className={css.mobileBreak}>
+            <br />
+          </span>
+
+          <span className={css.desktopBreak}>
+            <br />
+          </span>
+
+          <span className={css.tabletSpace}> </span>
+          вийти?
+        </h2>
 
         {description && <p className={css.text}>{description}</p>}
 

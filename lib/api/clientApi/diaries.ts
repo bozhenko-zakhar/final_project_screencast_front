@@ -7,7 +7,7 @@ import {
 } from "@/types/diary";
 
 const transformBackendEntry = (entry: BackendDiaryEntry): DiaryEntryDetail => ({
-  id: entry._id.$oid,
+  _id: entry._id.$oid,
   title: entry.title,
   date: entry.date,
   description: entry.description,
@@ -17,21 +17,14 @@ const transformBackendEntry = (entry: BackendDiaryEntry): DiaryEntryDetail => ({
   })),
 });
 
-export const createDiaryEntry = async (payload: DiaryEntry): Promise<DiaryEntryDetail> => {
-  const response = await nextServer.post<BackendDiaryEntry>("/diary", payload);
-  return transformBackendEntry(response.data);
+export const createDiaryEntry = async (payload: DiaryEntry): Promise<DiaryEntry> => {
+  const response = await nextServer.post<BackendDiaryEntry>("/diaries", payload);
+  return response.data.data;
 };
 
 export const fetchDiaries = async (): Promise<DiaryListItem[]> => {
   const response = await nextServer.get("/diaries");
-  return [{  id: "123",
-  title: "123",
-  date: "123",
-  description: "123",
-  emotions: [{
-    id: "string",
-    title: "string",
-  }]}];
+  return response.data.data ;
 };
 
 export const getDiaryEntry = async (entryId: string): Promise<DiaryEntryDetail> => {

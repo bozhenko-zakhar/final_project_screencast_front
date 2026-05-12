@@ -1,16 +1,15 @@
 "use client";
 
+import { useAuthStore } from "@/lib/store/authStore";
+import { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import type { FieldProps } from "formik";
 import * as Yup from "yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUser } from "@/lib/api/clientApi/users";
 import type { User, UpdateUserPayload, FormValues } from "@/types/user";
 import css from "./ProfileEditForm.module.css";
 import { useRouter } from "next/navigation";
-import DatePicker from "react-datepicker";
-import { useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
-import type { FieldProps } from "formik";
 import Select, {
   components,
   type SingleValue,
@@ -18,6 +17,7 @@ import Select, {
   type ClassNamesConfig,
 } from "react-select";
 import toast from "react-hot-toast";
+import CalendarPicker from "@/components/CalendarPicker/CalendarPicker";
 
 interface Props {
   user: User;
@@ -29,8 +29,6 @@ const validationSchema = Yup.object({
   gender: Yup.string().oneOf(["", "boy", "girl"]),
   dueDate: Yup.string().nullable(),
 });
-
-// ===============SETINGS-FOR-SELECT-LIBA================
 
 const genderOptions = [
   { value: "", label: "Не вибрано" },
@@ -65,13 +63,17 @@ const selectClassNames: ClassNamesConfig<GenderOption, false> = {
   indicatorSeparator: () => css.selectSeparator,
 };
 
-// ===============END-SETINGS-FOR-SELECT-LIBA================
-
 export default function ProfileEditForm({ user }: Props) {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
 
-  const [isDateOpen, setIsDateOpen] = useState(false);
+  useEffect(() => {
+    const gender = user?.gender;
+
+    document.body.dataset.theme =
+      gender === "girl" || gender === "boy" ? gender : "neutral";
+  }, [user?.gender]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateUser,
@@ -88,11 +90,11 @@ export default function ProfileEditForm({ user }: Props) {
       validationSchema={validationSchema}
       enableReinitialize
       onSubmit={(values, { resetForm }) => {
-        // =================ДОДАТКОВЕ-1==============================
-        // const isEmailChanged = values.email !== user.email;
-        // =================енд-ДОДАТКОВЕ-1==============================
-
-        const payload: UpdateUserPayload = {};
+        const payload: Partial<UpdateUserPayload> & {
+          name?: string;
+          date?: string | null;
+          newEmail?: string;
+        } = {};
 
         if (values.username !== user.name) {
           payload.name = values.username;
@@ -112,16 +114,17 @@ export default function ProfileEditForm({ user }: Props) {
           payload.gender = values.gender || null;
         }
 
-        mutate(payload, {
+        mutate(payload as UpdateUserPayload, {
           onSuccess: async (updatedUser) => {
+            setUser(updatedUser);
             queryClient.setQueryData(["user"], updatedUser);
 
-            toast.success("Профіль оновлено");
+            document.body.dataset.theme =
+              updatedUser.gender === "girl" || updatedUser.gender === "boy" ?
+                updatedUser.gender
+              : "neutral";
 
-            /* if (isEmailChanged) {
-              await sendVerifyEmail(values.email);
-              toast.success("Лист підтвердження відправлено");
-            } */
+            toast.success("Профіль оновлено");
 
             resetForm({
               values: {
@@ -133,7 +136,7 @@ export default function ProfileEditForm({ user }: Props) {
               },
             });
 
-            router.refresh();
+            // router.refresh();
           },
 
           onError: () => {
@@ -201,34 +204,24 @@ export default function ProfileEditForm({ user }: Props) {
               <div className={css.inputWrapper}>
                 <Field name="dueDate">
                   {({ field, form }: FieldProps<string, FormValues>) => (
-                    <DatePicker
-                      selected={field.value ? new Date(field.value) : null}
-                      open={isDateOpen}
-                      onInputClick={() => setIsDateOpen(true)}
-                      onClickOutside={() => setIsDateOpen(false)}
-                      onChange={(date: Date | null) => {
-                        form.setFieldValue(
-                          "dueDate",
-                          date ? date.toISOString().split("T")[0] : "",
-                        );
-                        form.setFieldTouched("dueDate", true);
+                    <CalendarPicker
+                      id="dueDate"
+                      value={field.value}
+                      placeholder="Оберіть дату"
+                      disabled={isPending}
+                      onChange={(date) => {
+                        form.setFieldValue("dueDate", date);
+                        form.setFieldTouched("dueDate", true, false);
                       }}
-                      onSelect={() => {
-                        setTimeout(() => {
-                          setIsDateOpen(false);
-                        }, 0);
-                      }}
-                      dateFormat="dd.MM.yyyy"
-                      className={`${css.input} ${css.inputDate}`}
-                      placeholderText="Оберіть дату"
                     />
                   )}
                 </Field>
-
-                <svg className={css.icon}>
-                  <use href="/sprite.svg#arrow-down" />
-                </svg>
               </div>
+              <ErrorMessage
+                name="dueDate"
+                component="p"
+                className={css.error}
+              />
             </label>
           </div>
 

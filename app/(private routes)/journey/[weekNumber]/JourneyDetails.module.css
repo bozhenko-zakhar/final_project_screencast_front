@@ -22,19 +22,20 @@
   gap: 24px;
 }
 
+
 @media only screen and (min-width: 1440px) {
-      .momBodyChange {
-        flex-wrap: wrap;
-        height: 540px;
-        width: 1064px;
-        margin: 0 auto;
-     }
+  .momBodyChange {
+    flex-wrap: wrap;
+    height: 540px;
+    width: 1064px;
+    margin: 0 auto;
+  }
 
-       .importantTasks {
-        width: 390px;
-        background-color: #fff4f6;
-        height: 540px;
-        border-radius: 32px;
+  .importantTasks {
+    width: 390px;
+    background-color: var(--color-scheme-accent);
+    height: 540px;
+    border-radius: 32px;
 
-    }
+  }
 }

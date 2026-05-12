@@ -39,13 +39,15 @@ export default function RegisterForm() {
   return (
     <div className={css.page}>
       <div className={css.logo}>
-        <svg className={css.logoIcon} width={30} height={30}>
-          <use href="/icons.svg#logo" />
-        </svg>
-        <svg className={css.logoLeleka} width={60} height={13}>
-          <use href="/icons.svg#icon-leleka" />
-        </svg>
-      </div>
+  <svg className={css.logoIcon} width={30} height={30}>
+    <use href="/public/logo.svg#logo" />
+  </svg>
+  <svg className={css.logoLeleka} width={60} height={13}>
+    <use href="/public/sprite.svg#icon-leleka" />
+  </svg>
+</div>
+
+
 
       <div className={css.center}>
         <Formik
@@ -72,7 +74,7 @@ export default function RegisterForm() {
 
               setUser(user);
               resetForm();
-              router.push('/');
+              router.push('/onboarding');
             } catch (error: unknown) {
               if (isAxiosError(error)) {
                 toast.error(
@@ -165,23 +167,12 @@ export default function RegisterForm() {
               <p className={css.register}>
                 Вже маєте аккаунт?{' '}
                 <span>
-                  <Link href="/login">Увійти</Link>
+                  <Link href="/auth/login">Увійти</Link>
                 </span>
               </p>
             </Form>
           )}
         </Formik>
-
-        <form>
-          <input
-            onChange={(e) => setDueDate(e.target.value)}
-            placeholder="dueDate"
-          />
-          <input
-            onChange={(e) => setGender(e.target.value)}
-            placeholder="gender"
-          />
-        </form>
       </div>
     </div>
   );

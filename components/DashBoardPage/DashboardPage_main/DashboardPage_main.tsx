@@ -1,27 +1,30 @@
-// components/DashboardPage/DashboardPage_main/DashboardPage_main.tsx
-
-"use client";
 import GreetingBlock from "./GreetingBlock/GreetingBlock";
 import TasksReminderCard from "./TasksReminderCard/TasksReminderCard";
 import FeelingCheckCard from "./FeelingCheckCard/FeelingCheckCard";
-import styles from "../DashboardPage_main/DashboardPage_main.module.css";
-
 import StatusBlock from "./StatusBlock/StatusBlock";
 import BabyTodayCard from "./BabyTodayCard/BabyTodayCard";
 import MomTipCard from "./MomTipCard/MomTipCard";
 
+import styles from "./DashboardPage_main.module.css";
 
-const DashboardPage = () => {
+type Props = {
+	token: string
+}
+
+const DashboardPage = ({token}: Props) => {
+	
   return (
     <section className={styles.dashboard}>
       <div className={styles.greetingWrapper}>
         <GreetingBlock />
       </div>
+
       <div className={styles.leftColumn}>
-        <StatusBlock />
-        <BabyTodayCard />
-        <MomTipCard />
+				<StatusBlock token={token}/>
+				<BabyTodayCard token={token}/>
+				<MomTipCard token={token}/>
       </div>
+
       <div className={styles.rightColumn}>
         <TasksReminderCard />
         <FeelingCheckCard />

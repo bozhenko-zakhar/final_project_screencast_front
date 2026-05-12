@@ -5,7 +5,7 @@
   /* min-width: 335px; */
   width: 100%;
   padding: 4px;
-  background-color: #fff4f6;
+  background-color: var(--color-scheme-foreground);
   margin: 0 auto 16px auto;
 }
 
@@ -13,22 +13,24 @@
   border-radius: 100px;
   padding: 10px 0;
   border: none;
-  background-color: #fff4f6;
+  background-color: transparent;
   flex-basis: calc(100% / 2);
+	font-family: var(--main-font);
   font-weight: 400;
   font-size: 14px;
   line-height: 150%;
+  cursor: pointer;
 }
 
 .babyMomButton.active {
-  background-color: #ffdae0;
-    font-weight: 500;
+  background-color: var(--color-scheme-foreground-alt);
+  font-weight: 500;
   line-height: 160%;
 }
 
 @media only screen and (min-width: 1440px) {
-     .toggle {
-        max-width: 572px;
-       margin: 0 auto 16px;
-    }
+  .toggle {
+    max-width: 572px;
+    margin: 0 auto 16px;
+  }
 }

@@ -1,22 +1,22 @@
-import { Lato, Comfortaa } from "next/font/google";
+import { Nunito, Comfortaa } from "next/font/google";
 import "./globals.css";
 import "modern-normalize/modern-normalize.css";
-import "modern-normalize";
 import { AuthProvider } from "@/components/AuthProvider/AuthProvider";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
+import GlobalLoader from "@/components/GlobalLoader/GlobalLoader";
 import { Toaster } from "react-hot-toast";
 
-const lato = Lato({
-  subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
-  variable: "--font-lato",
+const nunito = Nunito({
+  subsets: ["latin", "cyrillic"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  variable: "--main-font",
   display: "swap",
 });
 
 const comfortaa = Comfortaa({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-comfortaa",
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--accent-font",
   display: "swap",
 });
 
@@ -26,19 +26,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-		  <body className={`${lato.variable} ${comfortaa.variable}`}>		
-			  <TanStackProvider>
-				  <AuthProvider>
-            {children}
-          </AuthProvider>
-			  </TanStackProvider>
+    <html lang="uk">
+      <body className={`${nunito.variable} ${comfortaa.variable}`}>
+        <TanStackProvider>
+          <AuthProvider>{children}</AuthProvider>
+          <GlobalLoader />
+        </TanStackProvider>
+
         <Toaster
           position="top-right"
           toastOptions={{
             duration: 3000,
             style: {
               fontSize: "14px",
+              fontFamily: "var(--font-family)",
             },
           }}
         />

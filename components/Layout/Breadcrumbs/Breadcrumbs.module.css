@@ -18,6 +18,7 @@
 }
 
 .link {
+	font-family: var(--main-font);
 	color: #4b5563;
 	text-decoration: none;
 }
@@ -27,10 +28,12 @@
 }
 
 .current {
+	font-family: var(--main-font);
 	color: #111827;
 	font-weight: 700;
 }
 
 .separator {
+	font-family: var(--main-font);
 	color: #9ca3af;
 }

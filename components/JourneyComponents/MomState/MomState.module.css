@@ -5,12 +5,13 @@
 }
 
 .possibleFeelings {
-  background-color: #fff4f6;
+  background-color: var(--color-scheme-foreground);
   border-radius: 32px;
   padding: 24px;
 }
 
 .feelingsHeader {
+	font-family: var(--accent-font);
   font-weight: 700;
   font-size: 18px;
   line-height: 140%;
@@ -20,7 +21,6 @@
 
 .feelingsList {
   list-style-type: none;
-  display: flex;
   gap: 8px;
   margin-bottom: 8px;
 }
@@ -29,28 +29,35 @@
   padding: 4px 10px;
   background-color: #0000000d;
   border-radius: 100px;
+	font-family: var(--main-font);
   font-weight: 600;
   font-size: 12px;
   line-height: 160%;
   text-align: center;
-  display: flex;
+  display: inline-block;
   align-items: center;
   justify-content: center;
   flex-basis: calc((100% - 16px) / 3);
 }
 
+.feeling:not(:last-child) {
+	margin-right: 8px;
+}
+
 .feelingDescr {
+	font-family: var(--main-font);
   font-size: 14px;
   line-height: 150%;
 }
 
 .adviceSection {
-  background-color: #fff4f6;
+  background-color: var(--color-scheme-foreground);
   border-radius: 32px;
   padding: 24px;
 }
 
 .adviceHeader {
+	font-family: var(--accent-font);
   font-weight: 700;
   font-size: 18px;
   line-height: 140%;
@@ -80,12 +87,14 @@
 }
 
 .adviceType {
+	font-family: var(--main-font);
   font-weight: 700;
   font-size: 14px;
   line-height: 160%;
 }
 
 .adviceDescr {
+	font-family: var(--main-font);
   font-size: 14px;
   line-height: 150%;
 }
@@ -98,9 +107,7 @@
 }
 
 @media screen and (min-width: 768px) {
-    .feelingsList {
-      max-width: 50%;
-    }
+
   .icon {
     width: 24px;
   }
@@ -116,15 +123,12 @@
 
   .possibleFeelings {
     max-width: 650px;
-    height: 194px;
-      overflow-y: auto;
+    overflow-y: auto;
   }
 
   .adviceSection {
     max-width: 650px;
-    height: 322px;
-    overflow-y: auto; 
-
+    overflow-y: auto;
   }
 
   .feelingsHeader {

@@ -2,9 +2,7 @@
 
 import Modal from '../Modal/Modal';
 import AddTaskForm from './AddTaskForm';
-
 import styles from './AddTaskModal.module.css';
-
 import type { CreateTaskPayload } from '@/types/tasks';
 
 type AddTaskModalProps = {
@@ -30,16 +28,21 @@ export default function AddTaskModal({
   return (
     <Modal onClose={onClose}>
       <div className={styles.wrapper}>
-        <button
-          type="button"
-          className={styles.closeButton}
-          onClick={onClose}
-          aria-label="Закрити модальне вікно"
-        >
-          ×
-        </button>
-
-        <h2 className={styles.title}>Нове завдання</h2>
+       <button
+  type="button"
+  className={styles.closeButton}
+  onClick={onClose}
+  aria-label="Закрити модальне вікно"
+>
+  <svg className={styles.closeIcon} aria-hidden="true">
+    <use href="/sprite.svg#close" />
+  </svg>
+</button>
+        <h2 className={styles.title}>
+          <span className={styles.titleLine}>Нове</span>
+          <span className={styles.desktopSpace}> </span>
+          <span className={styles.titleLine}>завдання</span>
+        </h2>
 
         <AddTaskForm
           initialValues={initialValues}

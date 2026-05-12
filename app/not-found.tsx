@@ -1,10 +1,15 @@
-const NotFound = () => {
-	return (
-		<>
-			<h1>404 - Page not found</h1>
-			<p>Sorry, the page you are looking for does not exist.</p>
-		</>
-	)
-}
+import styles from './loading.module.css';
 
-export default NotFound;
+export default function Loading() {
+  return (
+    <div className={styles.wrapper}>
+      <div className={styles.loader}>
+        <div className={styles.circle}></div>
+        <div className={styles.circle}></div>
+        <div className={styles.circle}></div>
+      </div>
+
+      <p className={styles.text}>Завантаження...</p>
+    </div>
+  );
+}

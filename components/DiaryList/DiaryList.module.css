@@ -3,9 +3,21 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px;
-  background-color: #fff4f6;
+  background-color: var(--color-scheme-foreground);
   border-radius: 8px;
+
+	max-height: 727px;
+	overflow-y: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
 }
+
+@media (min-width: 1440px) {
+	.container {
+		height: 727px;
+	}
+}
+
 
 .header {
   display: flex;
@@ -16,12 +28,14 @@
 }
 
 .title {
+	font-family: var(--accent-font);
   margin: 0;
   font-size: 24px;
   font-weight: 600;
 }
 
 .addButton {
+	font-family: var(--main-font);
   background: none;
   border: none;
   color: black;
@@ -45,8 +59,9 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
+
 
 .loading,
 .error,
@@ -71,7 +86,6 @@
   }
 
   .title {
-    font-family: var(--second-family);
     font-weight: 700;
     font-size: 18px;
     line-height: 140%;
@@ -80,7 +94,6 @@
   }
 
   .addButton {
-    font-family: var(--font-family);
     font-weight: 500;
     font-size: 14px;
     line-height: 160%;
@@ -95,7 +108,6 @@
   }
 
   .title {
-    font-family: var(--second-family);
     font-weight: 700;
     font-size: 18px;
     line-height: 140%;
@@ -104,7 +116,6 @@
   }
 
   .addButton {
-    font-family: var(--font-family);
     font-weight: 500;
     font-size: 14px;
     line-height: 160%;

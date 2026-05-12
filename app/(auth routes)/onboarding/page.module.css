@@ -2,53 +2,68 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 16px 40px;
+    padding: 0 20px;
     min-height: 100vh;
     position: relative;
-    background-color: var(--color-scheme-background);
 }
 
 .plantImage {
     display: none;
-    /* Приховуємо великий декор на мобільних, якщо його немає в макеті */
-}
-
-.header {
-    width: 100%;
-    margin-bottom: 32px;
-    text-align: center;
 }
 
 .title {
-        font-family: var(--second-family);
-        font-weight: 700;
-        font-size: 36px;
-        line-height: 120%;
-        letter-spacing: 0.01em;
-        text-align: center;
-        color: var(--color-scheme-text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    line-height: 1.2;
+		font-family: var(--accent-font);
+    font-weight: 700;
+    font-size: 36px;
+    letter-spacing: 0.01em;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.titleLine {
+    display: block;
 }
 
 @media (min-width: 768px) {
     .container {
-        padding: 80px 40px;
-        /* Збільшуємо простір зверху та знизу */
+        padding: 0px 32px;
         justify-content: flex-start;
-        background-color: var(--color-scheme-background);
     }
 
-    .plantImage {
-        display: none;
-        /* Рослина залишається прихованою за вашим запитом */
-    }
 
-    .header {
-        margin-bottom: 48px;
-    }
+.title {
+    text-align: center;
+    width: 480px;
+    height: 86px;
+}
 
+}
+
+@media (min-width: 1440px) {
+    .container {
+            padding: 0 64px;
+            padding-right: 50%;
+            justify-content: center;
+        }
+    
     .title {
-        font-size: 36px;
-        line-height: 1.2;
-        margin-top: 0;
+            font-weight: 700;
+            font-size: 48px;
+            height: 174px;
+            
     }
+    .plantImage {
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            object-fit: cover;
+        }
 }

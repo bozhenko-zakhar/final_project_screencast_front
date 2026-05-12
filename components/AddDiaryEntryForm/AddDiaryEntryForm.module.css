@@ -16,15 +16,15 @@
     margin-bottom: 8px;
 }
 
-.input,
+customCheckbox .input,
 .textarea {
     width: 100%;
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--opacity-neutral-darkest-5);
 }
 
 .input {
     font-family: "Lato", sans-serif;
-
+    background: var(--opacity-neutral-darkest-5);
     border: 2px solid rgba(255, 255, 255, 0);
     border-radius: 12px;
     padding: 8px 12px;
@@ -60,7 +60,7 @@
 
 .input::placeholder,
 .textarea::placeholder {
-color: rgba(0, 0, 0, 0.6);
+    color: rgba(0, 0, 0, 0.6);
 }
 
 .field {
@@ -80,26 +80,26 @@ color: rgba(0, 0, 0, 0.6);
 
 .input[aria-invalid="true"],
 .textarea[aria-invalid="true"] {
-border: 2px solid #ffcbd3;
+    border: 2px solid var(--opacity-transparent);
     border-radius: 12px;
 }
 
 .submitBtn {
     border: none;
     cursor: pointer;
-border-bottom: 4px solid #ffcbd3;
+    border-bottom: 4px solid var(--color-scheme-accent);
     border-radius: 100px;
     padding: 10px 24px;
     width: 294px;
     height: 42px;
 
-background: #ffdae0;
+    background: var(--color-scheme-foreground-alt);
 
     font-family: "Lato", sans-serif;
     font-weight: 500;
-        font-size: 14px;
-        line-height: 1.6;
-        color: #000;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #000;
 }
 
 .submitBtn:hover {
@@ -108,9 +108,9 @@ background: #ffdae0;
 }
 
 .submitBtn:disabled {
-    background: #ffdae0;
+    background: var(--color-scheme-foreground-alt);
     opacity: 0.3;
-    border-bottom: 4px solid #ffcbd3;
+    border-bottom: 4px solid var(--color-scheme-accent);
     cursor: not-allowed;
 }
 
@@ -131,20 +131,20 @@ background: #ffdae0;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    background: #f2f2f2;
+    background: var(--color-neutral-lightest);
     cursor: pointer;
- 
-border: 1px solid rgba(255, 255, 255, 0);
+
+    border: 1px solid rgba(255, 255, 255, 0);
     border-radius: 12px;
     padding: 8px 12px;
     width: 294px;
     min-height: 48px;
     height: auto;
-   
+
 }
 
 .toggleCheckbox:checked~.selectWrapper .customSelect {
-border-left: 1px solid rgba(0, 0, 0, 0.15);
+    border-left: 1px solid rgba(0, 0, 0, 0.15);
     border-right: 1px solid rgba(0, 0, 0, 0.15);
     border-top: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 12px 12px 0 0;
@@ -161,10 +161,10 @@ border-left: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .tag {
-background: rgba(0, 0, 0, 0.05);
-padding: 4px 10px;
-border: 1px solid rgba(255, 255, 255, 0);
-border-radius: 100px;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 4px 10px;
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 100px;
     font-size: 12px;
     line-height: 1.6;
     color: #000;
@@ -172,15 +172,15 @@ border-radius: 100px;
 }
 
 .placeholder {
-font-family: "Lato", sans-serif;
-font-weight: 400;
-font-size: 14px;
-line-height: 1.5;
-color: #000;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #000;
 }
 
 .arrow {
-width: 12px;
+    width: 12px;
     height: 7px;
     display: inline-block;
     background-repeat: no-repeat;
@@ -199,7 +199,7 @@ width: 12px;
     left: 0;
     width: 295px;
     height: 220px;
-    background: #f2f2f2;
+    background: var(--color-neutral-lightest);
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 0 0 12px 12px;
     overflow-y: scroll;
@@ -207,8 +207,8 @@ width: 12px;
     padding: 8px 0;
 
     opacity: 0;
-        visibility: hidden;
-        transform: translateY(-10px);
+    visibility: hidden;
+    transform: translateY(-10px);
 }
 
 .optionsList::-webkit-scrollbar {
@@ -225,7 +225,7 @@ width: 12px;
 }
 
 .optionsList::-webkit-scrollbar-thumb {
-    background-color: #ffcbd3;
+    background-color: var(--color-scheme-accent);
     border-radius: 4px;
     width: 10px;
     height: 56px;
@@ -239,17 +239,12 @@ width: 12px;
 
 
 .optionItem {
+    position: relative;
     display: flex;
     align-items: center;
     padding: 12px 16px;
     gap: 12px;
     cursor: pointer;
-
-        font-size: 14px;
-        line-height: 1.6;
-        color: #000;
-
-        font-family: "Lato", sans-serif;
 }
 
 .optionItem:hover {
@@ -257,7 +252,9 @@ width: 12px;
 }
 
 .hiddenCheckbox {
-    display: none;
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .customCheckbox {
@@ -269,13 +266,14 @@ width: 12px;
     background: rgba(0, 0, 0, 0.05);
 }
 
+
 .hiddenCheckbox:checked+.customCheckbox {
-background-color: transparent;
+    background-color: transparent;
     border-color: transparent;
 
     background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0.5C17.4853 0.5 19.5 2.51472 19.5 5V15C19.5 17.4853 17.4853 19.5 15 19.5H5C2.51472 19.5 0.5 17.4853 0.5 15V5C0.5 2.51472 2.51472 0.5 5 0.5H15Z' fill='black' /%3E%3Cpath d='M15 0.5C17.4853 0.5 19.5 2.51472 19.5 5V15C19.5 17.4853 17.4853 19.5 15 19.5H5C2.51472 19.5 0.5 17.4853 0.5 15V5C0.5 2.51472 2.51472 0.5 5 0.5H15Z' stroke='black' /%3E%3Cpath d='M7.57181 12.6544L4.37339 9.456L3 10.8294L7.57181 15.4012L17 5.973L15.6266 4.59961L7.57181 12.6544Z' fill='white' /%3E%3C/svg%3E");
 
-background-size: contain;
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
 
@@ -289,33 +287,33 @@ background-size: contain;
 
 @media (min-width: 768px) {
 
-.input {
-    width: 640px;
-    height: 37px
-}
+    .input {
+        width: 640px;
+        height: 37px
+    }
 
-.textarea {
-    width: 640px;
-    height: 250px;
-}
+    .textarea {
+        width: 640px;
+        height: 250px;
+    }
 
-.submitBtn {
-    width: 268px;
+    .submitBtn {
+        width: 268px;
         height: 42px;
-       margin: 0 auto;
-}
+        margin: 0 auto;
+    }
 
-.customSelect {
-    width: 640px;
-}
+    .customSelect {
+        width: 640px;
+    }
 
-.toggleCheckbox:checked~.selectWrapper .customSelect {
-    width: 640px;
-}
+    .toggleCheckbox:checked~.selectWrapper .customSelect {
+        width: 640px;
+    }
 
-.optionsList {
-width: 640px;
-}
+    .optionsList {
+        width: 640px;
+    }
 
 }
 
@@ -323,9 +321,9 @@ width: 640px;
 
     .form {
         padding: 0 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
 }

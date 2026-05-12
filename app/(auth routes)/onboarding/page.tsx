@@ -8,17 +8,17 @@ export default function OnboardingPage() {
       <Image 
         src="/Plant.jpg" 
         alt="Plant Decoration" 
-        width={720} 
-        height={900} 
+        width={200} 
+        height={300}
         className={styles.plantImage}
         priority
       />
 
       <div className={styles.header}>
-        <h1 className={styles.title}>Давайте познайомимось ближче</h1>
+        <h2 className={styles.title}>  <span className={styles.titleLine}>Давайте</span>  <span className={styles.titleLine}>познайомимось ближче</span></h2>
       </div>
 
       <OnboardingForm />
     </main>
   );
-}
+};

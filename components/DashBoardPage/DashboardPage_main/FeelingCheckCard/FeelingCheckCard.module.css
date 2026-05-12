@@ -5,10 +5,12 @@
 .title {
     font-size: 20px;
     font-weight: 700;
-    font-family: var(--second-family);
+    font-family: var(--accent-font);
     letter-spacing: 1px;
     line-height: 1.4;
-    color: #000;
+    /* color: #000; */
+    color: var(--color-scheme-text);
+
     margin-bottom: 8px;
 }
 
@@ -18,7 +20,7 @@
     font-weight: 600;
     margin: 0px;
     line-height: 1.5;
-    font-family: "Lato", sans-serif;
+    font-family: var(--main-font);
 }
 
 /* текст рекомендації */
@@ -27,31 +29,15 @@
     font-weight: 400;
     margin: 0px;
     line-height: 1.5;
-    font-family: "Lato", sans-serif;
+    font-family: var(--main-font);
 }
 
 /* рожева кнопка "Зробити запис у щоденник" */
 .button {
     margin-top: 24px;
     align-self: flex-start;
-
-    padding: 10px 24px;
-    border-radius: 999px;
-    border: none;
-
-    background: var(--color-scheme-accent);
-    border-bottom: 4px solid var(--color-scheme-accent);
-    line-height: 1.6;
-    color: #000;
-
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
 }
 @media screen and (min-width: 1440px){
-    .button {
-        font-size: 16px;
-    }
     .title {
         font-size: 24px;
     }

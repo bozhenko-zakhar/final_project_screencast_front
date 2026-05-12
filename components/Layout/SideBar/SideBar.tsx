@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import AuthBar from "../AuthBar/AuthBar";
 import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
 import UserBar from "../UserBar/UserBar";
 import { useAuthStore } from "@/lib/store/authStore";
 import css from "./SideBar.module.css";
+import { getCurrentWeek } from "@/lib/api/services/getCurrentWeek";
 
 interface Props {
   setBarInactive: () => void;
@@ -17,6 +19,8 @@ interface Props {
 const SideBar = ({ setBarInactive, isOpen }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   const user = useAuthStore(
     (state: ReturnType<typeof useAuthStore.getState>) => state.user,
   );
@@ -26,13 +30,16 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
   const clearUser = useAuthStore(
     (state: ReturnType<typeof useAuthStore.getState>) => state.clearUser,
   );
+
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [logoutError, setLogoutError] = useState<string | null>(null);
 
+  const userCurrentWeek = getCurrentWeek(user);
+
   const navItems = [
     { href: "/", label: "Мій день" },
-    { href: "/journey/10", label: "Подорож" },
+    { href: `/journey/${userCurrentWeek}`, label: "Подорож" },
     { href: "/diary", label: "Щоденник" },
     { href: "/profile", label: "Профіль" },
   ];
@@ -42,9 +49,7 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
   };
 
   const isNavItemActive = (href: string) => {
-    if (href === "/") {
-      return pathname === "/";
-    }
+    if (href === "/") return pathname === "/";
 
     return pathname === href || pathname.startsWith(`${href}/`);
   };
@@ -55,12 +60,18 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 
     try {
       const response = await fetch("/api/auth/logout", { method: "POST" });
+
       if (!response.ok) {
         throw new Error("Logout request failed");
       }
 
       clearUser();
+      queryClient.clear();
+      document.body.dataset.theme = "neutral";
+
       setIsConfirmationOpen(false);
+
+      router.refresh();
       router.push("/");
     } catch {
       setLogoutError("Не вдалося вийти. Спробуйте ще раз.");
@@ -71,9 +82,7 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") {
-        return;
-      }
+      if (event.key !== "Escape") return;
 
       if (isConfirmationOpen) {
         setIsConfirmationOpen(false);
@@ -92,9 +101,8 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 
   return (
     <>
-      {isOpen ?
-        <div className={css.backdrop} onClick={closeMenu}></div>
-      : null}
+      {isOpen ? <div className={css.backdrop} onClick={closeMenu}></div> : null}
+
       <aside className={`${css.sidebar} ${isOpen ? css.open : ""}`}>
         <div className={css.top}>
           <Link href="/" className={css.logoLink} onClick={closeMenu}>
@@ -102,6 +110,7 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
               <use href="/logo.svg#icon-alternate-false"></use>
             </svg>
           </Link>
+
           <button
             className={css.close}
             onClick={closeMenu}
@@ -136,27 +145,28 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
         </nav>
 
         <div className={css.bottom}>
-          {isAuthenticated && user ?
+          {isAuthenticated && user ? (
             <UserBar
               name={user.name}
               email={user.email}
-              avatar={user.avatar}
+              avatar={user.avatar ?? user.name?.slice(0, 2).toUpperCase()}
               onLogout={() => {
                 setLogoutError(null);
                 setIsConfirmationOpen(true);
               }}
               isLoading={isLoading}
             />
-          : <AuthBar />}
+          ) : (
+            <AuthBar />
+          )}
         </div>
       </aside>
 
       <ConfirmationModal
         isOpen={isConfirmationOpen}
         title="Ви впевнені, що хочете вийти?"
-        description="Після виходу потрібно буде знову увійти в обліковий запис."
-        confirmButtonText="Так, вийти"
-        cancelButtonText="Скасувати"
+        confirmButtonText="Так"
+        cancelButtonText="Ні"
         onCancel={() => {
           setLogoutError(null);
           setIsConfirmationOpen(false);

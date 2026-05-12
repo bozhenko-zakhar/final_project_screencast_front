@@ -9,6 +9,7 @@ import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
 import { useAuthStore } from "@/lib/store/authStore";
 import DiaryEntryModal from "@/components/AddDiaryEntryModal/AddDiaryEntryModal";
 import { DiaryEntryForm } from "@/components/AddDiaryEntryForm/AddDiaryEntryForm";
+import { Button } from "@/components/Button/Button";
 
 const FeelingCheckCard = () => {
   const router = useRouter();
@@ -34,18 +35,15 @@ const FeelingCheckCard = () => {
         <h2 className={styles.title}>Як ви себе почуваєте?</h2>
         <p className={styles.subtitle}>Рекомендація на сьогодні:</p>
         <p className={styles.text}>Занотуйте незвичні відчуття у тілі.</p>
-        <button
-          type="button"
-          className={styles.button}
-          onClick={handleOpenModal}
-        >
+        
+        <Button onClick={handleOpenModal} className={styles.button}> 
           Зробити запис у щоденник
-        </button>
+        </Button>
       </section>
 
       {isModalOpen && (
         <DiaryEntryModal onClose={handleCloseModal} title="Новий запис">
-          <DiaryEntryForm onClose={handleCloseModal} />
+          <DiaryEntryForm currentId="0" type="create" onClose={handleCloseModal} />
         </DiaryEntryModal>
       )}
     </>
