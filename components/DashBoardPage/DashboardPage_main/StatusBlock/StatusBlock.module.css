@@ -1,32 +1,55 @@
 .daysCountWrapper {
   display: flex;
   gap: 16px; 
-  width: 100%;
 }
 
 .weeks {
-  flex: 1; 
-  height: 105px; 
-  padding: 16px;
+	width: 159.5px;
   box-sizing: border-box; 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; 
+  padding: 16px;
 }
 
 .title {
+	font-family: var(--main-font);
   font-size: 14px;
   line-height: 150%;
-  color: rgba(0, 0, 0, 0.6);
-  margin: 0;
-  font-family: var(--main-font);
+	color: var(--color-scheme-text);
+  margin-bottom: 4px;
 }
 
 .days {
-  font-size: 46px;
+	font-family: var(--accent-font);
+  font-size: 40px;
   font-weight: 700;
-  line-height: 100%;
+  line-height: 120%;
   letter-spacing: 0.01em;
-  margin: 0;
-  font-family: var(--accent-font);
+	color: var(--color-scheme-text);
+}
+
+@media (min-width: 771px) {
+	.daysCountWrapper {
+		gap: 32px;
+	}
+
+	.weeks {
+		width: 337.5px;
+	}
+	
+	.days {
+		font-size: 56px;
+	}
+}
+
+@media (min-width: 1440px) {
+	.daysCountWrapper {
+		gap: 32px;
+	}
+
+	.weeks {
+		width: 305px;
+	}
+
+	.title {
+		font-size: 16px;
+	}
 }

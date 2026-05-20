@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import { useLoadingStore } from "@/lib/store/loadingStore";
 
-let requestCounter = 0;
+// let requestCounter = 0;
 
 declare module "axios" {
   interface AxiosRequestConfig {
@@ -14,22 +14,22 @@ export const nextServer = axios.create({
   withCredentials: true,
 });
 
-nextServer.interceptors.request.use((config) => {
-  const requestId = `request-${++requestCounter}`;
-  config.metadata = { requestId };
-  useLoadingStore.getState().addRequest(requestId);
-  return config;
-});
+// nextServer.interceptors.request.use((config) => {
+//   const requestId = `request-${++requestCounter}`;
+//   config.metadata = { requestId };
+//   useLoadingStore.getState().addRequest(requestId);
+//   return config;
+// });
 
-nextServer.interceptors.response.use(
-  (response: AxiosResponse) => {
-    const requestId = response.config.metadata?.requestId;
-    if (requestId) useLoadingStore.getState().removeRequest(requestId);
-    return response;
-  },
-  (error: AxiosError) => {
-    const requestId = error.config?.metadata?.requestId;
-    if (requestId) useLoadingStore.getState().removeRequest(requestId);
-    return Promise.reject(error);
-  }
-);
+// nextServer.interceptors.response.use(
+//   (response: AxiosResponse) => {
+//     const requestId = response.config.metadata?.requestId;
+//     if (requestId) useLoadingStore.getState().removeRequest(requestId);
+//     return response;
+//   },
+//   (error: AxiosError) => {
+//     const requestId = error.config?.metadata?.requestId;
+//     if (requestId) useLoadingStore.getState().removeRequest(requestId);
+//     return Promise.reject(error);
+//   }
+// );
