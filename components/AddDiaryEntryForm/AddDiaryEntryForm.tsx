@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import * as Yup from "yup";
@@ -71,15 +70,9 @@ export const DiaryEntryForm = ({ onClose, type, currentId }: { onClose: () => vo
     await createMutate.mutateAsync(payload);
 	}
 
-  const initialValues = {
-    title: initialData?.title || "",
-    emotions: initialData?.emotions.map((e) => e.id) || [],
-    description: initialData?.description || "",
-  };
-
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={{ title: "", emotions: [], description: "" }}
       validationSchema={Yup.object({
         title: Yup.string().min(1).required("Обов'язкове поле"),
         description: Yup.string().min(1).max(1000).required("Обов'язкове поле"),

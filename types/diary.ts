@@ -32,7 +32,6 @@ export interface DiaryListItem {
     id: string;
     title: string;
   }>;
-	// owner: string
 }
 
 export interface DiaryEntryDetail {
