@@ -8,8 +8,6 @@ import { fetchDiaries } from "@/lib/api/clientApi/diaries";
 import AddDiaryEntryModal from "@/components/AddDiaryEntryModal/AddDiaryEntryModal";
 import { DiaryEntryForm } from "@/components/AddDiaryEntryForm/AddDiaryEntryForm";
 import DiaryEntryCard from "@/components/DiaryList/DiaryEntryCard/DiaryEntryCard";
-import { DiaryListItem } from "@/types/diary";
-import { useDiaryStore } from "@/lib/store/diaryStore";
 
 import css from "./DiaryList.module.css";
 

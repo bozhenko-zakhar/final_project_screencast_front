@@ -10,7 +10,6 @@ import toast from "react-hot-toast";
 import ConfirmationModal from "@/components/Layout/ConfirmationModal/ConfirmationModal";
 import AddDiaryEntryModal from "@/components/AddDiaryEntryModal/AddDiaryEntryModal";
 import { DiaryEntryForm } from "@/components/AddDiaryEntryForm/AddDiaryEntryForm";
-import { useDiaryStore } from "@/lib/store/diaryStore";
 
 // lib directory
 import { useDiaryStore } from "@/lib/store/diaryStore";
