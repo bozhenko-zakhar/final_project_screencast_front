@@ -3,13 +3,12 @@
     flex-direction: column;
 }
 .title {
-    font-size: 20px;
-    font-weight: 700;
     font-family: var(--accent-font);
-    letter-spacing: 1px;
+		font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
     line-height: 1.4;
-    /* color: #000; */
-    color: var(--color-scheme-text);
+		color: var(--color-scheme-text);
 
     margin-bottom: 8px;
 }
@@ -18,35 +17,32 @@
 .subtitle {
     font-size: 14px;
     font-weight: 600;
-    margin: 0px;
-    line-height: 1.5;
+    line-height: 1.6;
     font-family: var(--main-font);
+		color: var(--color-scheme-text);
 }
 
 /* текст рекомендації */
 .text {
-    font-size: 14px;
-    font-weight: 400;
-    margin: 0px;
-    line-height: 1.5;
     font-family: var(--main-font);
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 1.5;
+		color: var(--color-scheme-text);
+
+		margin-bottom: 24px;
 }
 
 /* рожева кнопка "Зробити запис у щоденник" */
 .button {
-    margin-top: 24px;
     align-self: flex-start;
 }
 @media screen and (min-width: 1440px){
     .title {
         font-size: 24px;
     }
-    .subtitle {
-        font-size: 16px;
-        line-height: 1.6;
-    }
-    .text {
+    .subtitle,
+		.text {
         font-size: 16px;
     }
-
 }
