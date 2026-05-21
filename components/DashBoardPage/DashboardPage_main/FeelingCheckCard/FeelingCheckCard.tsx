@@ -29,7 +29,7 @@ const FeelingCheckCard = () => {
 
   return (
     <>
-      <section
+      <div
         className={`${cardStyles.card} ${cardStyles.feelingHeight} ${styles.feeling}`}
       >
         <h2 className={styles.title}>Як ви себе почуваєте?</h2>
@@ -39,7 +39,7 @@ const FeelingCheckCard = () => {
         <Button onClick={handleOpenModal} className={styles.button}> 
           Зробити запис у щоденник
         </Button>
-      </section>
+      </div>
 
       {isModalOpen && (
         <DiaryEntryModal onClose={handleCloseModal} title="Новий запис">

@@ -95,7 +95,7 @@ const TasksReminderCard = () => {
   );
 
   return (
-    <section
+    <div
       className={`${cardStyles.card} ${cardStyles.tasksHeight} ${styles.tasks}`}
     >
       <div className={styles.header}>
@@ -176,7 +176,7 @@ const TasksReminderCard = () => {
         onSubmit={handleTaskCreate}
         isSubmitting={createTaskMutation.isPending}
       />
-    </section>
+    </div>
   );
 };
 

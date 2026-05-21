@@ -18,15 +18,19 @@ const MomTipCard = ({token}: Props) => {
     queryKey: ["baby"],
     queryFn: token ? fetchPrivateWeeks : fetchPublicWeeks,
     placeholderData: keepPreviousData,
-  });
+	});
+	
+	function caclulateTodaysDay(): number {
+		if (babyData?.daysLeft && babyData?.babyState.weekNumber)
+			return Math.trunc(babyData?.daysLeft % babyData?.babyState.weekNumber);
+		else return 0
+	}
 
   return (
-    <section className={`${cardStyles.card}  ${css.advicesForMom}`}>
-      <div className={css.advicesForMomWrap}>
-        <h3 className={css.babyContainerHeaderline}>Порада для мами </h3>
-        <p className={css.momDailyTips}>{babyData?.babyState.momDailyTips?.[0]}</p>
-      </div>
-    </section>
+		<div className={css.advicesForMom}>
+			<h3 className={css.babyContainerHeaderline}>Порада для мами </h3>
+			<p className={css.momDailyTips}>{babyData?.babyState.momDailyTips[caclulateTodaysDay()]}</p>
+		</div>
   );
 };
 
