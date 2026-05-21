@@ -27,7 +27,7 @@
 	color: var(--color-scheme-text);
 }
 
-@media (min-width: 771px) {
+@media (min-width: 768px) {
 	.daysCountWrapper {
 		gap: 32px;
 		margin-bottom: 32px;
