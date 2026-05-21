@@ -15,7 +15,7 @@
   font-size: 20px;
   font-weight: 700;
   font-family: var(--accent-font);
-  letter-spacing: 1px;
+  letter-spacing: .01em;
   line-height: 1.4;
   color: var(--color-scheme-text);
 }
@@ -52,16 +52,21 @@
 	font-family: var(--main-font);
   font-weight: 700;
   font-size: 14px;
-  margin-bottom: 4px;
-  line-height: 1.5;
+  line-height: 1.6;
+	color: var(--color-scheme-text);
+
+	margin-bottom: 4px;
 }
 
 .noTasksText {
-  font-weight: 400;
-  font-size: 14px;
-  margin: 0px;
-  line-height: 1.5;
+	font-family: var(--main-font);
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--color-scheme-text);
+
+	margin-bottom: 16px;
 }
+
 .list {
     list-style: none;
     padding: 0;
@@ -78,16 +83,17 @@
 .taskDate {
     font-family: var(--main-font);
     font-size: 10px;
-    font-weight: 400;
     line-height: 1.6;
-    color: #000;
+		color: var(--color-neutral-darkest);
+
     padding-left: 26px;
 }
 .taskLabel {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     gap: 8px;
+		height: 21px;
     cursor: pointer;
     position: relative;
 }
@@ -103,12 +109,15 @@
 .checkboxBox {
     width: 18px;
     height: 18px;
+		border: 1px solid var(--opacity-transparent);
     border-radius: 4px;
-    background: rgba(0, 0, 0, 0.05);
+		background: var(--opacity-neutral-darkest-5);
+
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+		
     transition: background 0.15s;
     color: transparent;
     /* іконка прихована за замовчуванням */
@@ -152,21 +161,18 @@
 .taskText {
     font-family: var(--main-font);
     font-size: 12px;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #000;
+    line-height: 1.6;
+		color: var(--color-scheme-text);
 }
 .taskCompleted {
-    font-family: var(--main-font);
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #000;
+		font-family: var(--main-font);
+		font-size: 14px;
+		line-height: 1.5;
+		color: var(--color-scheme-text);
     text-decoration: line-through;
 }
 /* велика рожева кнопка "Створити завдання" */
 .createButton {
-  margin-top: 16px;
   align-self: flex-start;
 }
 
@@ -174,13 +180,15 @@
   .title {
     font-size: 24px;
   }
-  .button {
+
+  .button,
+	.noTasksTitle,
+	.noTasksText,
+	.taskCompleted {
     font-size: 16px;
   }
-  .noTasksTitle {
-    font-size: 16px;
-  }
-  .noTasksText {
-    font-size: 16px;
-  }
+
+	.taskText {
+		font-size: 14px;
+	}
 }
