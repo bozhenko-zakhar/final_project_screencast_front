@@ -1,6 +1,7 @@
 .daysCountWrapper {
   display: flex;
-  gap: 16px; 
+  gap: 16px;
+	margin-bottom: 16px;
 }
 
 .weeks {
@@ -29,6 +30,7 @@
 @media (min-width: 771px) {
 	.daysCountWrapper {
 		gap: 32px;
+		margin-bottom: 32px;
 	}
 
 	.weeks {

@@ -35,9 +35,9 @@ export const AuthProvider = ({ children }: Props) => {
         console.warn("Not authenticated", err);
         clearUser();
 
-        setThemeByGender(null);
+        setThemeByGender("girl");
 
-        document.body.dataset.theme = "neutral";
+        document.body.dataset.theme = "girl";
 
         /* try {
           const publicWeeks = await fetchPublicWeeks();

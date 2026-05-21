@@ -112,7 +112,7 @@ export default function OnboardingForm() {
             />
           ) : (
             <Image
-              src="/Avatar-def.jpg"
+              src="/image/Avatar-def.jpg"
               alt="Default Avatar"
               fill
               sizes="164px"

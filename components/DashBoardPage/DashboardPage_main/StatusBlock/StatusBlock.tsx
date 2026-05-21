@@ -19,7 +19,7 @@ const StatusBlock = ({token}: Props) => {
   });
 
   return (
-    <section className={css.daysCountWrapper}>
+    <div className={css.daysCountWrapper}>
       <div className={`${cardStyles.card} ${css.weeks}`}>
         <p className={css.title}>Тиждень</p>
         <h3 className={css.days}>{babyData?.babyState.weekNumber}</h3>
@@ -29,7 +29,7 @@ const StatusBlock = ({token}: Props) => {
         <p className={css.title}>Днів до зустрічі</p>
         <h3 className={css.days}>~{babyData?.daysLeft}</h3>
       </div>
-    </section>
+    </div>
   );
 };
 
