@@ -1,27 +1,24 @@
-
 .loginPage {
   position: relative;
-  min-height: 100vh;
+	min-width: 335px;
+	max-width: 375px;
+	margin-inline: auto;
+	padding-inline: 20px;
 }
 
 .fieldWrapper {
-  position: relative;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 
 .logo {
   position: absolute;
-  top: 20px;
-  left: 10px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  top: 13.5px;
 }
 
-.logoIcon {
-  width: 30px;
-  height: 30px;
+.logo_icon {
+	width: 105px;
+	height: 45px;
 }
 
 .logoLeleka {
@@ -34,11 +31,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+	margin-inline: auto;
 }
 
 .form {
   width: 100%;
-  max-width: 335px;
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -46,98 +43,75 @@
 
 .title {
 	font-family: var(--accent-font);
-  font-size: 48px;
-  margin-bottom: 30px;
-  color: var(--color-scheme-text);
-  font-weight: 700;
+	font-weight: 700;
+	font-size: 36px;
+	line-height: 1.2;
+	letter-spacing: 0.01em;
+	text-align: center;
+	color: var(--color-scheme-text);
+
+	margin-bottom: 32px;
 }
 
 .input {
-  width: 100%;
-  height: 40px;
-  border-radius: 12px;
-  border: 2px;
-  background-color: rgba(0, 0, 0, 0.05);
+	width: 100%;
+	height: 37px;
+  border-radius: 12px; 
+	border: 2px solid var(--opacity-transparent);
+	background: var(--opacity-neutral-darkest-5);
   text-align: left;
-  padding: 8px 16px;
+	padding-block: 8px;
+	padding-inline: 12px;
+
 	font-family: var(--main-font);
-  font-size: 16px;
+  font-size: 14px;
+	line-height: 1.5;
+	color: var(--color-scheme-text);
   outline: none;
-  margin-bottom: 16px;
 }
 
 .input::placeholder {
-  text-align: left;
-  border: 1px solid transparent;
-  color: rgba(0, 0, 0, 0.6);
 	font-family: var(--main-font);
-  font-size: 16px;
-  outline: none;
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--opacity-neutral-darkest-60);
+
+	outline: none;
   transition: 0.2s;
 }
 
-.inputError {
-  border: 1px solid var(--color-scheme-red);
-}
-
-.inputError::placeholder {
-	font-family: var(--main-font);
-  color: var(--color-scheme-red);
+.input:not(:placeholder-shown):invalid {
+	border: 1px solid var(--color-red);
+  color: var(--color-red);
 }
 
 .error {
-  position: absolute;
-  left: 0;
-  bottom: -18px;
-  color: var(--color-scheme-red);
-  text-align: left;
+	display: block;
+	text-align: left;
+	margin-top: 8px;
+
 	font-family: var(--main-font);
-  font-size: 12px;
-  margin-top: 8px;
-  min-height: 16px;
-  margin-bottom: 16px;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 1.6;
+	color: var(--color-red);
 }
 
 .btn {
-  width: 100%;
-  padding: 10px 24px;
-  border-radius: 100px;
-  background-color: var(--color-scheme-foreground);
-  color: var(--color-scheme-text);
-  font-weight: 500;
-  cursor: pointer;
-  transition: 0.3s;
-	font-family: var(--main-font);
-  font-size: 16px;
-  margin-bottom: 24px;
-  border: none;
-  box-shadow:
-    0 4px 4px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-}
-
-.btn:hover {
-  background: var(--color-scheme-background);
-}
-
-.btn:active {
-  background-color: var(--color-scheme-accent);
-}
-
-.btn:disabled {
-  background-color: var(--color-scheme-foreground);
+	margin-bottom: 24px;
 }
 
 .register {
 	font-family: var(--main-font);
-  font-size: 16px;
-  color: var(--color-scheme-text);
+	line-height: 1.5;
+	text-align: center;
+	color: var(--color-scheme-text);
 }
 
 .register span {
-	font-family: var(--main-font);
-  cursor: pointer;
-  text-decoration: underline;
+	line-height: 1.6;
+	text-decoration: underline;
+	text-underline-offset: 4px
 }
 
 .login-right {
@@ -159,11 +133,27 @@
 
 
 @media screen and (min-width: 768px) {
-  .form {
-    max-width: 480px;
-  }
+	.loginPage {
+		min-width: 707px
+	}
 
-  .logo {
-    left: 36px;
-  }
+	.center {
+		width: 480px;
+	}
+}
+
+@media screen and (min-width: 1440px) {
+	.title {
+		font-size: 48px;
+	}
+
+	.input,
+	.input::placeholder,
+	.input:not(:placeholder-shown):invalid,
+	.error,
+	.btn,
+	.register,
+	.register span {
+		font-size: 16px;
+	}
 }

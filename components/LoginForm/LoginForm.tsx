@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { useAuthStore } from "@/lib/store/authStore";
 import { isAxiosError } from "axios";
 import { type LoginRequest as LoginFormValues } from "@/types/auth";
+import { Button } from "../Button/Button";
 
 const LoginFormSchema = Yup.object().shape({
   email: Yup.string().email("Некоректна пошта").required("Обовʼязкове поле"),
@@ -31,14 +32,12 @@ export default function LoginForm() {
 
   return (
     <div className={css.loginPage}>
-      <div className={css.logo}>
-        <svg className={css.logoIcon} width={30} height={30}>
-          <use href="/public/logo.svg#logo" />
-        </svg>
-        <svg className={css.logoLeleka} width={60} height={13}>
-          <use href="/public/sprite.svg#icon-leleka" />
-        </svg>
-      </div>
+			<Link href="/" className={css.logo}>
+				<svg className={css.logo_icon}>
+					<use href="/logo.svg#icon-alternate-false"></use>
+				</svg>
+			</Link>
+			
       <div className={css.center}>
         <Formik
           initialValues={initialValues}
@@ -85,7 +84,7 @@ export default function LoginForm() {
                   id={`${fieldId}-email`}
                   type="email"
                   name="email"
-                  className={`${css.input} ${errors.email && touched.email ? css.inputError : ""}`}
+                  className={`${css.input}`}
                   placeholder="Пошта"
                 />
                 <ErrorMessage
@@ -108,9 +107,9 @@ export default function LoginForm() {
                   component="span"
                 />
               </div>
-              <button type="submit" disabled={isSubmitting} className={css.btn}>
+              <Button type="submit" disabled={isSubmitting} className={css.btn}>
                 {isSubmitting ? "Завантаження..." : "Увійти"}
-              </button>
+              </Button>
 
               <p className={css.register}>
                 Немає акаунту?{" "}
