@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import { useLoadingStore } from "@/lib/store/loadingStore";
 
-// let requestCounter = 0;
+let requestCounter = 0;
 
 declare module "axios" {
   interface AxiosRequestConfig {
