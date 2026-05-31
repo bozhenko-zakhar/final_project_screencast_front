@@ -13,6 +13,7 @@ import { register } from '@/lib/api/clientApi/auth';
 import { useAuthStore } from '@/lib/store/authStore';
 import type { RegisterRequest } from '@/types/auth';
 import type { User } from '@/types/user';
+import { Button } from '../Button/Button';
 
 type RegisterFormValues = RegisterRequest;
 
@@ -33,22 +34,14 @@ export default function RegisterForm() {
   const fieldId = useId();
   const setUser = useAuthStore((state) => state.setUser);
 
-  const [dueDate, setDueDate] = useState('');
-  const [gender, setGender] = useState('');
-
   return (
     <div className={css.page}>
-      <div className={css.logo}>
-  <svg className={css.logoIcon} width={30} height={30}>
-    <use href="/public/logo.svg#logo" />
-  </svg>
-  <svg className={css.logoLeleka} width={60} height={13}>
-    <use href="/public/sprite.svg#icon-leleka" />
-  </svg>
-</div>
-
-
-
+			<Link href="/" className={css.logo}>
+				<svg className={css.logo_icon}>
+					<use href="/logo.svg#icon-alternate-false"></use>
+				</svg>
+			</Link>
+			
       <div className={css.center}>
         <Formik
           initialValues={initialValues}
@@ -64,9 +57,7 @@ export default function RegisterForm() {
             const registerRequest: RegisterRequest = {
               name: values.name.trim(),
               email: values.email.trim(),
-              password: values.password,
-              ...(dueDate && { dueDate }),
-              ...(gender && { gender }),
+              password: values.password
             };
 
             try {
@@ -96,7 +87,7 @@ export default function RegisterForm() {
         >
           {({ isSubmitting, errors, touched }) => (
             <Form className={css.form}>
-              <h1 className={css.title}>Реєстрація</h1>
+              <h2 className={css.title}>Реєстрація</h2>
 
               <label htmlFor={`${fieldId}-name`} className={css.label}>
                 Імʼя*
@@ -160,11 +151,11 @@ export default function RegisterForm() {
                 />
               </div>
 
-              <button type="submit" disabled={isSubmitting} className={css.btn}>
+              <Button type="submit" disabled={isSubmitting} className={css.btn}>
                 {isSubmitting ? 'Завантаження...' : 'Зареєструватись'}
-              </button>
+              </Button>
 
-              <p className={css.register}>
+              <p className={css.login}>
                 Вже маєте аккаунт?{' '}
                 <span>
                   <Link href="/auth/login">Увійти</Link>

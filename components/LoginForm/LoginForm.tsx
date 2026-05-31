@@ -78,7 +78,7 @@ export default function LoginForm() {
         >
           {({ isSubmitting, errors, touched }) => (
             <Form className={css.form}>
-              <h1 className={css.title}>Вхід</h1>
+              <h2 className={css.title}>Вхід</h2>
               <div className={css.fieldWrapper}>
                 <Field
                   id={`${fieldId}-email`}
