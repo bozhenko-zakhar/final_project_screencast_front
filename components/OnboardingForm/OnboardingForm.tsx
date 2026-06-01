@@ -1,194 +1,53 @@
 'use client';
 
-import { useState, useRef, type ChangeEvent, type FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Image from 'next/image';
-import toast from 'react-hot-toast';
-import axios from 'axios';
 
-import { useAuthStore } from '@/lib/store/authStore';
-import { nextServer } from '@/lib/api/api';
-import { getMe } from '@/lib/api/clientApi/users';
-
-import CalendarPicker from '@/components/CalendarPicker/CalendarPicker';
-
-import styles from './OnboardingForm.module.css';
-import css from '../Button/Button.module.css';
+import css from './OnboardingForm.module.css';
+import { Button } from '../Button/Button';
+import { Field, Form, Formik } from 'formik';
+import { useId } from 'react';
 
 export default function OnboardingForm() {
-  const router = useRouter();
+	const fieldId = useId();
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
+	return (
+		<div className={css.container}>
+			<Link href="/" className={css.logo}>
+				<svg className={css.logo_icon}>
+					<use href="/logo.svg#icon-alternate-false"></use>
+				</svg>
+			</Link>
 
-  const { setUser } = useAuthStore();
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
-
-  const [dueDate, setDueDate] = useState('');
-
-  const [gender, setGender] = useState('unknown');
-
-  const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-
-    if (file) {
-      setAvatarFile(file);
-      setAvatarPreview(URL.createObjectURL(file));
-    }
-  };
-
-  const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
-		
-    setIsLoading(true);
-
-    try {
-      // update user data
-			if (dueDate) {
-				await nextServer.patch('/users/me', {
-					date: dueDate
-				});
-			}
+			<h2>Давайте познаймимось ближче</h2>
 			
-			if (gender) {
-				await nextServer.patch('/users/me', {
-					gender: gender === 'unknown' ? null : gender,
-				});
-			}
+			<div>
+				<Image
+					src="/image/Avatar-def.jpg"
+					alt="Plant Decoration"
+					className={css.image}
+					width={164}
+					height={164}
+				/>
 
-      // update avatar
-      if (avatarFile) {
-        const avatarData = new FormData();
+				<Button>Завантажити фото</Button>
+			</div>
 
-        avatarData.append('avatar', avatarFile);
+			<Formik initialValues={{}} onSubmit={() => {}}>
+				<Form className={css.form}>
+					<label htmlFor={`${fieldId}-gender`}>Стать дитини</label>
+					<Field as="select" name="gender" id={`${fieldId}-gender`}>
+						<option>Хлопчик</option>
+						<option>Дівчинка</option>
+						<option>Ще не знаю</option>
+					</Field>
 
-        await nextServer.patch('/users/me/avatar', avatarData);
-      }
+					<label htmlFor={`${fieldId}-dueDate`}>Планова дата пологів</label>
+					<Field type="text" name="dueDate" id={`${fieldId}-dueDate`} />
 
-      const updatedUser = await getMe();
-
-      if (updatedUser) {
-        setUser(updatedUser);
-      }
-
-      toast.success('Дані збережено успішно!');
-
-      router.push('/');
-    } catch (error: unknown) {
-      let errorMsg = 'Виникла помилка під час збереження даних';
-
-      if (axios.isAxiosError(error) && error.response?.data?.message) {
-        errorMsg = error.response.data.message;
-      } else if (error instanceof Error) {
-        errorMsg = error.message;
-      }
-
-      toast.error(errorMsg);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <div className={styles.avatarSection}>
-        <div
-          className={styles.avatarPreview}
-          onClick={() => fileInputRef.current?.click()}
-        >
-          {avatarPreview ? (
-            <Image
-              src={avatarPreview}
-              alt="Avatar"
-              fill
-              sizes="164px"
-              className={styles.image}
-            />
-          ) : (
-            <Image
-              src="/image/Avatar-def.jpg"
-              alt="Default Avatar"
-              fill
-              sizes="164px"
-              className={styles.image}
-            />
-          )}
-        </div>
-
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          onChange={handleAvatarChange}
-          className={styles.hiddenInput}
-        />
-
-        <button
-          type="button"
-          className={css.button}
-          onClick={() => fileInputRef.current?.click()}
-        >
-          Завантажити фото
-        </button>
-      </div>
-
-      <div className={styles.inputGroup}>
-        <label>Стать дитини</label>
-
-        <div className={styles.selectWrapper}>
-          <select
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-            className={styles.customSelect}
-          >
-            <option value="boy">Хлопчик</option>
-
-            <option value="girl">Дівчинка</option>
-            <option value="unknown">Ще не знаю</option>
-          </select>
-
-          <svg width="12" height="7" className={styles.selectIcon}>
-            <use href="/sprite.svg#arrow-down" />
-          </svg>
-        </div>
-      </div>
-
-      <div className={styles.inputGroup}>
-        <label>Планова дата пологів</label>
-
-        <CalendarPicker
-          value={dueDate}
-          placeholder="дд.мм.рррр"
-          error={Boolean(errors.dueDate)}
-          onChange={(date) => {
-            setDueDate(date);
-
-            if (errors.dueDate) {
-              setErrors({ ...errors, dueDate: '' });
-            }
-          }}
-        />
-
-        {errors.dueDate && (
-          <span className={styles.errorText}>
-            {errors.dueDate}
-          </span>
-        )}
-      </div>
-
-      <button
-        type="submit"
-        className={styles.submitBtn}
-        disabled={isLoading}
-      >
-        {isLoading ? 'Збереження...' : 'Зберегти'}
-      </button>
-    </form>
-  );
-}
+					<Button>Зберегти</Button>
+				</Form>
+			</Formik>
+		</div>
+	);
+};

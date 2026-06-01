@@ -1,24 +1,26 @@
 import Image from 'next/image';
+
 import OnboardingForm from '@/components/OnboardingForm/OnboardingForm';
-import styles from './page.module.css';
+
+import css from './page.module.css';
 
 export default function OnboardingPage() {
   return (
-    <main className={styles.container}>
-      <Image 
-        src="/Plant.jpg" 
-        alt="Plant Decoration" 
-        width={200} 
-        height={300}
-        className={styles.plantImage}
-        priority
-      />
+		<section className={css.container}>
+			<div className={css.form_box}>
+      	<OnboardingForm />
+			</div>
 
-      <div className={styles.header}>
-        <h2 className={styles.title}>  <span className={styles.titleLine}>Давайте</span>  <span className={styles.titleLine}>познайомимось ближче</span></h2>
-      </div>
-
-      <OnboardingForm />
-    </main>
+			<div className={css.image_box}>
+				<Image
+					src="/image/Plant.jpg"
+					alt="Plant Decoration"
+					fill
+					className={css.image}
+					sizes="(min-width: 1440px) 50vw, 0px"
+					priority
+				/>
+			</div>
+    </section>
   );
 };
