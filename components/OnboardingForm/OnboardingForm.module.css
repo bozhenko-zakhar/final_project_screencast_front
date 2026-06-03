@@ -10,11 +10,8 @@
 
 .logo {
 	position: absolute;
-	top: 20px;
-	left: 10px;
-	display: flex;
-	align-items: center;
-	gap: 5px;
+	top: 13.5px;
+	left: 0;
 }
 
 .logo_icon {
@@ -22,9 +19,125 @@
 	height: 45px;
 }
 
+.title {
+	font-family: var(--accent-font);
+	font-weight: 700;
+	font-size: 36px;
+	line-height: 1.2;
+	letter-spacing: 0.01em;
+	text-align: center;
+	color: var(--color-scheme-text);
+
+	margin-bottom: 32px;
+}
+
+.image {
+	margin-bottom: 24px;
+}
+
+.photo_btn {
+	margin-bottom: 32px;
+}
+
 .form {
 	display: flex;
 	flex-direction: column;
 
 	width: 100%;
+}
+
+.label {
+
+	display: block;
+	margin-bottom: 24px;
+}
+
+.label span {
+	font-family: var(--main-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--color-scheme-text);
+
+	display: inline-block;
+	margin-bottom: 8px;
+}
+
+.input {
+	border: 2px solid var(--opacity-transparent);
+	border-radius: 12px;
+	padding: 8px 12px;
+	width: 100%;
+	height: 37px;
+	background-color: var(--opacity-neutral-darkest-5);
+	font-family: var(--main-font);
+	font-size: 14px;
+	transition: border 0.2s ease;
+}
+
+.input:hover,
+.input:focus {
+	outline: none;
+	border: 2px solid var(--color-scheme-accent);
+
+}
+
+.input:active {
+	border: 2px solid var(--color-scheme-accent);
+}
+
+.inputSelect {
+	height: 40px;
+	appearance: none;
+	-webkit-appearance: none;
+	padding-right: 12px;
+}
+
+.inputWrapper {
+	position: relative;
+	width: 100%;
+}
+
+.selectMenu {
+	position: absolute;
+	top: calc(100% + 8px);
+	left: 0;
+	z-index: 20;
+
+	width: 100%;
+	border-radius: 12px;
+	background-color: var(--color-neutral-lightest);
+	overflow: hidden;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.selectOption {
+	padding: 8px 12px;
+	font-size: 14px;
+	color: var(--color-scheme-text);
+	background-color: var(--color-neutral-lightest);
+	cursor: pointer;
+}
+
+.selectOptionActive {
+	background-color: var(--opacity-neutral-darkest-5);
+}
+
+.selectIndicator {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 100%;
+
+	transition: transform 0.2s ease;
+}
+
+.selectIndicatorOpen {
+	transform: rotate(180deg);
+}
+
+.selectIndicator svg {
+	display: block;
+	color: var(--opacity-neutral-darkest-60);
 }

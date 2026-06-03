@@ -17,8 +17,8 @@ export interface UpdateUserPayload {
 }
 
 export interface FormValues {
-  username: string;
-  email: string;
+  username?: string;
+  email?: string;
   gender: "" | "boy" | "girl";
   dueDate: string;
 }
