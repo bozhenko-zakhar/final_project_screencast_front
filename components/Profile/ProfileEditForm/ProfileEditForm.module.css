@@ -66,6 +66,11 @@
     padding-right: 12px;
 }
 
+.inputWrapper {
+    position: relative;
+    width: 335px;
+}
+
 /* =============================INPUT-END================================== */
 
 .icon {
