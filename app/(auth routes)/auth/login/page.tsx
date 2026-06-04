@@ -7,7 +7,7 @@ import LoginForm from '@/components/LoginForm/LoginForm';
 
 export default function Login() {
   return (
-    <section>
+    <main>
       <div className={clsx(css.box, 'container')}>
         <div className={css.formBox}>
           <LoginForm />
@@ -23,6 +23,6 @@ export default function Login() {
           />
         </div>
       </div>
-    </section>
+    </main>
   );
 }

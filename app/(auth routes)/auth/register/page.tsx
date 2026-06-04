@@ -7,7 +7,7 @@ import RegisterForm from '@/components/RegisterForm/RegisterForm';
 
 export default function Register() {
   return (
-    <section>
+    <main>
       <div className={clsx(css.box, 'container')}>
 				<div className={css.formBox}>
           <RegisterForm />
@@ -23,6 +23,6 @@ export default function Register() {
           />
 				</div>
 			</div>
-    </section>
+    </main>
   );
 }
