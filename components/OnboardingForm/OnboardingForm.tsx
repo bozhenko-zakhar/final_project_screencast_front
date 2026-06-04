@@ -1,194 +1,235 @@
 'use client';
 
-import { useState, useRef, type ChangeEvent, type FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Image from 'next/image';
-import toast from 'react-hot-toast';
-import axios from 'axios';
 
+import css from './OnboardingForm.module.css';
+import { Button } from '../Button/Button';
+import { ErrorMessage, Field, FieldProps, Form, Formik } from 'formik';
+import { useEffect } from 'react';
+import { updateUser } from '@/lib/api/clientApi/users';
+import { FormValues, UpdateUserPayload, User } from '@/types/user';
+
+import * as Yup from "yup";
+
+import Select, {
+  components,
+  type SingleValue,
+  type DropdownIndicatorProps,
+  type ClassNamesConfig,
+} from "react-select";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/lib/store/authStore';
-import { nextServer } from '@/lib/api/api';
-import { getMe } from '@/lib/api/clientApi/users';
 
-import CalendarPicker from '@/components/CalendarPicker/CalendarPicker';
+import toast from "react-hot-toast";
+import CalendarPicker from '../CalendarPicker/CalendarPicker';
 
-import styles from './OnboardingForm.module.css';
-import css from '../Button/Button.module.css';
+const validationSchema = Yup.object({
+	gender: Yup.string().oneOf(["", "boy", "girl"]),
+	dueDate: Yup.string().nullable(),
+});
 
-export default function OnboardingForm() {
-  const router = useRouter();
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { setUser } = useAuthStore();
 
-  const [isLoading, setIsLoading] = useState(false);
+const genderOptions = [
+  { value: "", label: "Не вибрано" },
+  { value: "boy", label: "Хлопчик" },
+  { value: "girl", label: "Дівчинка" },
+];
 
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+type GenderOption = (typeof genderOptions)[number];
 
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+const DropdownIndicator = (
+	props: DropdownIndicatorProps<GenderOption, false>,
+) => (
+	<components.DropdownIndicator {...props}>
+		<svg width="12" height="7">
+			<use href="/sprite.svg#arrow-down" />
+		</svg>
+	</components.DropdownIndicator>
+);
 
-  const [dueDate, setDueDate] = useState('');
-
-  const [gender, setGender] = useState('unknown');
-
-  const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-
-    if (file) {
-      setAvatarFile(file);
-      setAvatarPreview(URL.createObjectURL(file));
-    }
-  };
-
-  const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
-		
-    setIsLoading(true);
-
-    try {
-      // update user data
-			if (dueDate) {
-				await nextServer.patch('/users/me', {
-					date: dueDate
-				});
-			}
-			
-			if (gender) {
-				await nextServer.patch('/users/me', {
-					gender: gender === 'unknown' ? null : gender,
-				});
-			}
-
-      // update avatar
-      if (avatarFile) {
-        const avatarData = new FormData();
-
-        avatarData.append('avatar', avatarFile);
-
-        await nextServer.patch('/users/me/avatar', avatarData);
-      }
-
-      const updatedUser = await getMe();
-
-      if (updatedUser) {
-        setUser(updatedUser);
-      }
-
-      toast.success('Дані збережено успішно!');
-
-      router.push('/');
-    } catch (error: unknown) {
-      let errorMsg = 'Виникла помилка під час збереження даних';
-
-      if (axios.isAxiosError(error) && error.response?.data?.message) {
-        errorMsg = error.response.data.message;
-      } else if (error instanceof Error) {
-        errorMsg = error.message;
-      }
-
-      toast.error(errorMsg);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <div className={styles.avatarSection}>
-        <div
-          className={styles.avatarPreview}
-          onClick={() => fileInputRef.current?.click()}
-        >
-          {avatarPreview ? (
-            <Image
-              src={avatarPreview}
-              alt="Avatar"
-              fill
-              sizes="164px"
-              className={styles.image}
-            />
-          ) : (
-            <Image
-              src="/image/Avatar-def.jpg"
-              alt="Default Avatar"
-              fill
-              sizes="164px"
-              className={styles.image}
-            />
-          )}
-        </div>
-
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          onChange={handleAvatarChange}
-          className={styles.hiddenInput}
-        />
-
-        <button
-          type="button"
-          className={css.button}
-          onClick={() => fileInputRef.current?.click()}
-        >
-          Завантажити фото
-        </button>
-      </div>
-
-      <div className={styles.inputGroup}>
-        <label>Стать дитини</label>
-
-        <div className={styles.selectWrapper}>
-          <select
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-            className={styles.customSelect}
-          >
-            <option value="boy">Хлопчик</option>
-
-            <option value="girl">Дівчинка</option>
-            <option value="unknown">Ще не знаю</option>
-          </select>
-
-          <svg width="12" height="7" className={styles.selectIcon}>
-            <use href="/sprite.svg#arrow-down" />
-          </svg>
-        </div>
-      </div>
-
-      <div className={styles.inputGroup}>
-        <label>Планова дата пологів</label>
-
-        <CalendarPicker
-          value={dueDate}
-          placeholder="дд.мм.рррр"
-          error={Boolean(errors.dueDate)}
-          onChange={(date) => {
-            setDueDate(date);
-
-            if (errors.dueDate) {
-              setErrors({ ...errors, dueDate: '' });
-            }
-          }}
-        />
-
-        {errors.dueDate && (
-          <span className={styles.errorText}>
-            {errors.dueDate}
-          </span>
-        )}
-      </div>
-
-      <button
-        type="submit"
-        className={styles.submitBtn}
-        disabled={isLoading}
-      >
-        {isLoading ? 'Збереження...' : 'Зберегти'}
-      </button>
-    </form>
-  );
+interface Props {
+	user: User;
 }
+
+
+const selectClassNames: ClassNamesConfig<GenderOption, false> = {
+  control: () => `${css.input} ${css.inputSelect} ${css.selectControl}`,
+  valueContainer: () => css.selectValue,
+  singleValue: () => css.selectText,
+  placeholder: () => css.selectText,
+  menu: () => css.selectMenu,
+  option: ({ isFocused }) =>
+    `${css.selectOption} ${isFocused ? css.selectOptionActive : ""}`,
+  dropdownIndicator: ({ selectProps }) =>
+    `${css.selectIndicator} ${
+      selectProps.menuIsOpen ? css.selectIndicatorOpen : ""
+    }`,
+  indicatorSeparator: () => css.selectSeparator,
+};
+
+export default function OnboardingForm({ user }: Props) {
+	const queryClient = useQueryClient();
+	const setUser = useAuthStore((state) => state.setUser);
+
+  useEffect(() => {
+    const gender = user?.gender;
+
+    document.body.dataset.theme =
+      gender === "girl" || gender === "boy" ? gender : "neutral";
+  }, [user?.gender]);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: updateUser,
+  });
+
+	return (
+		<div className={css.container}>
+			<Link href="/" className={css.logo}>
+				<svg className={css.logo_icon}>
+					<use href="/logo.svg#icon-alternate-false"></use>
+				</svg>
+			</Link>
+
+			<div className={css.form_container}>
+
+				<h2 className={css.title}>Давайте познаймимось ближче</h2>
+				
+				<div>
+					<Image
+						src="/image/Avatar-def.jpg"
+						alt="Plant Decoration"
+						className={css.image}
+						width={164}
+						height={164}
+					/>
+
+					<Button className={css.photo_btn}>Завантажити фото</Button>
+				</div>
+
+				<Formik<FormValues>
+					initialValues={{
+						gender: "",
+						dueDate: user.dueDate ? user.dueDate.split("T")[0] : "",
+					}}
+					validationSchema={validationSchema}
+					enableReinitialize
+					onSubmit={(values, { resetForm }) => {
+						const payload: Partial<UpdateUserPayload> & {
+							name?: string;
+							date?: string | null;
+							newEmail?: string;
+						} = {};
+
+						if (
+							values.dueDate !== (user.dueDate ? user.dueDate.split("T")[0] : "")
+						) {
+							payload.date = values.dueDate || null;
+						}
+
+						if (values.gender !== (user.gender || "")) {
+							payload.gender = values.gender || null;
+						}
+
+						mutate(payload as UpdateUserPayload, {
+							onSuccess: async (updatedUser) => {
+								setUser(updatedUser);
+								queryClient.setQueryData(["user"], updatedUser);
+
+								document.body.dataset.theme =
+									updatedUser.gender === "girl" || updatedUser.gender === "boy" ?
+										updatedUser.gender
+									: "neutral";
+
+								toast.success("Профіль збережено");
+
+								resetForm({
+									values: {
+										gender: updatedUser.gender || "",
+										dueDate:
+											updatedUser.dueDate ? updatedUser.dueDate.split("T")[0] : "",
+									},
+								});
+							},
+
+							onError: () => {
+								toast.error("Не зберегти оновити профіль");
+							},
+						});
+					}}
+				>
+				{() => (
+					<Form className={css.form}>
+						<div className={css.fields}>
+							<label className={css.label}>
+								<span>Стать дитини</span>
+								<div className={css.inputWrapper}>
+									<Field name="gender">
+										{({ field, form }: FieldProps<string, FormValues>) => (
+										<Select<GenderOption, false>
+											unstyled
+											options={genderOptions}
+											value={genderOptions.find(
+												(option) => option.value === field.value,
+											)}
+											onChange={(option: SingleValue<GenderOption>) => {
+												const gender = option?.value || "";
+
+												form.setFieldValue("gender", gender);
+
+												document.body.dataset.theme =
+													gender === "girl" || gender === "boy" ?
+														gender
+													: "neutral";
+											}}
+											onBlur={() => form.setFieldTouched("gender", true)}
+											placeholder="Оберіть стать"
+											isSearchable={false}
+											classNames={selectClassNames}
+											components={{
+												DropdownIndicator,
+												IndicatorSeparator: () => null,
+											}}
+										/>
+										)}
+									</Field>
+								</div>
+							</label>
+
+							<label className={css.label}>
+								<span>Планова дата пологів</span>
+								<div className={css.inputWrapper}>
+									<Field name="dueDate">
+										{({ field, form }: FieldProps<string, FormValues>) => (
+										<CalendarPicker
+											id="dueDate"
+											value={field.value}
+											placeholder="Оберіть дату"
+											disabled={isPending}
+											onChange={(date) => {
+												form.setFieldValue("dueDate", date);
+												form.setFieldTouched("dueDate", true, false);
+											}}
+										/>
+										)}
+									</Field>
+								</div>
+								<ErrorMessage
+									name="dueDate"
+									component="p"
+									className={css.error}
+								/>
+							</label>
+						</div>
+						
+						<Button>Зберегти</Button>
+					</Form>
+					)}
+				</Formik>
+			</div>
+		</div>
+	);
+};
