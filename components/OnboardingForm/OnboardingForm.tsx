@@ -173,8 +173,8 @@ export default function OnboardingForm({ user }: Props) {
 					enableReinitialize
 					onSubmit={(values, { resetForm }) => {
 						const payload: Partial<UpdateUserPayload> & {
-							gender?: string;
 							date?: string | null;
+							newEmail?: string;
 						} = {};
 
 						if (
@@ -183,8 +183,8 @@ export default function OnboardingForm({ user }: Props) {
 							payload.date = values.dueDate || null;
 						}
 
-						if (values.gender !== (user.gender || undefined)) {
-							payload.gender = values.gender || undefined;
+						if (values.gender !== (user.gender || "")) {
+							payload.gender = values.gender || null;
 						}
 
 						mutateUser.mutate(payload as UpdateUserPayload, {
