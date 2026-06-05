@@ -1,16 +1,13 @@
 'use client';
 
-import Link from 'next/link';
-import Image from 'next/image';
-
-import css from './OnboardingForm.module.css';
-import { Button } from '../Button/Button';
+import { useEffect, useState, useRef, type ChangeEvent, type FormEvent } from 'react';
 import { ErrorMessage, Field, FieldProps, Form, Formik } from 'formik';
-import { useEffect, useRef } from 'react';
-import { updateUser, updateUserAvatar } from '@/lib/api/clientApi/users';
-import { FormValues, UpdateUserPayload, User } from '@/types/user';
-
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import * as Yup from "yup";
+import Image from 'next/image';
+import toast from 'react-hot-toast';
+import axios from 'axios';
 
 import Select, {
   components,
@@ -18,20 +15,27 @@ import Select, {
   type DropdownIndicatorProps,
   type ClassNamesConfig,
 } from "react-select";
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAuthStore } from '@/lib/store/authStore';
 
-import toast from "react-hot-toast";
-import CalendarPicker from '../CalendarPicker/CalendarPicker';
-import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/lib/store/authStore';
+import { nextServer } from '@/lib/api/api';
+import { getMe, updateUser, updateUserAvatar } from '@/lib/api/clientApi/users';
+import { FormValues, UpdateUserPayload, User } from '@/types/user';
+
+
+import CalendarPicker from '../CalendarPicker/CalendarPicke
+import { Button } from '../Button/Button';r';
+
+import css from './OnboardingForm.module.css';
+
+// =========GLOBAL-SCOPE-DATA=========================
+interface Props {
+	user: User;
+}
 
 const validationSchema = Yup.object({
 	gender: Yup.string().oneOf(["", "boy", "girl"]),
 	dueDate: Yup.string().nullable(),
 });
-
-
-
 
 const genderOptions = [
   { value: "", label: "Не вибрано" },
@@ -40,7 +44,6 @@ const genderOptions = [
 ];
 
 type GenderOption = (typeof genderOptions)[number];
-
 
 const DropdownIndicator = (
 	props: DropdownIndicatorProps<GenderOption, false>,
@@ -51,11 +54,6 @@ const DropdownIndicator = (
 		</svg>
 	</components.DropdownIndicator>
 );
-
-interface Props {
-	user: User;
-}
-
 
 const selectClassNames: ClassNamesConfig<GenderOption, false> = {
   control: () => `${css.input} ${css.inputSelect} ${css.selectControl}`,
@@ -72,27 +70,11 @@ const selectClassNames: ClassNamesConfig<GenderOption, false> = {
   indicatorSeparator: () => css.selectSeparator,
 };
 
+// =========OnboardingForm-COMPONENT=========================
 export default function OnboardingForm({ user }: Props) {
 	const router = useRouter();
 	const setUser = useAuthStore((state) => state.setUser);
 	const inputRef = useRef<HTMLInputElement | null>(null);
-	
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: updateUserAvatar,
-    onSuccess: (updatedAvatar) => {
-      setUser({
-        ...user,
-        avatar: updatedAvatar.url,
-      });
-
-      toast.success("Фото профілю оновлено");
-      router.refresh();
-    },
-    onError: () => {
-      toast.error("Не вдалося завантажити фото");
-    },
-  });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -115,7 +97,27 @@ export default function OnboardingForm({ user }: Props) {
 
     mutate(formData);
     e.target.value = "";
-	};
+	}
+
+  const mutateUser = useMutation({
+    mutationFn: updateUser,
+	});
+  
+  const { mutate, isPending } = useMutation({
+    mutationFn: updateUserAvatar,
+    onSuccess: (updatedAvatar) => {
+      setUser({
+        ...user,
+        avatar: updatedAvatar.url,
+      });
+
+      toast.success("Фото профілю оновлено");
+      router.refresh();
+    },
+    onError: () => {
+      toast.error("Не вдалося завантажити фото");
+    },
+  });
 
   useEffect(() => {
     const gender = user?.gender;
@@ -123,10 +125,6 @@ export default function OnboardingForm({ user }: Props) {
     document.body.dataset.theme =
       gender === "girl" || gender === "boy" ? gender : "neutral";
   }, [user?.gender]);
-
-  const mutateUser = useMutation({
-    mutationFn: updateUser,
-	});
 
 	return (
 		<div className={css.container}>

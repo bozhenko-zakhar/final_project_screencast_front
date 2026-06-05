@@ -7,15 +7,15 @@ import { redirect } from 'next/navigation';
 import { User } from '@/types/user';
 import { getServerUser } from '@/lib/api/serverApi/users';
 
-export default async function OnboardingPage() {
-	let user: User;
+export default function OnboardingPage() {
+  let user: User;
 
 	try {
 		user = await getServerUser();
 	} catch {
 		redirect("/auth/login");
 	}
-	
+  
   return (
 		<main className={css.container}>
 			<div className={css.form_box}>
