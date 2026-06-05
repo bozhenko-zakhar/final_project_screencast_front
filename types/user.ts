@@ -17,10 +17,10 @@ export interface UpdateUserPayload {
 }
 
 export interface FormValues {
-  username: string;
-  email: string;
-  gender: "" | "boy" | "girl";
-  dueDate: string;
+  username?: string;
+  email?: string;
+  gender?: "" | "boy" | "girl";
+  dueDate?: string;
 }
 
 export type UpdateAvatarResponse = {

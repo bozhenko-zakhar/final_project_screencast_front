@@ -1,38 +1,38 @@
 .container {
-  min-width: 320px;
-  max-width: 375px;
-  margin: 0 auto;
-  padding: 0 20px;
+	min-width: 320px;
+	max-width: 375px;
+	margin: 0 auto;
+	padding: 0 20px;
 }
 
 .journeySection {
-  padding: 24px 0 24px 0;
+	padding: 24px 0 24px 0;
 }
 
 .title {
-  margin: 0;
+	margin: 0;
 }
 
 .momBodyChange {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
 }
 
 
 @media only screen and (min-width: 1440px) {
-  .momBodyChange {
-    flex-wrap: wrap;
-    height: 540px;
-    width: 1064px;
-    margin: 0 auto;
-  }
+	.momBodyChange {
+		flex-wrap: wrap;
+		height: 540px;
+		width: 1064px;
+		margin: 0 auto;
+	}
 
-  .importantTasks {
-    width: 390px;
-    background-color: var(--color-scheme-accent);
-    height: 540px;
-    border-radius: 32px;
+	.importantTasks {
+		width: 390px;
+		background-color: var(--color-scheme-accent);
+		height: 540px;
+		border-radius: 32px;
 
-  }
+	}
 }
