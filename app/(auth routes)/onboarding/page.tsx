@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 import { User } from '@/types/user';
 import { getServerUser } from '@/lib/api/serverApi/users';
 
-export default function OnboardingPage() {
+export default async function OnboardingPage() {
   let user: User;
 
 	try {
