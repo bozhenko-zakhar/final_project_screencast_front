@@ -65,6 +65,7 @@ const selectClassNames: ClassNamesConfig<GenderOption, false> = {
 
 export default function ProfileEditForm({ user }: Props) {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
 
   useEffect(() => {
