@@ -1,6 +1,5 @@
 import { QueryClient, dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import JourneyDetails from "./JourneyDetails.client";
-import { getBabyStateInfo, getMomStateInfo } from "@/lib/api/clientApi/weeks";
 import { getServerBabyState, getServerMomState } from "@/lib/api/serverApi/weeks";
 
 export default async function Page({

@@ -6,8 +6,8 @@ import Image from 'next/image';
 import css from './OnboardingForm.module.css';
 import { Button } from '../Button/Button';
 import { ErrorMessage, Field, FieldProps, Form, Formik } from 'formik';
-import { useEffect } from 'react';
-import { updateUser } from '@/lib/api/clientApi/users';
+import { useEffect, useRef } from 'react';
+import { updateUser, updateUserAvatar } from '@/lib/api/clientApi/users';
 import { FormValues, UpdateUserPayload, User } from '@/types/user';
 
 import * as Yup from "yup";
@@ -23,6 +23,7 @@ import { useAuthStore } from '@/lib/store/authStore';
 
 import toast from "react-hot-toast";
 import CalendarPicker from '../CalendarPicker/CalendarPicker';
+import { useRouter } from 'next/navigation';
 
 const validationSchema = Yup.object({
 	gender: Yup.string().oneOf(["", "boy", "girl"]),
@@ -72,8 +73,49 @@ const selectClassNames: ClassNamesConfig<GenderOption, false> = {
 };
 
 export default function OnboardingForm({ user }: Props) {
-	const queryClient = useQueryClient();
+	const router = useRouter();
 	const setUser = useAuthStore((state) => state.setUser);
+	const inputRef = useRef<HTMLInputElement | null>(null);
+	
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: updateUserAvatar,
+    onSuccess: (updatedAvatar) => {
+      setUser({
+        ...user,
+        avatar: updatedAvatar.url,
+      });
+
+      toast.success("Фото профілю оновлено");
+      router.refresh();
+    },
+    onError: () => {
+      toast.error("Не вдалося завантажити фото");
+    },
+  });
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // =========CHEK-TYPE-OF-FILE=========================
+    if (!file.type.startsWith("image/")) {
+      toast.error("Можна завантажити тільки зображення");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Максимальний розмір — 5MB");
+      return;
+    }
+    // =========END-CHEK-TYPE-OF-FILE=========================
+
+    const formData = new FormData();
+    formData.append("avatar", file);
+
+    mutate(formData);
+    e.target.value = "";
+	};
 
   useEffect(() => {
     const gender = user?.gender;
@@ -82,9 +124,9 @@ export default function OnboardingForm({ user }: Props) {
       gender === "girl" || gender === "boy" ? gender : "neutral";
   }, [user?.gender]);
 
-  const { mutate, isPending } = useMutation({
+  const mutateUser = useMutation({
     mutationFn: updateUser,
-  });
+	});
 
 	return (
 		<div className={css.container}>
@@ -98,16 +140,32 @@ export default function OnboardingForm({ user }: Props) {
 
 				<h2 className={css.title}>Давайте познаймимось ближче</h2>
 				
-				<div>
+				<div className={css.image_container}>
 					<Image
-						src="/image/Avatar-def.jpg"
-						alt="Plant Decoration"
 						className={css.image}
-						width={164}
-						height={164}
+						src={user.avatar || "/image/Avatar-def.jpg"}
+						alt={user.name}
+						width={120}
+						height={120}
 					/>
 
-					<Button className={css.photo_btn}>Завантажити фото</Button>
+					<Button
+						className={css.photo_btn}
+						type="button"
+						onClick={() => inputRef.current?.click()}
+						disabled={isPending}
+					>
+						{isPending ? "Завантаження..." : "Завантажити нове фото"}
+					</Button>
+
+					<input
+						ref={inputRef}
+						type="file"
+						accept="image/*"
+						hidden
+						onChange={handleFileChange}
+						aria-label="Завантажити аватар"
+					/>
 				</div>
 
 				<Formik<FormValues>
@@ -134,25 +192,19 @@ export default function OnboardingForm({ user }: Props) {
 							payload.gender = values.gender || null;
 						}
 
-						mutate(payload as UpdateUserPayload, {
+						mutateUser.mutate(payload as UpdateUserPayload, {
 							onSuccess: async (updatedUser) => {
 								setUser(updatedUser);
-								queryClient.setQueryData(["user"], updatedUser);
 
 								document.body.dataset.theme =
 									updatedUser.gender === "girl" || updatedUser.gender === "boy" ?
 										updatedUser.gender
-									: "neutral";
+										: "neutral";
+								
+								resetForm();
 
 								toast.success("Профіль збережено");
-
-								resetForm({
-									values: {
-										gender: updatedUser.gender || "",
-										dueDate:
-											updatedUser.dueDate ? updatedUser.dueDate.split("T")[0] : "",
-									},
-								});
+								router.push("/")
 							},
 
 							onError: () => {
@@ -208,7 +260,7 @@ export default function OnboardingForm({ user }: Props) {
 											id="dueDate"
 											value={field.value}
 											placeholder="Оберіть дату"
-											disabled={isPending}
+											disabled={mutateUser.isPending}
 											onChange={(date) => {
 												form.setFieldValue("dueDate", date);
 												form.setFieldTouched("dueDate", true, false);
@@ -225,7 +277,7 @@ export default function OnboardingForm({ user }: Props) {
 							</label>
 						</div>
 						
-						<Button>Зберегти</Button>
+						<Button type='submit'>Зберегти</Button>
 					</Form>
 					)}
 				</Formik>

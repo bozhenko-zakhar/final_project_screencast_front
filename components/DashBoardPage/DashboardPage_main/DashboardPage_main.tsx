@@ -14,7 +14,7 @@ type Props = {
 const DashboardPage = ({token}: Props) => {
 	
   return (
-    <section className={styles.dashboard}>
+    <main className={styles.dashboard}>
       <div className={styles.greetingWrapper}>
         <GreetingBlock />
       </div>
@@ -29,7 +29,7 @@ const DashboardPage = ({token}: Props) => {
         <TasksReminderCard />
         <FeelingCheckCard />
       </div>
-    </section>
+    </main>
   );
 };
 

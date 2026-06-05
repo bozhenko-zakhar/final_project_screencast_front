@@ -17,7 +17,7 @@ export default async function OnboardingPage() {
 	}
 	
   return (
-		<section className={css.container}>
+		<main className={css.container}>
 			<div className={css.form_box}>
 				<OnboardingForm user={user} />
 			</div>
@@ -32,6 +32,6 @@ export default async function OnboardingPage() {
 					priority
 				/>
 			</div>
-    </section>
+    </main>
   );
 };

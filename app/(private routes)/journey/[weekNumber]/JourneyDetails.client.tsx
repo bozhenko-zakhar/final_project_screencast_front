@@ -64,7 +64,7 @@ const JourneyDetails = ({ weekNumber }: Props) => {
   }
 
   return (
-    <>
+    <main>
       <GreetingBlock />
 
       <WeekSelector
@@ -89,7 +89,7 @@ const JourneyDetails = ({ weekNumber }: Props) => {
           </div>
         )}
       </section>
-    </>
+    </main>
   );
 };
 
