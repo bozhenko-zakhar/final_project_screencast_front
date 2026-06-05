@@ -1,24 +1,37 @@
 import Image from 'next/image';
+
 import OnboardingForm from '@/components/OnboardingForm/OnboardingForm';
-import styles from './page.module.css';
 
-export default function OnboardingPage() {
+import css from './page.module.css';
+import { redirect } from 'next/navigation';
+import { User } from '@/types/user';
+import { getServerUser } from '@/lib/api/serverApi/users';
+
+export default async function OnboardingPage() {
+  let user: User;
+
+	try {
+		user = await getServerUser();
+	} catch {
+		redirect("/auth/login");
+	}
+  
   return (
-    <main className={styles.container}>
-      <Image 
-        src="/Plant.jpg" 
-        alt="Plant Decoration" 
-        width={200} 
-        height={300}
-        className={styles.plantImage}
-        priority
-      />
+		<main className={css.container}>
+			<div className={css.form_box}>
+				<OnboardingForm user={user} />
+			</div>
 
-      <div className={styles.header}>
-        <h2 className={styles.title}>  <span className={styles.titleLine}>Давайте</span>  <span className={styles.titleLine}>познайомимось ближче</span></h2>
-      </div>
-
-      <OnboardingForm />
+			<div className={css.image_box}>
+				<Image
+					src="/image/Plant.jpg"
+					alt="Plant Decoration"
+					fill
+					className={css.image}
+					sizes="(min-width: 1440px) 50vw, 0px"
+					priority
+				/>
+			</div>
     </main>
   );
 };

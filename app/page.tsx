@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 
 import DashboardPage from '@/components/DashBoardPage/DashboardPage_main/DashboardPage_main';
 import LehlehkaLayout from './(private routes)/layout';
-import { useAuthStore } from '@/lib/store/authStore';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { fetchPrivateWeeks, fetchPublicWeeks } from '@/lib/api/clientApi/weeks';
 

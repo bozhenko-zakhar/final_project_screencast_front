@@ -15,7 +15,7 @@ export default function DiaryLayout({
 }: DiaryLayoutProps) {
 	const isDiaryEditing = useDiaryStore(state => state.isDiaryEditing);
   return (
-		<>
+		<main>
 			<div className={css.greeting_container}>
       	<GreetingBlock />
 			</div>
@@ -32,6 +32,6 @@ export default function DiaryLayout({
 					{details}
 				</aside>
 			</div>
-		</>
+		</main>
   );
 }
