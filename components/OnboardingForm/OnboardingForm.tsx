@@ -177,7 +177,6 @@ export default function OnboardingForm({ user }: Props) {
 					enableReinitialize
 					onSubmit={(values, { resetForm }) => {
 						const payload: Partial<UpdateUserPayload> & {
-							name?: string;
 							date?: string | null;
 							newEmail?: string;
 						} = {};
