@@ -22,8 +22,8 @@ import { getMe, updateUser, updateUserAvatar } from '@/lib/api/clientApi/users';
 import { FormValues, UpdateUserPayload, User } from '@/types/user';
 
 
-import CalendarPicker from '../CalendarPicker/CalendarPicke
-import { Button } from '../Button/Button';r';
+import CalendarPicker from '../CalendarPicker/CalendarPicker'
+import { Button } from '../Button/Button';
 
 import css from './OnboardingForm.module.css';
 
