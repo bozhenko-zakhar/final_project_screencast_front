@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState, useRef, type ChangeEvent, type FormEvent } from 'react';
+import { useEffect, useRef } from 'react';
 import { ErrorMessage, Field, FieldProps, Form, Formik } from 'formik';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import * as Yup from "yup";
 import Image from 'next/image';
+import Link from 'next/link';
+import * as Yup from "yup";
 import toast from 'react-hot-toast';
-import axios from 'axios';
 
 import Select, {
   components,
@@ -17,10 +17,8 @@ import Select, {
 } from "react-select";
 
 import { useAuthStore } from '@/lib/store/authStore';
-import { nextServer } from '@/lib/api/api';
-import { getMe, updateUser, updateUserAvatar } from '@/lib/api/clientApi/users';
+import { updateUser, updateUserAvatar } from '@/lib/api/clientApi/users';
 import { FormValues, UpdateUserPayload, User } from '@/types/user';
-
 
 import CalendarPicker from '../CalendarPicker/CalendarPicker'
 import { Button } from '../Button/Button';
