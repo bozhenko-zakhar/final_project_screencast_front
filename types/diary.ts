@@ -6,7 +6,7 @@ export interface DiaryEntry {
 }
 
 export interface BackendDiaryEntry {
-	data: DiaryEntry;
+  data: DiaryEntry;
   _id: {
     $oid: string;
   };
@@ -27,9 +27,9 @@ export interface DiaryListItem {
   _id: string;
   title: string;
   date: string;
-	description: string;
+  description: string;
   emotions: Array<{
-    id: string;
+    _id: string;
     title: string;
   }>;
 }
@@ -40,7 +40,7 @@ export interface DiaryEntryDetail {
   date: string;
   description: string;
   emotions: Array<{
-    id: string;
+    _id: string;
     title: string;
   }>;
-}	
+}

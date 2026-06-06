@@ -9,7 +9,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUser } from "@/lib/api/clientApi/users";
 import type { User, UpdateUserPayload, FormValues } from "@/types/user";
 import css from "./ProfileEditForm.module.css";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import Select, {
   components,
   type SingleValue,
@@ -65,7 +65,7 @@ const selectClassNames: ClassNamesConfig<GenderOption, false> = {
 
 export default function ProfileEditForm({ user }: Props) {
   const queryClient = useQueryClient();
-  const router = useRouter();
+  // const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
 
   useEffect(() => {

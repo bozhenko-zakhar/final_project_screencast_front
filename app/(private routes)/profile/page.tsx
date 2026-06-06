@@ -3,16 +3,9 @@ import type { User } from "@/types/user";
 import { getServerUser } from "@/lib/api/serverApi/users";
 import ProfileAvatar from "@/components/Profile/ProfileAvatar/ProfileAvatar";
 import ProfileEditForm from "@/components/Profile/ProfileEditForm/ProfileEditForm";
-import { redirect } from "next/navigation";
 
 const ProfilePage = async () => {
-  let user: User;
-
-  try {
-    user = await getServerUser();
-  } catch {
-    redirect("/auth/login");
-  }
+  const user: User = await getServerUser();
 
   return (
     <main className={css.main}>

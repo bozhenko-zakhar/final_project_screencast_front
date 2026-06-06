@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import Modal from '@/components/modals/Modal/Modal';
-import css from './ConfirmationModal.module.css';
+import Modal from "@/components/modals/Modal/Modal";
+import css from "./ConfirmationModal.module.css";
 
 type ConfirmationModalProps = {
   isOpen: boolean;
@@ -17,6 +17,7 @@ type ConfirmationModalProps = {
 
 const ConfirmationModal = ({
   isOpen,
+  title,
   confirmButtonText,
   cancelButtonText,
   onConfirm,
@@ -41,26 +42,7 @@ const ConfirmationModal = ({
           </svg>
         </button>
 
-        <h2 className={css.title}>
-          Ви точно
-          <span className={css.mobileBreak}>
-            <br />
-          </span>
-
-          <span className={css.tabletSpace}> </span>
-          хочете
-
-          <span className={css.mobileBreak}>
-            <br />
-          </span>
-
-          <span className={css.desktopBreak}>
-            <br />
-          </span>
-
-          <span className={css.tabletSpace}> </span>
-          вийти?
-        </h2>
+        <h2 className={css.title}>{title}</h2>
 
         {description && <p className={css.text}>{description}</p>}
 
@@ -82,7 +64,7 @@ const ConfirmationModal = ({
             onClick={onConfirm}
             disabled={isLoading}
           >
-            {isLoading ? 'Зачекайте...' : confirmButtonText}
+            {isLoading ? "Зачекайте..." : confirmButtonText}
           </button>
         </div>
       </div>

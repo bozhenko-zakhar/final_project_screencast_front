@@ -24,7 +24,7 @@ interface DiaryEntryDetailsProps {
 const DiaryEntryDetails = ({ entryId }: DiaryEntryDetailsProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const setDiaryEditing = useDiaryStore(state => state.setDiaryEditing);
+  const setDiaryEditing = useDiaryStore((state) => state.setDiaryEditing);
 
   const { data: diaries } = useQuery({
     queryKey: ["diary"],
@@ -33,40 +33,44 @@ const DiaryEntryDetails = ({ entryId }: DiaryEntryDetailsProps) => {
 
   const currentDiary = diaries?.find((item) => item._id === entryId) ?? null;
 
-	const router = useRouter();
+  const router = useRouter();
   const queryClient = useQueryClient();
   const { mutate: deleteMutate, isPending: isDeleting } = useMutation({
     mutationFn: async (id: string) => deleteDiaryEntry(id),
     onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: ["diary"],
-			});
+      queryClient.invalidateQueries({
+        queryKey: ["diary"],
+      });
 
-			router.push("/diary");
+      router.push("/diary");
 
-			toast.success("Запис видалено!");
+      toast.success("Запис видалено!");
 
-			setIsDeleteModalOpen(false);
-		},
+      setIsDeleteModalOpen(false);
+    },
     onError: () => {
       toast.error("Помилка при видаленні запису");
     },
   });
 
-
   if (!currentDiary) {
     return (
       <div className={css.container}>
-        <div className={css.placeholder}>Наразі записи у щоденнику відстні</div>
+        <div className={css.placeholder}>
+          Наразі записи у щоденнику відсутні
+        </div>
       </div>
     );
   }
 
-  const formattedDate = new Date(currentDiary.date).toLocaleDateString("uk-UA", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
+  const formattedDate = new Date(currentDiary.date).toLocaleDateString(
+    "uk-UA",
+    {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    },
+  );
 
   const handleDelete = (id: string) => {
     deleteMutate(id);
@@ -82,27 +86,28 @@ const DiaryEntryDetails = ({ entryId }: DiaryEntryDetailsProps) => {
         <div className={css.header}>
           <div>
             <h2 className={css.title}>{currentDiary.title}</h2>
-						<button
+            <button
               className={css.icon_container}
               onClick={handleEdit}
-              disabled={isDeleting}>
-							<svg className={css.icon}>
-								<use href="/sprite.svg#edit_square"></use>
-							</svg>
-						</button>
+              disabled={isDeleting}
+            >
+              <svg className={css.icon}>
+                <use href="/sprite.svg#edit_square"></use>
+              </svg>
+            </button>
           </div>
           <div className={css.actions}>
             <p className={css.date}>{formattedDate}</p>
-						
-						<button
+
+            <button
               className={css.icon_container}
               onClick={() => setIsDeleteModalOpen(true)}
               disabled={isDeleting}
-							>
-							<svg className={css.icon}>
-								<use href="/sprite.svg#delete_forever"></use>
-							</svg>
-						</button>
+            >
+              <svg className={css.icon}>
+                <use href="/sprite.svg#delete_forever"></use>
+              </svg>
+            </button>
           </div>
         </div>
 
@@ -113,7 +118,7 @@ const DiaryEntryDetails = ({ entryId }: DiaryEntryDetailsProps) => {
         {currentDiary.emotions && currentDiary.emotions.length > 0 && (
           <div className={css.emotions}>
             {currentDiary.emotions.map((emotion) => (
-              <span key={emotion.id} className={css.emotionTag}>
+              <span key={emotion._id} className={css.emotionTag}>
                 {emotion.title}
               </span>
             ))}
@@ -121,21 +126,21 @@ const DiaryEntryDetails = ({ entryId }: DiaryEntryDetailsProps) => {
         )}
       </div>
 
-			<ConfirmationModal
-				isOpen={isDeleteModalOpen}
-				title="Ви впевнені, що хочете видалити запис?"
-				description="Цю дію неможливо буде скасувати."
-				confirmButtonText="Видалити"
-				cancelButtonText="Скасувати"
-				onCancel={() => {
-					setIsDeleteModalOpen(false);
-				}} 
-				onConfirm={() => {
-					handleDelete(currentDiary._id); 
-					setDiaryEditing(false);
-				}}
-				isLoading={isDeleting}
-			/>
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        title="Видалити запис?"
+        description="Цю дію неможливо буде скасувати."
+        confirmButtonText="Видалити"
+        cancelButtonText="Скасувати"
+        onCancel={() => {
+          setIsDeleteModalOpen(false);
+        }}
+        onConfirm={() => {
+          handleDelete(currentDiary._id);
+          setDiaryEditing(false);
+        }}
+        isLoading={isDeleting}
+      />
 
       {isEditModalOpen && (
         <AddDiaryEntryModal
@@ -143,9 +148,14 @@ const DiaryEntryDetails = ({ entryId }: DiaryEntryDetailsProps) => {
           onClose={() => setIsEditModalOpen(false)}
         >
           <DiaryEntryForm
-						currentId={currentDiary._id}
-						type={"edit"}
+            currentId={currentDiary._id}
+            type={"edit"}
             onClose={() => setIsEditModalOpen(false)}
+            initialData={{
+              title: currentDiary.title,
+              description: currentDiary.description,
+              emotions: currentDiary.emotions.map((e) => e._id),
+            }}
           />
         </AddDiaryEntryModal>
       )}
