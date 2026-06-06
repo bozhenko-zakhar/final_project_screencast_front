@@ -20,7 +20,7 @@ export default function BabyDevelopment({ data }: Props) {
           height={379}
         />
         <p className={css.imageDescr}>
-          Ваш малюк зараз розміром з {data.analogy}
+          Ваш малюк зараз розміром, як {data.analogy}
         </p>
       </div>
       <div className={css.descrSection}>
