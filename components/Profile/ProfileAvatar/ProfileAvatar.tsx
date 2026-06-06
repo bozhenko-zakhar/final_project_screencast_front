@@ -62,7 +62,7 @@ export default function ProfileAvatar({ user }: ProfileAvatarProps) {
     <section className={css.wrapper}>
       <Image
         className={css.avatar}
-        src={user.avatar || "/Avatar-def.jpg"}
+        src={user.avatar || "/image/Avatar-def.jpg"}
         alt={user.name}
         width={120}
         height={120}

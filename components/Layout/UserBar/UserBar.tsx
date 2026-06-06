@@ -17,9 +17,9 @@ const UserBar = ({
   isLoading,
 }: UserBarProps) => {
   const imageSrc =
-    avatar && (avatar.startsWith("/") || avatar.startsWith("http"))
-      ? avatar
-      : "/Avatar-def.jpg";
+    avatar && (avatar.startsWith("/") || avatar.startsWith("http")) ?
+      avatar
+    : "/image/Avatar-def.jpg";
 
   return (
     <div className={css.container}>
