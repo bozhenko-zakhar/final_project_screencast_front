@@ -26,12 +26,6 @@ const MomTipCard = ({ token }: Props) => {
     return babyData.daysLeft % tipsCount;
   }
 
-  console.log("babyData:", babyData);
-  console.log("daysLeft:", babyData?.daysLeft);
-  console.log("weekNumber:", babyData?.babyState.weekNumber);
-  console.log("tipIndex:", caclulateTodaysDay());
-  console.log("tip:", babyData?.babyState.momDailyTips[caclulateTodaysDay()]);
-
   return (
     <div className={css.advicesForMom}>
       <h3 className={css.babyContainerHeaderline}>Порада для мами </h3>
