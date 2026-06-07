@@ -1,7 +1,7 @@
-import css from './BabyDevelopment.module.css'
+import css from "./BabyDevelopment.module.css";
 import Image from "next/image";
-import starImage from "../../../app/(private routes)/journey/[weekNumber]/img/star_shine.svg"
-import { BabyWeek } from '@/types/baby';
+import starImage from "../../../app/(private routes)/journey/[weekNumber]/img/star_shine.svg";
+import { BabyWeek } from "@/types/baby";
 
 type Props = {
   data: BabyWeek | undefined;
@@ -19,10 +19,13 @@ export default function BabyDevelopment({ data }: Props) {
           width={287}
           height={379}
         />
-        <p className={css.imageDescr}>{data.analogy}</p>
+        <p className={css.imageDescr}>
+          Ваш малюк зараз розміром, як {data.analogy}
+        </p>
       </div>
       <div className={css.descrSection}>
         <p className={css.descrText}>{data.babyDevelopment}</p>
+        <p className={css.descrText}>{data.babyActivity}</p>
 
         <div className={css.interestingFact}>
           <div className={css.factHeaderContainer}>
@@ -35,9 +38,7 @@ export default function BabyDevelopment({ data }: Props) {
             />
             <p className={css.factHeader}>Цікавий факт тижня</p>
           </div>
-          <p className={css.factText}>
-            {data.interestingFact}
-          </p>
+          <p className={css.factText}>{data.interestingFact}</p>
         </div>
       </div>
     </div>

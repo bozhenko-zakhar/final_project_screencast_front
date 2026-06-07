@@ -14,7 +14,11 @@ import css from "./DiaryList.module.css";
 const DiaryList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { data: entries, isLoading, error } = useQuery({
+  const {
+    data: entries,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["diary"],
     queryFn: fetchDiaries,
   });
@@ -45,14 +49,11 @@ const DiaryList = () => {
       : error ?
         <div className={css.error}>Помилка завантаження записів</div>
       : entries?.length === 0 ?
-        <div className={css.empty}>Наразі записи у щоденнику відстні</div>
+        <div className={css.empty}>Наразі записи у щоденнику відсутні</div>
       : <ul className={css.list}>
           {entries?.map((entry) => (
-						<DiaryEntryCard
-							key={entry._id}
-							entry={entry}
-						/>
-					))}
+            <DiaryEntryCard key={entry._id} entry={entry} />
+          ))}
         </ul>
       }
 
@@ -61,7 +62,11 @@ const DiaryList = () => {
           title="Новий запис"
           onClose={() => setIsModalOpen(false)}
         >
-          <DiaryEntryForm type="0" currentId="0" onClose={() => setIsModalOpen(false)} />
+          <DiaryEntryForm
+            type="0"
+            currentId="0"
+            onClose={() => setIsModalOpen(false)}
+          />
         </AddDiaryEntryModal>
       )}
     </div>

@@ -22,14 +22,14 @@
 }
 
 .imageDescr {
-	font-family: var(--main-font);
+  font-family: var(--main-font);
   text-align: left;
   line-height: 150%;
   font-size: 14px;
 }
 
 .descrText {
-	font-family: var(--main-font);
+  font-family: var(--main-font);
   margin-bottom: 16px;
   line-height: 150%;
   font-size: 14px;
@@ -49,14 +49,14 @@
 }
 
 .factHeader {
-	font-family: var(--main-font);
+  font-family: var(--main-font);
   font-size: 14px;
   font-weight: 700;
   line-height: 150%;
 }
 
 .factText {
-	font-family: var(--main-font);
+  font-family: var(--main-font);
   line-height: 150%;
   font-size: 14px;
 }

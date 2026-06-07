@@ -92,9 +92,7 @@ customCheckbox .input,
     padding: 10px 24px;
     width: 294px;
     height: 42px;
-
     background: var(--color-scheme-foreground-alt);
-
     font-family: "Lato", sans-serif;
     font-weight: 500;
     font-size: 14px;
@@ -103,8 +101,8 @@ customCheckbox .input,
 }
 
 .submitBtn:hover {
-    border-bottom: 4px solid rgba(0, 0, 0, 0.15);
-    background: #fff4f6;
+
+    background: var(--color-scheme-foreground);
 }
 
 .submitBtn:disabled {

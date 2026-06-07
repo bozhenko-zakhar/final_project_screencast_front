@@ -6,36 +6,36 @@
   background-color: var(--color-scheme-foreground);
   border-radius: 8px;
 
-	max-height: 727px;
-	overflow-y: auto;
-	scrollbar-width: none;
-	-ms-overflow-style: none;
+  max-height: 727px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 @media (min-width: 1440px) {
-	.container {
-		height: 727px;
-	}
+  .container {
+    height: 727px;
+  }
 }
 
 
 .header {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   gap: 16px;
   margin-bottom: 8px;
 }
 
 .title {
-	font-family: var(--accent-font);
+  font-family: var(--accent-font);
   margin: 0;
   font-size: 24px;
   font-weight: 600;
 }
 
 .addButton {
-	font-family: var(--main-font);
+  font-family: var(--main-font);
   background: none;
   border: none;
   color: black;
