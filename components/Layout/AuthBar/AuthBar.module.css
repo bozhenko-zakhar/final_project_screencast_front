@@ -5,52 +5,8 @@
 	width: 100%;
 }
 
-.registerLink,
-.loginLink {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+.registerLink > button,
+.loginLink > button {
+	display: block;
 	width: 100%;
-	border-radius: 100px;
-	padding: 10px 24px;
-	font-family: var(--main-font);
-	font-size: 16px;
-	font-weight: 500;
-	line-height: 1.6;
-	color: #000000;
-	text-decoration: none;
-	white-space: nowrap;
-	margin-bottom: 4px;
-	cursor: pointer;
-	transition: filter 0.15s ease, transform 0.1s ease, background-color 0.15s ease;
-}
-
-.registerLink {
-	background-color: var(--color-scheme-foreground-alt);
-	box-shadow: 0 4px 0 0 var(--color-scheme-accent);
-}
-
-.registerLink:hover {
-	text-decoration: none;
-	background-color: var(--color-scheme-foreground);
-}
-
-.registerLink:active {
-	transform: translateY(2px);
-	box-shadow: 0 2px 0 0 var(--control-focus-border);
-}
-
-.loginLink {
-	background-color: rgba(0, 0, 0, 0.05);
-	box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.15);
-}
-
-.loginLink:hover {
-	background-color: var(--opacity-white-20);
-	text-decoration: none;
-}
-
-.loginLink:active {
-	transform: translateY(2px);
-	box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.15);
 }

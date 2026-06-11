@@ -9,6 +9,7 @@ import { updateUserAvatar } from "@/lib/api/clientApi/users";
 import type { User } from "@/types/user";
 import css from "./ProfileAvatar.module.css";
 import toast from "react-hot-toast";
+import { Button } from "@/components/Button/Button";
 
 interface ProfileAvatarProps {
   user: User;
@@ -73,14 +74,15 @@ export default function ProfileAvatar({ user }: ProfileAvatarProps) {
           <p className={css.email}>{user.email}</p>
         </div>
 
-        <button
+				<Button
+					isLower={true}
+					isNeutral={true}
           className={css.button}
-          type="button"
           onClick={() => inputRef.current?.click()}
           disabled={isPending}
         >
           {isPending ? "Завантаження..." : "Завантажити нове фото"}
-        </button>
+        </Button>
       </div>
 
       <input

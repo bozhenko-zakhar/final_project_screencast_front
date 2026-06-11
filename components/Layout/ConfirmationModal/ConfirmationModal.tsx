@@ -2,6 +2,7 @@
 
 import Modal from "@/components/modals/Modal/Modal";
 import css from "./ConfirmationModal.module.css";
+import { Button } from "@/components/Button/Button";
 
 type ConfirmationModalProps = {
   isOpen: boolean;
@@ -49,23 +50,22 @@ const ConfirmationModal = ({
         {errorMessage && <p className={css.error}>{errorMessage}</p>}
 
         <div className={css.actions}>
-          <button
-            type="button"
+          <Button
             className={css.cancel}
             onClick={onCancel}
             disabled={isLoading}
           >
             {cancelButtonText}
-          </button>
+          </Button>
 
-          <button
-            type="button"
+					<Button
+						isNeutral={true}
             className={css.confirm}
             onClick={onConfirm}
             disabled={isLoading}
           >
             {isLoading ? "Зачекайте..." : confirmButtonText}
-          </button>
+          </Button>
         </div>
       </div>
     </Modal>
