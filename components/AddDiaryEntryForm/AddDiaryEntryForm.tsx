@@ -14,6 +14,7 @@ import {
 
 import css from "./AddDiaryEntryForm.module.css";
 import { DiaryEntry } from "@/types/diary";
+import { Button } from "../Button/Button";
 
 type UpdateDiaryPayload = {
   id: string;
@@ -238,9 +239,9 @@ export const DiaryEntryForm = ({
             />
           </div>
 
-          <button type="submit" className={css.submitBtn}>
+          <Button type="submit" className={css.submitBtn}>
             Зберегти
-          </button>
+          </Button>
         </Form>
       )}
     </Formik>

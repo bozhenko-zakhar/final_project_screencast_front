@@ -10,6 +10,7 @@ import CalendarPicker from "@/components/CalendarPicker/CalendarPicker";
 import type { CreateTaskPayload } from "@/types/tasks";
 
 import styles from "./AddTaskForm.module.css";
+import { Button } from "@/components/Button/Button";
 
 type AddTaskFormProps = {
   initialValues: CreateTaskPayload;
@@ -121,13 +122,13 @@ export default function AddTaskForm({
               />
             </div>
 
-            <button
+            <Button
               type="submit"
               className={styles.button}
               disabled={isDisabled}
             >
               {isLoading ? "Збереження..." : "Зберегти"}
-            </button>
+            </Button>
           </Form>
         );
       }}

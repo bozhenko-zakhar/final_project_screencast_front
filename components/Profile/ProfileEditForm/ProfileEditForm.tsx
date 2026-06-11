@@ -18,6 +18,7 @@ import Select, {
 } from "react-select";
 import toast from "react-hot-toast";
 import CalendarPicker from "@/components/CalendarPicker/CalendarPicker";
+import { Button } from "@/components/Button/Button";
 
 interface Props {
   user: User;
@@ -226,9 +227,10 @@ export default function ProfileEditForm({ user }: Props) {
           </div>
 
           <div className={css.buttons}>
-            <button
+						<Button
+							isLower={true}
+							isNeutral={true}
               className={css.cancelButton}
-              type="button"
               onClick={() => {
                 resetForm();
 
@@ -240,15 +242,16 @@ export default function ProfileEditForm({ user }: Props) {
               disabled={!dirty || isPending}
             >
               Відмінити зміни
-            </button>
+            </Button>
 
-            <button
+						<Button
+							isLower={true}
               className={css.submitButton}
               type="submit"
               disabled={!dirty || isPending}
             >
               {isPending ? "Збереження..." : "Зберегти зміни"}
-            </button>
+            </Button>
           </div>
         </Form>
       )}

@@ -29,15 +29,15 @@ export default function AddTaskModal({
     <Modal onClose={onClose}>
       <div className={styles.wrapper}>
        <button
-  type="button"
-  className={styles.closeButton}
-  onClick={onClose}
-  aria-label="Закрити модальне вікно"
->
-  <svg className={styles.closeIcon} aria-hidden="true">
-    <use href="/sprite.svg#close" />
-  </svg>
-</button>
+					type="button"
+					className={styles.closeButton}
+					onClick={onClose}
+					aria-label="Закрити модальне вікно"
+				>
+					<svg className={styles.closeIcon} aria-hidden="true">
+						<use href="/sprite.svg#close" />
+					</svg>
+				</button>
         <h2 className={styles.title}>
           <span className={styles.titleLine}>Нове</span>
           <span className={styles.desktopSpace}> </span>

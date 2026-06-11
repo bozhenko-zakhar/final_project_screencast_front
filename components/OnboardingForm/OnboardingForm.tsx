@@ -151,7 +151,8 @@ export default function OnboardingForm({ user }: Props) {
 
 					<Button
 						className={css.photo_btn}
-						type="button"
+						isLower={true}
+						isNeutral={true}
 						onClick={() => inputRef.current?.click()}
 						disabled={isPending}
 					>

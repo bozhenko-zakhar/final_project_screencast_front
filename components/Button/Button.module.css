@@ -1,4 +1,4 @@
-.button {
+/* .button {
     padding: 8px 20px;
     border-radius: 100px;
     border: none;
@@ -41,4 +41,73 @@
     .button {
         font-size: 16px;
     }
+} */
+
+.button {
+	border: none;
+
+	background: var(--color-scheme-foreground-alt);
+	border-bottom: 4px solid var(--color-scheme-accent);
+	border-radius: 100px;
+	padding-block: 10px;
+	padding-inline: 24px;
+	height: 42px;
+
+	font-family: var(--main-font);
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 1.6;
+	color: var(--color-main);
+
+	transition: background 0.15s, opacity 0.15s, transform 0.1s;
+}
+
+.button.neutral {
+	background: var(--opacity-neutral-darkest-5);
+	border-bottom: 4px solid var(--opacity-neutral-darkest-15);
+}
+
+.button:hover:not(:disabled),
+.button:focus:not(:disabled) {
+	border-bottom: 4px solid var(--color-scheme-border);
+	background: var(--color-scheme-background);
+}
+
+.button.neutral:hover:not(:disabled),
+.button.neutral:focus:not(:disabled) {
+	border-bottom: 4px solid var(--opacity-neutral-darkest-15);
+	background: var(--color-scheme-foreground);
+}
+
+.button:active:not(:disabled) {
+	border: none;
+	background: var(--color-neutral-light);
+}
+
+.button.neutral:active:not(:disabled) {
+	border: none;
+	background: var(--color-scheme-accent);
+}
+
+.button:disabled,
+.button.neutral:disabled {
+	opacity: 0.3;
+	cursor: not-allowed;
+}
+
+.lower {
+	padding-block: 8px;
+	padding-inline: 20px;
+	height: 38px;
+}
+
+@media screen and (min-width: 1440px) {
+	.button {
+		height: 46px;
+		font-size: 16px;
+	}
+
+	.lower {
+		height: 42px;
+	}
 }
