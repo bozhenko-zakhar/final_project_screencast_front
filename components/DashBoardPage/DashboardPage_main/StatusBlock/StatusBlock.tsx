@@ -27,7 +27,7 @@ const StatusBlock = ({token}: Props) => {
 
       <div className={`${cardStyles.card} ${css.weeks}`}>
         <p className={css.title}>Днів до зустрічі</p>
-        <h3 className={css.days}>~{babyData?.daysLeft}</h3>
+        <h3 className={css.days}>{babyData?.daysLeft && `~${babyData?.daysLeft}`}</h3>
       </div>
     </div>
   );

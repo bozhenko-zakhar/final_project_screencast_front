@@ -1,7 +1,13 @@
+"use client"
+
 import styles from './loading.module.css';
 
 const Loading = () => {
-  return <p className={styles.text}>🤰 Завантажуємо...</p>
+	return (
+		<div className={styles.overlay}>
+			<div className={styles.spinner} />
+		</div>
+	)
 };
 
 export default Loading;

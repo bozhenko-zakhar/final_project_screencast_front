@@ -34,7 +34,8 @@ const BabyTodayCard = ({token}: Props) => {
 					width={287}
 					height={216}
 				/>
-				<div>
+				{ babyData &&
+					<div>
 					<p className={css.titlesOfBabyToday}>
 						Розмір:
 						<span className={css.babyDescriptionText}>{babyData?.babyState.babySize}</span>
@@ -49,7 +50,7 @@ const BabyTodayCard = ({token}: Props) => {
 							{babyData?.babyState.babyActivity}
 						</span>
 					</p>
-				</div>
+				</div>}
 			</div>
 
 			<p className={css.babyDevelopment}>{babyData?.babyState.babyDevelopment}</p>
