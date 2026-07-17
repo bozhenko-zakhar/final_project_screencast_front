@@ -3,24 +3,26 @@
 import { useEffect, useState } from "react";
 import { useGlobalLoading } from "@/hooks/useGlobalLoading";
 import styles from "./GlobalLoader.module.css";
+import { useLoadingStore } from "@/lib/store/loadingStore";
 
 const messages = [
 	{
-		delay: 2000,
+		delay: 3000,
 		text: "🔄 Підключаємося до сервера...",
 	},
 	{
-		delay: 8000,
+		delay: 10000,
 		text: "⏳ Сервер ще запускається після простою. Це нормально і може зайняти до 30 секунд.",
 	},
 	{
-		delay: 15000,
+		delay: 17000,
 		text: "✨ Майже готово. Дякуємо за терпіння!",
 	},
 ];
 
 const GlobalLoader = () => {
 	const { isLoading } = useGlobalLoading();
+	const isBlockingUi = useLoadingStore(state => state.isBlockingUi);
 	const [message, setMessage] = useState("");
 
 	useEffect(() => {
@@ -37,7 +39,7 @@ const GlobalLoader = () => {
 	}, [isLoading]);
 
 
-	if (!isLoading) return null;
+	if (!isLoading || isBlockingUi) return null;
 
 	return (
 		<div className={styles.overlay}>

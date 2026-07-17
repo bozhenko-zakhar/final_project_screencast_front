@@ -55,16 +55,12 @@ const JourneyDetails = ({ weekNumber }: Props) => {
     window.history.replaceState(null, "", `/journey/${week}`);
   };
 
-  if (babyLoading || momLoading) {
-    return <p>Loading, please wait...</p>;
-  }
-
   if (hasError) {
     return <p>Failed to fetch data</p>;
   }
 
   return (
-    <main>
+    <main className={css.main}>
       <GreetingBlock />
 
       <WeekSelector
