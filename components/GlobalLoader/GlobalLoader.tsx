@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useGlobalLoading } from "@/hooks/useGlobalLoading";
 import styles from "./GlobalLoader.module.css";
-import { useLoadingStore } from "@/lib/store/loadingStore";
 
 const messages = [
 	{
@@ -22,7 +21,6 @@ const messages = [
 
 const GlobalLoader = () => {
 	const { isLoading } = useGlobalLoading();
-	const isBlockingUi = useLoadingStore(state => state.isBlockingUi);
 	const [message, setMessage] = useState("");
 
 	useEffect(() => {
