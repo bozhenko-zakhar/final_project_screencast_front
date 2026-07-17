@@ -20,24 +20,27 @@ const Breadcrumbs = () => {
 			return titleMap[segment];
 		}
 
-		// Hide raw ids/slugs in breadcrumbs and show a stable human label.
-		const isIdLikeSegment = /^[a-f0-9-]{8,}$/i.test(segment) || /^\d+$/.test(segment);
-		if (isIdLikeSegment) {
-			return "Запис";
-		}
-
 		return decodeURIComponent(segment)
 			.replace(/-/g, " ")
 			.replace(/^\p{L}/u, (letter) => letter.toUpperCase());
 	};
 
-	const crumbs = [
-		{ href: "/", label: "Лелека" },
-		...segments.map((segment, index) => ({
-			href: `/${segments.slice(0, index + 1).join("/")}`,
-			label: formatSegmentLabel(segment)
-		}))
-	];
+	const crumbs = [{ href: "/", label: "Лелека" }];
+
+	if (pathname === "/") {
+		crumbs.push({ href: "/", label: "Мій день" });
+	} else if (/^\/journey\/[^/]+$/.test(pathname)) {
+		crumbs.push({ href: "/journey", label: "Подорож" });
+	} else if (/^\/diary\/[^/]+$/.test(pathname)) {
+		crumbs.push({ href: "/diary", label: "Щоденник" });
+	} else {
+		crumbs.push(
+			...segments.map((segment, index) => ({
+				href: `/${segments.slice(0, index + 1).join("/")}`,
+				label: formatSegmentLabel(segment),
+			}))
+		);
+	}
 
 	return (
 		<nav aria-label="Breadcrumbs" className={css.nav}>
@@ -54,7 +57,11 @@ const Breadcrumbs = () => {
 									{crumb.label}
 								</Link>
 							)}
-							{!isLast ? <span className={css.separator}>/</span> : null}
+							{!isLast ? <span className={css.separator}>
+								<svg className={css.chevron}>
+									<use href="/sprite.svg#keyboard_arrow_right"></use>
+								</svg>
+							</span> : null}
 						</li>
 					);
 				})}

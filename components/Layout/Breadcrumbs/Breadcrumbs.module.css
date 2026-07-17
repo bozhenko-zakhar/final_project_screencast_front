@@ -5,7 +5,7 @@
 .list {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 6px;
+	gap: 8px;
 	margin: 0;
 	padding: 0;
 	list-style: none;
@@ -14,7 +14,7 @@
 .item {
 	display: flex;
 	align-items: center;
-	gap: 6px;
+	gap: 8px;
 }
 
 .link {
@@ -36,4 +36,10 @@
 .separator {
 	font-family: var(--main-font);
 	color: #9ca3af;
+}
+
+.chevron {
+	width: 24px;
+	height: 24px;
+	fill: black;
 }
