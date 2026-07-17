@@ -39,7 +39,7 @@ const GlobalLoader = () => {
 	}, [isLoading]);
 
 
-	if (!isLoading || isBlockingUi) return null;
+	if (!isLoading) return null;
 
 	return (
 		<div className={styles.overlay}>
