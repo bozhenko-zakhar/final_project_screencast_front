@@ -6,7 +6,10 @@ import type {
 import { nextServer } from "@/lib/api/api";
 
 export async function getMe(): Promise<User> {
-  const res = await nextServer.get<User>("/users/me");
+  const res = await nextServer.get<User>("/users/me", {
+    skipAuthRefresh: true,
+  });
+
   return res.data;
 }
 

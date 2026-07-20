@@ -9,6 +9,7 @@ import { useAuthStore } from "@/lib/store/authStore";
 import { User } from "@/types/user";
 import { setThemeByGender } from "@/lib/theme/setThemeByGender";
 import { useDiaryStore } from "@/lib/store/diaryStore";
+import axios from "axios";
 
 type Props = {
   children: React.ReactNode;
@@ -21,7 +22,6 @@ export const AuthProvider = ({ children }: Props) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-
         const user: User = await getMe();
         setUser(user);
 
@@ -32,44 +32,21 @@ export const AuthProvider = ({ children }: Props) => {
             user.gender
           : "neutral";
       } catch (err) {
-        console.warn("Not authenticated", err);
-        clearUser();
+				if (axios.isAxiosError(err) && err.response?.status === 401) {
+					clearUser();
 
-        setThemeByGender("girl");
+					setThemeByGender("girl");
+					document.body.dataset.theme = "girl";
 
-        document.body.dataset.theme = "girl";
+					return;
+				}
 
-        /* try {
-          const publicWeeks = await fetchPublicWeeks();
-
-          setBabyData({
-            babyState: publicWeeks.babyState,
-            daysLeft: publicWeeks.daysLeft,
-          });
-        } catch (publicErr) {
-          console.error(
-            "Помилка при завантаженні публічних тижнів:",
-            publicErr,
-          );
-        }
-
-        return; */
-      }
-
-      /* try {
-        const weeks = await fetchPrivateWeeks();
-
-        setBabyData({
-          babyState: weeks.babyState,
-          daysLeft: weeks.daysLeft,
-        });
-      } catch (weeksErr) {
-        console.error("Помилка при завантаженні приватних тижнів:", weeksErr);
-      } */
+				console.error("Failed to fetch user:", err);
+			}
     };
 
     fetchUser();
-  }, [setUser, clearUser /*, setBabyData*/]);
+  }, [setUser, clearUser]);
 
   return children;
 };

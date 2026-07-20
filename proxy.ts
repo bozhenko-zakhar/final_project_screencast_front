@@ -17,7 +17,7 @@ export function proxy(request: NextRequest) {
   );
 
   const isAuthRoute =
-    pathname === '/sign-in' || pathname === '/sign-up';
+    pathname === '/auth/login' || pathname === '/auth/register';
 
   // Авторизований користувач не може зайти на sign-in/sign-up
   if (accessToken && isAuthRoute) {
@@ -26,7 +26,7 @@ export function proxy(request: NextRequest) {
 
   // Приватний маршрут без access token
   if (!accessToken && isPrivateRoute) {
-    return NextResponse.redirect(new URL('/sign-in', request.url));
+    return NextResponse.redirect(new URL('/auth/login', request.url));
   }
 
   return NextResponse.next();
@@ -35,8 +35,7 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     '/',
-    '/sign-in',
-    '/sign-up',
+    '/auth/:path*',
     '/onboarding/:path*',
     '/journey/:path*',
     '/diary/:path*',
