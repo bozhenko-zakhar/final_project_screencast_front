@@ -6,15 +6,14 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchPrivateWeeks, fetchPublicWeeks } from "@/lib/api/clientApi/weeks";
 
 type Props = {
-	token: string
-}
+  token: string;
+};
 
-const StatusBlock = ({token}: Props) => {
-  const {
-    data: babyData
-  } = useQuery({
+const StatusBlock = ({ token }: Props) => {
+  const { data: babyData } = useQuery({
     queryKey: ["baby"],
     queryFn: token ? fetchPrivateWeeks : fetchPublicWeeks,
+    staleTime: 5 * 60 * 1000,
     placeholderData: keepPreviousData,
   });
 
@@ -27,7 +26,9 @@ const StatusBlock = ({token}: Props) => {
 
       <div className={`${cardStyles.card} ${css.weeks}`}>
         <p className={css.title}>Днів до зустрічі</p>
-        <h3 className={css.days}>{babyData?.daysLeft && `~${babyData?.daysLeft}`}</h3>
+        <h3 className={css.days}>
+          {babyData?.daysLeft && `~${babyData?.daysLeft}`}
+        </h3>
       </div>
     </div>
   );

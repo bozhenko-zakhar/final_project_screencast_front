@@ -1,9 +1,13 @@
 import { cookies } from "next/headers";
 
-import DashboardPage from '@/components/DashBoardPage/DashboardPage_main/DashboardPage_main';
-import LehlehkaLayout from './(private routes)/layout';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { fetchPrivateWeeks, fetchPublicWeeks } from '@/lib/api/clientApi/weeks';
+import DashboardPage from "@/components/DashBoardPage/DashboardPage_main/DashboardPage_main";
+import LehlehkaLayout from "./(private routes)/layout";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { fetchPrivateWeeks, fetchPublicWeeks } from "@/lib/api/clientApi/weeks";
 
 export default async function Home() {
   const cookieStore = await cookies();
@@ -12,17 +16,17 @@ export default async function Home() {
 
   const queryClient = new QueryClient();
 
-	await queryClient.prefetchQuery({
-		queryKey: ["baby"],
-		queryFn: token ? fetchPrivateWeeks : fetchPublicWeeks,
-	});
+  await queryClient.prefetchQuery({
+    queryKey: ["baby"],
+    queryFn: token ? fetchPrivateWeeks : fetchPublicWeeks,
+    staleTime: 5 * 60 * 1000,
+  });
 
   return (
     <LehlehkaLayout>
-			<HydrationBoundary state={dehydrate(queryClient)}>
-				<DashboardPage token={token?.toString() ?? ""}/>
-			</HydrationBoundary>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <DashboardPage token={token?.toString() ?? ""} />
+      </HydrationBoundary>
     </LehlehkaLayout>
   );
-  
 }

@@ -12,9 +12,14 @@ export const getCurrentWeek = (user: User | Partial<User> | null) => {
 
   const now = new Date();
 
-  const daysLeft = Math.floor((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  const daysLeft = Math.floor(
+    (dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+  );
 
   const currentWeek = Math.min(40, Math.max(1, 40 - Math.floor(daysLeft / 7)));
 
-  return currentWeek;
+  return {
+    currentWeek,
+    daysLeft,
+  };
 };

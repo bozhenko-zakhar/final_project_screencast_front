@@ -35,7 +35,7 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [logoutError, setLogoutError] = useState<string | null>(null);
 
-  const userCurrentWeek = getCurrentWeek(user);
+  const { currentWeek: userCurrentWeek } = getCurrentWeek(user);
 
   const navItems = [
     { href: "/", label: "Мій день" },
@@ -101,7 +101,9 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
 
   return (
     <>
-      {isOpen ? <div className={css.backdrop} onClick={closeMenu}></div> : null}
+      {isOpen ?
+        <div className={css.backdrop} onClick={closeMenu}></div>
+      : null}
 
       <aside className={`${css.sidebar} ${isOpen ? css.open : ""}`}>
         <div className={css.top}>
@@ -145,7 +147,7 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
         </nav>
 
         <div className={css.bottom}>
-          {isAuthenticated && user ? (
+          {isAuthenticated && user ?
             <UserBar
               name={user.name}
               email={user.email}
@@ -156,9 +158,7 @@ const SideBar = ({ setBarInactive, isOpen }: Props) => {
               }}
               isLoading={isLoading}
             />
-          ) : (
-            <AuthBar />
-          )}
+          : <AuthBar />}
         </div>
       </aside>
 

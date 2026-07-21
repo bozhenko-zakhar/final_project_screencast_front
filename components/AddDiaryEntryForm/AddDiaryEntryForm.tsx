@@ -67,6 +67,7 @@ export const DiaryEntryForm = ({
   const { data: emotions = [] } = useQuery({
     queryKey: ["emotions"],
     queryFn: fetchEmotions,
+    staleTime: 5 * 60 * 1000,
   });
 
   const createMutate = useMutation({

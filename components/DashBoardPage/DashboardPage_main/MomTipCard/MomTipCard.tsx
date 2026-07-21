@@ -17,6 +17,7 @@ const MomTipCard = ({ token }: Props) => {
   } = useQuery({
     queryKey: ["baby"],
     queryFn: token ? fetchPrivateWeeks : fetchPublicWeeks,
+    staleTime: 5 * 60 * 1000,
     placeholderData: keepPreviousData,
   });
 

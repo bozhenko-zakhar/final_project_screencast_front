@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
-import styles from './TasksReminderCard.module.css';
-import cardStyles from '../../DashboardPage_main/DashboardPage_main.module.css';
+import styles from "./TasksReminderCard.module.css";
+import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
 
-import { useAuthStore } from '@/lib/store/authStore';
+import { useAuthStore } from "@/lib/store/authStore";
 
 import {
   createTask,
   fetchTasks,
   toggleTaskStatus,
-} from '@/lib/api/clientApi/tasks';
+} from "@/lib/api/clientApi/tasks";
 
-import type { CreateTaskPayload, Task } from '@/types/tasks';
+import type { CreateTaskPayload, Task } from "@/types/tasks";
 
-import AddTaskModal from '@/components/modals/AddTaskModal/AddTaskModal';
-import EmojiLoader from '@/components/EmojiLoader/EmojiLoader';
-import { Button } from '@/components/Button/Button';
+import AddTaskModal from "@/components/modals/AddTaskModal/AddTaskModal";
+import EmojiLoader from "@/components/EmojiLoader/EmojiLoader";
+import { Button } from "@/components/Button/Button";
 
 const TasksReminderCard = () => {
   const router = useRouter();
@@ -35,42 +35,45 @@ const TasksReminderCard = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['tasks'],
+    queryKey: ["tasks"],
     queryFn: fetchTasks,
+    staleTime: 5 * 60 * 1000,
     enabled: isAuthenticated,
   });
 
   useEffect(() => {
     if (isError) {
-      toast.error('Не вдалося завантажити завдання', {id: 'tasks-fetch-error'});
+      toast.error("Не вдалося завантажити завдання", {
+        id: "tasks-fetch-error",
+      });
     }
   }, [isError]);
 
   const createTaskMutation = useMutation({
     mutationFn: createTask,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['tasks'] });
-      toast.success('Завдання створено');
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      toast.success("Завдання створено");
       setIsAddModalOpen(false);
     },
     onError: () => {
-      toast.error('Не вдалося створити завдання');
+      toast.error("Не вдалося створити завдання");
     },
   });
 
   const toggleStatusMutation = useMutation({
     mutationFn: toggleTaskStatus,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['tasks'] });
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
     onError: () => {
-      toast.error('Не вдалося оновити завдання');
+      toast.error("Не вдалося оновити завдання");
     },
   });
 
   const handleCreateTaskClick = () => {
     if (!isAuthenticated) {
-      router.push('/auth/register');
+      router.push("/auth/register");
       return;
     }
 
@@ -91,7 +94,7 @@ const TasksReminderCard = () => {
   const hasTasks = tasks.length > 0;
 
   const sortedTasks = [...tasks].sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   );
 
   return (
@@ -120,8 +123,11 @@ const TasksReminderCard = () => {
           <div className={styles.placeholder}>
             <p className={styles.noTasksTitle}>Наразі немає жодних завдань</p>
             <p className={styles.noTasksText}>Створіть мершій нове завдання!</p>
-            
-            <Button className={styles.createButton} onClick={handleCreateTaskClick}>
+
+            <Button
+              className={styles.createButton}
+              onClick={handleCreateTaskClick}
+            >
               Створити завдання
             </Button>
           </div>
@@ -137,9 +143,9 @@ const TasksReminderCard = () => {
               return (
                 <li key={task.id} className={styles.item}>
                   <span className={styles.taskDate}>
-                    {new Date(task.date).toLocaleDateString('uk-UA', {
-                      day: '2-digit',
-                      month: '2-digit'
+                    {new Date(task.date).toLocaleDateString("uk-UA", {
+                      day: "2-digit",
+                      month: "2-digit",
                     })}
                   </span>
                   <label className={styles.taskLabel}>
@@ -151,15 +157,20 @@ const TasksReminderCard = () => {
                       onChange={() => handleToggleTask(task)}
                     />
                     <span className={styles.checkboxBox} aria-hidden="true">
-                      {isThisPending ? (
-                         <span className={styles.spinner} />
-                      ) : (
-                          <svg className={styles.checkboxIcon}>
-                            <use href="/sprite.svg#check" />
-                          </svg>
-                      )}   
+                      {isThisPending ?
+                        <span className={styles.spinner} />
+                      : <svg className={styles.checkboxIcon}>
+                          <use href="/sprite.svg#check" />
+                        </svg>
+                      }
                     </span>
-                    <span className={task.isCompleted ? styles.taskCompleted : styles.taskText}>
+                    <span
+                      className={
+                        task.isCompleted ?
+                          styles.taskCompleted
+                        : styles.taskText
+                      }
+                    >
                       {task.title}
                     </span>
                   </label>

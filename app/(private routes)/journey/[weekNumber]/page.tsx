@@ -1,6 +1,13 @@
-import { QueryClient, dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import {
+  QueryClient,
+  dehydrate,
+  HydrationBoundary,
+} from "@tanstack/react-query";
 import JourneyDetails from "./JourneyDetails.client";
-import { getServerBabyState, getServerMomState } from "@/lib/api/serverApi/weeks";
+import {
+  getServerBabyState,
+  getServerMomState,
+} from "@/lib/api/serverApi/weeks";
 
 export default async function Page({
   params,
@@ -17,14 +24,16 @@ export default async function Page({
     queryClient.prefetchQuery({
       queryKey: ["baby", weekNumber],
       queryFn: () => getServerBabyState(weekNumber),
+      staleTime: 5 * 60 * 1000,
     }),
     queryClient.prefetchQuery({
       queryKey: ["mom", weekNumber],
       queryFn: () => getServerMomState(weekNumber),
+      staleTime: 5 * 60 * 1000,
     }),
   ]);
 
-	console.log()
+  console.log();
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
