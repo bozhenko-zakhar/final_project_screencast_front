@@ -20,7 +20,11 @@ const mapTaskFromBackend = (task: BackendTask): Task => ({
 });
 
 export const fetchTasks = async (): Promise<Task[]> => {
-  const { data } = await nextServer.get<BackendTask[]>('/tasks');
+  const { data } = await nextServer.get<BackendTask[]>('/tasks', {
+		metadata: {
+			showGlobalLoader: false,
+		},
+	});
 
   return data
     .map(mapTaskFromBackend)
@@ -41,8 +45,11 @@ export const toggleTaskStatus = async ({
 }: ToggleTaskStatusPayload): Promise<Task> => {
   const { data } = await nextServer.patch<TaskResponse>(
     `/tasks/${id}/status`,
-    { isDone }
-  );
+    { isDone }, {
+		metadata: {
+			showGlobalLoader: false,
+		},
+	});
 
   return mapTaskFromBackend(data.data);
 };

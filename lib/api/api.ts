@@ -6,7 +6,11 @@ let refreshPromise: Promise<void> | null = null;
 
 declare module "axios" {
   interface AxiosRequestConfig {
-    metadata?: { requestId: string };
+    metadata?: {
+      requestId?: string;
+      showGlobalLoader?: boolean;
+    };
+
     _retry?: boolean;
     skipAuthRefresh?: boolean;
   }
@@ -19,8 +23,16 @@ export const nextServer = axios.create({
 
 nextServer.interceptors.request.use((config) => {
   const requestId = `request-${++requestCounter}`;
-  config.metadata = { requestId };
-  useLoadingStore.getState().addRequest(requestId);
+
+  config.metadata = {
+    requestId,
+    showGlobalLoader: config.metadata?.showGlobalLoader ?? true,
+  };
+
+  if (config.metadata.showGlobalLoader) {
+    useLoadingStore.getState().addRequest(requestId);
+  }
+
   return config;
 });
 
@@ -28,9 +40,12 @@ nextServer.interceptors.response.use(
   (response: AxiosResponse) => {
     const requestId = response.config.metadata?.requestId;
 
-    if (requestId) {
-      useLoadingStore.getState().removeRequest(requestId);
-    }
+		if (
+			requestId &&
+			response.config.metadata?.showGlobalLoader
+		) {
+			useLoadingStore.getState().removeRequest(requestId);
+		}
 
     return response;
   },
