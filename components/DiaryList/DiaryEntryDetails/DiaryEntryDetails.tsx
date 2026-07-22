@@ -29,6 +29,7 @@ const DiaryEntryDetails = ({ entryId }: DiaryEntryDetailsProps) => {
   const { data: diaries } = useQuery({
     queryKey: ["diary"],
     queryFn: fetchDiaries,
+    staleTime: 5 * 60 * 1000,
   });
 
   const currentDiary = diaries?.find((item) => item._id === entryId) ?? null;

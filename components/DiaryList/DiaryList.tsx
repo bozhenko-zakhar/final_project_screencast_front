@@ -21,6 +21,7 @@ const DiaryList = () => {
   } = useQuery({
     queryKey: ["diary"],
     queryFn: fetchDiaries,
+    staleTime: 5 * 60 * 1000,
   });
 
   return (

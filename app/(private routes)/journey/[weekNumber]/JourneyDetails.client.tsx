@@ -11,6 +11,9 @@ import TasksReminderCard from "@/components/DashBoardPage/DashboardPage_main/Tas
 import GreetingBlock from "@/components/DashBoardPage/DashboardPage_main/GreetingBlock/GreetingBlock";
 import BabyMomToggle from "@/components/JourneyComponents/BabyMomToggle/BabyMomToggle";
 import WeekSelector from "@/components/JourneyComponents/WeekSelector/WeekSelector";
+import { useAuthStore } from "@/lib/store/authStore";
+import { getCurrentWeek } from "@/lib/api/services/getCurrentWeek";
+import { useRouter } from "next/navigation";
 
 import { getBabyStateInfo, getMomStateInfo } from "@/lib/api/clientApi/weeks";
 
@@ -20,25 +23,23 @@ type Props = {
 
 const JourneyDetails = ({ weekNumber }: Props) => {
   const [mode, setMode] = useState<"baby" | "mom">("baby");
-  const [selectedWeek, setSelectedWeek] = useState<number>(weekNumber);
+  const router = useRouter();
+  const user = useAuthStore((state) => state.user);
+  const { currentWeek: userCurrentWeek } = getCurrentWeek(user);
 
-  const {
-    data: babyData,
-    isLoading: babyLoading,
-    isError: babyError,
-  } = useQuery({
+  const selectedWeek = Math.min(weekNumber, userCurrentWeek);
+
+  const { data: babyData, isError: babyError } = useQuery({
     queryKey: ["baby", selectedWeek],
     queryFn: () => getBabyStateInfo(selectedWeek),
+    staleTime: 5 * 60 * 1000,
     placeholderData: keepPreviousData,
   });
 
-  const {
-    data: momData,
-    isLoading: momLoading,
-    isError: momError,
-  } = useQuery({
+  const { data: momData, isError: momError } = useQuery({
     queryKey: ["mom", selectedWeek],
     queryFn: () => getMomStateInfo(selectedWeek),
+    staleTime: 5 * 60 * 1000,
     placeholderData: keepPreviousData,
   });
 
@@ -51,8 +52,8 @@ const JourneyDetails = ({ weekNumber }: Props) => {
   }, [hasError]);
 
   const handleWeekChange = (week: number) => {
-    setSelectedWeek(week);
-    window.history.replaceState(null, "", `/journey/${week}`);
+    if (week > userCurrentWeek) return;
+    router.replace(`/journey/${week}`);
   };
 
   if (hasError) {
@@ -64,7 +65,7 @@ const JourneyDetails = ({ weekNumber }: Props) => {
       <GreetingBlock />
 
       <WeekSelector
-        userCurrentWeek={weekNumber}
+        userCurrentWeek={userCurrentWeek}
         viewWeek={selectedWeek}
         onWeekChange={handleWeekChange}
       />
@@ -76,14 +77,13 @@ const JourneyDetails = ({ weekNumber }: Props) => {
           setMomMode={() => setMode("mom")}
         />
 
-        {mode === "baby" ? (
+        {mode === "baby" ?
           <BabyDevelopment data={babyData} />
-        ) : (
-          <div className={css.momBodyChange}>
+        : <div className={css.momBodyChange}>
             <MomState data={momData} />
             <TasksReminderCard />
           </div>
-        )}
+        }
       </section>
     </main>
   );

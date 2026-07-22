@@ -12,6 +12,7 @@ const DiaryPage = async () => {
   await queryClient.prefetchQuery({
     queryKey: ["diary"],
     queryFn: fetchDiaries,
+    staleTime: 5 * 60 * 1000,
   });
 
   return (
