@@ -15,7 +15,7 @@ type Props = {
 const BabyTodayCard = ({ token }: Props) => {
   const {user} = useAuthStore();
   
-  console.log(user);
+  // console.log(user);
   console.log(token);
   const {
     data: babyData,
