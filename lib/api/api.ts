@@ -1,4 +1,8 @@
-import axios, { AxiosResponse, AxiosError, InternalAxiosRequestConfig } from "axios";
+import axios, {
+  AxiosResponse,
+  AxiosError,
+  InternalAxiosRequestConfig,
+} from "axios";
 import { useLoadingStore } from "@/lib/store/loadingStore";
 
 let requestCounter = 0;
@@ -40,12 +44,9 @@ nextServer.interceptors.response.use(
   (response: AxiosResponse) => {
     const requestId = response.config.metadata?.requestId;
 
-		if (
-			requestId &&
-			response.config.metadata?.showGlobalLoader
-		) {
-			useLoadingStore.getState().removeRequest(requestId);
-		}
+    if (requestId && response.config.metadata?.showGlobalLoader) {
+      useLoadingStore.getState().removeRequest(requestId);
+    }
 
     return response;
   },
@@ -59,18 +60,15 @@ nextServer.interceptors.response.use(
 
     if (requestId) {
       useLoadingStore.getState().removeRequest(requestId);
-		}
-		
-		if (
-			error.response?.status === 401 &&
-			originalRequest?.skipAuthRefresh
-		) {
-			return Promise.reject(error);
-		}
+    }
 
-    // if (error.response?.status !== 401) {
-    //   return Promise.reject(error);
-    // }
+    if (error.response?.status === 401 && originalRequest?.skipAuthRefresh) {
+      return Promise.reject(error);
+    }
+
+    if (error.response?.status !== 401) {
+      return Promise.reject(error);
+    }
 
     if (!originalRequest || originalRequest._retry) {
       return Promise.reject(error);
@@ -97,13 +95,13 @@ nextServer.interceptors.response.use(
       return nextServer(originalRequest);
     } catch (refreshError) {
       if (
-				axios.isAxiosError(refreshError) &&
-				refreshError.response?.status === 401
-			) {
-				if (window.location.pathname !== "/") {
-					window.location.href = "/";
-				}
-			}
+        axios.isAxiosError(refreshError) &&
+        refreshError.response?.status === 401
+      ) {
+        if (window.location.pathname !== "/") {
+          window.location.href = "/";
+        }
+      }
 
       return Promise.reject(refreshError);
     }

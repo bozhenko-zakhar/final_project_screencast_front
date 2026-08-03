@@ -46,13 +46,15 @@ export async function POST(req: NextRequest) {
           error: error.message,
           response: error.response?.data,
         },
-        { status: error.response?.status || 500 }
+        { status: error.response?.status || 500 },
       );
     }
 
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    throw error;
   }
+
+  // return NextResponse.json(
+  //   { error: "Internal Server Error" },
+  //   { status: 500 }
+  // );
 }

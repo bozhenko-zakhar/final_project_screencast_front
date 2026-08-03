@@ -32,12 +32,12 @@ export default function LoginForm() {
 
   return (
     <div className={css.loginPage}>
-			<Link href="/" className={css.logo}>
-				<svg className={css.logo_icon}>
-					<use href="/logo.svg#icon-alternate-false"></use>
-				</svg>
-			</Link>
-			
+      <Link href="/" className={css.logo}>
+        <svg className={css.logo_icon}>
+          <use href="/logo.svg#icon-alternate-false"></use>
+        </svg>
+      </Link>
+
       <div className={css.center}>
         <Formik
           initialValues={initialValues}
