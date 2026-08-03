@@ -16,11 +16,11 @@ export default async function Home() {
 
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ["baby"],
-    queryFn: token ? fetchPrivateWeeks : fetchPublicWeeks,
-    staleTime: 5 * 60 * 1000,
-  });
+  // await queryClient.prefetchQuery({
+  //   queryKey: ["baby"],
+  //   queryFn: token ? fetchPrivateWeeks : fetchPublicWeeks,
+  //   staleTime: 5 * 60 * 1000,
+  // });
 
   return (
     <LehlehkaLayout>

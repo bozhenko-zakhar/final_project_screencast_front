@@ -4,12 +4,14 @@ import css from "./MomTipCard.module.css";
 // import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchPrivateWeeks, fetchPublicWeeks } from "@/lib/api/clientApi/weeks";
+import { useAuthStore } from "@/lib/store/authStore";
 
 type Props = {
   token: string;
 };
 
 const MomTipCard = ({ token }: Props) => {
+  const {user} = useAuthStore();
   const {
     data: babyData,
     // isLoading: babyLoading,

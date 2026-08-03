@@ -16,6 +16,7 @@ import { getCurrentWeek } from "@/lib/api/services/getCurrentWeek";
 import { useRouter } from "next/navigation";
 
 import { getBabyStateInfo, getMomStateInfo } from "@/lib/api/clientApi/weeks";
+import Loader from "./Loader/Loader";
 
 type Props = {
   weekNumber: number;
@@ -29,14 +30,14 @@ const JourneyDetails = ({ weekNumber }: Props) => {
 
   const selectedWeek = Math.min(weekNumber, userCurrentWeek);
 
-  const { data: babyData, isError: babyError } = useQuery({
+  const { data: babyData, isError: babyError, isLoading: babyLoading} = useQuery({
     queryKey: ["baby", selectedWeek],
     queryFn: () => getBabyStateInfo(selectedWeek),
     staleTime: 5 * 60 * 1000,
     placeholderData: keepPreviousData,
   });
 
-  const { data: momData, isError: momError } = useQuery({
+  const { data: momData, isError: momError, isLoading: momLoading } = useQuery({
     queryKey: ["mom", selectedWeek],
     queryFn: () => getMomStateInfo(selectedWeek),
     staleTime: 5 * 60 * 1000,
@@ -60,6 +61,10 @@ const JourneyDetails = ({ weekNumber }: Props) => {
     return <p>Failed to fetch data</p>;
   }
 
+  // if(babyLoading || momLoading) {
+  //   return <Loader/>;
+  // }
+
   return (
     <main className={css.main}>
       <GreetingBlock />
@@ -77,13 +82,15 @@ const JourneyDetails = ({ weekNumber }: Props) => {
           setMomMode={() => setMode("mom")}
         />
 
-        {mode === "baby" ?
+        {babyLoading? <Loader/> : mode === "baby" ?
           <BabyDevelopment data={babyData} />
         : <div className={css.momBodyChange}>
             <MomState data={momData} />
             <TasksReminderCard />
           </div>
         }
+
+        {babyLoading || momLoading && <p className={css.loader}>Loading...</p>}
       </section>
     </main>
   );

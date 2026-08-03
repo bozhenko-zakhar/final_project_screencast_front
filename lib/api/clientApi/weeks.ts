@@ -23,6 +23,9 @@ type MomStateResponse = {
 export const getMomStateInfo = async (weekNumber: number): Promise<MomWeek> => {
   const res = await nextServer.get<MomStateResponse>("/weeks/mom-state", {
     params: { weekNumber },
+    metadata: {
+      showGlobalLoader: false,
+    },
   });
 
   return res.data.momState;
@@ -33,6 +36,9 @@ export const getBabyStateInfo = async (
 ): Promise<BabyWeek> => {
   const res = await nextServer.get<BabyStateResponse>("/weeks/baby-state", {
     params: { weekNumber },
+     metadata: {
+      showGlobalLoader: false,
+    },
   });
 
   return res.data.babyState;
