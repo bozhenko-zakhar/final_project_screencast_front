@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 import styles from "./TasksReminderCard.module.css";
-import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
+import cardStyles from "../../../app/page.client.module.css";
 
 import { useAuthStore } from "@/lib/store/authStore";
 

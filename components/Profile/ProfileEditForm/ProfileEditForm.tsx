@@ -118,7 +118,10 @@ export default function ProfileEditForm({ user }: Props) {
         mutate(payload as UpdateUserPayload, {
           onSuccess: async (updatedUser) => {
             setUser(updatedUser);
-            queryClient.setQueryData(["user"], updatedUser);
+						queryClient.setQueryData(["user"], updatedUser);
+						queryClient.invalidateQueries({
+							queryKey: ["baby"],
+						});
 
             document.body.dataset.theme =
               updatedUser.gender === "girl" || updatedUser.gender === "boy" ?

@@ -4,7 +4,7 @@ import { useAuthStore } from "@/lib/store/authStore";
 import Image from "next/image";
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUserAvatar } from "@/lib/api/clientApi/users";
 import type { User } from "@/types/user";
 import css from "./ProfileAvatar.module.css";
@@ -18,7 +18,9 @@ interface ProfileAvatarProps {
 export default function ProfileAvatar({ user }: ProfileAvatarProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
-  const setUser = useAuthStore((state) => state.setUser);
+	const setUser = useAuthStore((state) => state.setUser);
+	
+	const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateUserAvatar,
@@ -26,7 +28,11 @@ export default function ProfileAvatar({ user }: ProfileAvatarProps) {
       setUser({
         ...user,
         avatar: updatedAvatar.url,
-      });
+			});
+			
+			queryClient.invalidateQueries({
+				queryKey: ["baby"],
+			});
 
       toast.success("Фото профілю оновлено");
       router.refresh();

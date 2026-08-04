@@ -1,6 +1,6 @@
 "use client"
 
-import GreetingBlock from "@/components/DashBoardPage/DashboardPage_main/GreetingBlock/GreetingBlock";
+import GreetingBlock from "@/components/DashBoard//GreetingBlock/GreetingBlock";
 import css from "./layout.module.css"
 import WeekSelector from "@/components/JourneyComponents/WeekSelector/WeekSelector";
 import { usePathname, useRouter } from "next/navigation";

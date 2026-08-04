@@ -1,30 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
-import { fetchPrivateWeeks, fetchPublicWeeks } from "@/lib/api/clientApi/weeks";
+import { WeeksResponse } from "@/lib/api/clientApi/weeks";
 
 import css from "./BabyTodayCard.module.css";
-import { useAuthStore } from "@/lib/store/authStore";
 
 type Props = {
-  token: string;
+	data: WeeksResponse | undefined
 };
 
-const BabyTodayCard = ({ token }: Props) => {
-  const {user} = useAuthStore();
-  
-  console.log(token);
-  const {
-    data: babyData,
-  } = useQuery({
-    queryKey: ["baby"],
-    queryFn: user ? fetchPrivateWeeks : fetchPublicWeeks,
-    staleTime: 5 * 60 * 1000,
-    placeholderData: keepPreviousData,
-  });
-
+const BabyTodayCard = ({data}: Props) => {
   return (
     <div className={css.aboutBabyContainer}>
       <h2 className={css.babyHeaderline}>Малюк сьогодні</h2>
@@ -32,29 +18,29 @@ const BabyTodayCard = ({ token }: Props) => {
       <div className={css.CharacteristicsWrapper}>
         <Image
           className={css.babyImg}
-          src={babyData?.babyState?.image ?? "/image/default-week.jpeg"}
-          alt={babyData?.babyState?.analogy ?? "Calendar entry holds a pencil"}
+          src={data?.babyState?.image ?? "/image/default-week.jpeg"}
+          alt={data?.babyState?.analogy ?? "Calendar entry holds a pencil"}
           width={287}
           height={216}
         />
-        {babyData && (
+        {data && (
           <div>
             <p className={css.titlesOfBabyToday}>
               Розмір:
               <span className={css.babyDescriptionText}>
-                {babyData?.babyState?.babySize}
+                {data?.babyState?.babySize}
               </span>
             </p>
             <p className={css.titlesOfBabyToday}>
               Вага:
               <span className={css.babyDescriptionText}>
-                {babyData?.babyState?.babyWeight}
+                {data?.babyState?.babyWeight}
               </span>
             </p>
             <p className={css.titlesOfBabyToday}>
               Активність:
               <span className={css.babyDescriptionText}>
-                {babyData?.babyState?.babyActivity}
+                {data?.babyState?.babyActivity}
               </span>
             </p>
           </div>
@@ -62,7 +48,7 @@ const BabyTodayCard = ({ token }: Props) => {
       </div>
 
       <p className={css.babyDevelopment}>
-        {babyData?.babyState.babyDevelopment}
+        {data?.babyState.babyDevelopment}
       </p>
     </div>
   );

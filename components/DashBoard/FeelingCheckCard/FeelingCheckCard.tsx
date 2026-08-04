@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import styles from "./FeelingCheckCard.module.css";
-import cardStyles from "../../DashboardPage_main/DashboardPage_main.module.css";
+import cardStyles from "../../../app/page.client.module.css";
 
 import { useAuthStore } from "@/lib/store/authStore";
 import DiaryEntryModal from "@/components/AddDiaryEntryModal/AddDiaryEntryModal";

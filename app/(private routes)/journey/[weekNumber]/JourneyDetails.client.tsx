@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 
 import BabyDevelopment from "@/components/JourneyComponents/BabyDevelopment/BabyDevelopment";
 import MomState from "@/components/JourneyComponents/MomState/MomState";
-import TasksReminderCard from "@/components/DashBoardPage/DashboardPage_main/TasksReminderCard/TasksReminderCard";
+import TasksReminderCard from "@/components/DashBoard/TasksReminderCard/TasksReminderCard";
 import BabyMomToggle from "@/components/JourneyComponents/BabyMomToggle/BabyMomToggle";
 import { useAuthStore } from "@/lib/store/authStore";
 import { getCurrentWeek } from "@/lib/api/services/getCurrentWeek";
