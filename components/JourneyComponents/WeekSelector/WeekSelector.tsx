@@ -5,76 +5,76 @@ import { useEffect } from "react";
 import css from "./WeekSelector.module.css";
 
 type WeekSelectorProps = {
-  userCurrentWeek: number;
-  viewWeek: number;
-  onWeekChange: (week: number) => void;
+	userCurrentWeek: number;
+	viewWeek: number;
+	onWeekChange: (week: number) => void;
 };
 
 export default function WeekSelector({
-  userCurrentWeek,
-  viewWeek,
-  onWeekChange,
+	userCurrentWeek,
+	viewWeek,
+	onWeekChange,
 }: WeekSelectorProps) {
-  
-  const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
 
-//  Active week
-  const activeWeek = viewWeek ?? userCurrentWeek;
+	const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
 
-//  Center week
-  useEffect(() => {
-    const element = document.querySelector(
-      `[data-week="${activeWeek}"]`
-    ) as HTMLButtonElement | null;
+	//  Active week
+	const activeWeek = viewWeek ?? userCurrentWeek;
 
-    if (!element) return;
+	//  Center week
+	useEffect(() => {
+		const element = document.querySelector(
+			`[data-week="${activeWeek}"]`
+		) as HTMLButtonElement | null;
 
-    requestAnimationFrame(() => {
-      element.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
-    });
-  }, [activeWeek]);
+		if (!element) return;
 
-  return (
-    <div className={css.wrapper}>
-      {weeks.map((week) => {
-        const isCurrentUserWeek = week === userCurrentWeek;
+		requestAnimationFrame(() => {
+			element.scrollIntoView({
+				behavior: "smooth",
+				inline: "center",
+				block: "nearest",
+			});
+		});
+	}, [activeWeek]);
 
-        const isActive = week === activeWeek;
+	return (
+		<div className={css.wrapper}>
+			{weeks.map((week) => {
+				const isCurrentUserWeek = week === userCurrentWeek;
 
-        const isFuture = week > userCurrentWeek;
+				const isActive = week === activeWeek;
 
-        const isClickable = week <= userCurrentWeek;
+				const isFuture = week > userCurrentWeek;
 
-        return (
-          <button
-            key={week}
-            data-week={week}
-            disabled={!isClickable}
-            className={`
+				const isClickable = week <= userCurrentWeek;
+
+				return (
+					<button
+						key={week}
+						data-week={week}
+						disabled={!isClickable}
+						className={`
               ${css.button}
               ${isActive ? css.active : ""}
               ${isCurrentUserWeek ? css.currentWeek : ""}
               ${isFuture ? css.disabled : ""}
             `}
-            onClick={() => {
-              if (!isClickable) return;
+						onClick={() => {
+							if (!isClickable) return;
 
-              if (week === activeWeek) return;
+							if (week === activeWeek) return;
 
-              onWeekChange(week);
-            }}
-          >
-            <span className={css.number}>{week}</span>
-            Тиждень
-          </button>
-        );
-      })}
-    </div>
-  );
+							onWeekChange(week);
+						}}
+					>
+						<span className={css.number}>{week}</span>
+						Тиждень
+					</button>
+				);
+			})}
+		</div>
+	);
 }
 
 

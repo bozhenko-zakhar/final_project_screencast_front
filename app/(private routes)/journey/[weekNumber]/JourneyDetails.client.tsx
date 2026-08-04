@@ -8,92 +8,68 @@ import toast from "react-hot-toast";
 import BabyDevelopment from "@/components/JourneyComponents/BabyDevelopment/BabyDevelopment";
 import MomState from "@/components/JourneyComponents/MomState/MomState";
 import TasksReminderCard from "@/components/DashBoardPage/DashboardPage_main/TasksReminderCard/TasksReminderCard";
-import GreetingBlock from "@/components/DashBoardPage/DashboardPage_main/GreetingBlock/GreetingBlock";
 import BabyMomToggle from "@/components/JourneyComponents/BabyMomToggle/BabyMomToggle";
-import WeekSelector from "@/components/JourneyComponents/WeekSelector/WeekSelector";
 import { useAuthStore } from "@/lib/store/authStore";
 import { getCurrentWeek } from "@/lib/api/services/getCurrentWeek";
-import { useRouter } from "next/navigation";
 
 import { getBabyStateInfo, getMomStateInfo } from "@/lib/api/clientApi/weeks";
 import Loader from "./Loader/Loader";
 
 type Props = {
-  weekNumber: number;
+	weekNumber: number;
 };
 
 const JourneyDetails = ({ weekNumber }: Props) => {
-  const [mode, setMode] = useState<"baby" | "mom">("baby");
-  const router = useRouter();
-  const user = useAuthStore((state) => state.user);
-  const { currentWeek: userCurrentWeek } = getCurrentWeek(user);
+	const [mode, setMode] = useState<"baby" | "mom">("baby");
+	const user = useAuthStore((state) => state.user);
+	const { currentWeek: userCurrentWeek } = getCurrentWeek(user);
+	const selectedWeek = Math.min(weekNumber, userCurrentWeek);
 
-  const selectedWeek = Math.min(weekNumber, userCurrentWeek);
+	const { data: babyData, isError: babyError, isLoading: babyLoading } = useQuery({
+		queryKey: ["baby", selectedWeek],
+		queryFn: () => getBabyStateInfo(selectedWeek),
+		staleTime: 5 * 60 * 1000,
+		placeholderData: keepPreviousData,
+	});
 
-  const { data: babyData, isError: babyError, isLoading: babyLoading} = useQuery({
-    queryKey: ["baby", selectedWeek],
-    queryFn: () => getBabyStateInfo(selectedWeek),
-    staleTime: 5 * 60 * 1000,
-    placeholderData: keepPreviousData,
-  });
+	const { data: momData, isError: momError, isLoading: momLoading } = useQuery({
+		queryKey: ["mom", selectedWeek],
+		queryFn: () => getMomStateInfo(selectedWeek),
+		staleTime: 5 * 60 * 1000,
+		placeholderData: keepPreviousData,
+	});
 
-  const { data: momData, isError: momError, isLoading: momLoading } = useQuery({
-    queryKey: ["mom", selectedWeek],
-    queryFn: () => getMomStateInfo(selectedWeek),
-    staleTime: 5 * 60 * 1000,
-    placeholderData: keepPreviousData,
-  });
+	const hasError = babyError || momError;
 
-  const hasError = babyError || momError;
+	useEffect(() => {
+		if (hasError) {
+			toast.error("Failed to fetch data");
+		}
+	}, [hasError]);
 
-  useEffect(() => {
-    if (hasError) {
-      toast.error("Failed to fetch data");
-    }
-  }, [hasError]);
+	if (hasError) {
+		return <p>Failed to fetch data</p>;
+	}
 
-  const handleWeekChange = (week: number) => {
-    if (week > userCurrentWeek) return;
-    router.replace(`/journey/${week}`);
-  };
+	return (
+		<section className={css.journeySection}>
+			<BabyMomToggle
+				mode={mode}
+				setBabyMode={() => setMode("baby")}
+				setMomMode={() => setMode("mom")}
+			/>
 
-  if (hasError) {
-    return <p>Failed to fetch data</p>;
-  }
+			{babyLoading ? <Loader /> : mode === "baby" ?
+				<BabyDevelopment data={babyData} />
+				: <div className={css.momBodyChange}>
+					<MomState data={momData} />
+					<TasksReminderCard />
+				</div>
+			}
 
-  // if(babyLoading || momLoading) {
-  //   return <Loader/>;
-  // }
-
-  return (
-    <main className={css.main}>
-      <GreetingBlock />
-
-      <WeekSelector
-        userCurrentWeek={userCurrentWeek}
-        viewWeek={selectedWeek}
-        onWeekChange={handleWeekChange}
-      />
-
-      <section className={css.journeySection}>
-        <BabyMomToggle
-          mode={mode}
-          setBabyMode={() => setMode("baby")}
-          setMomMode={() => setMode("mom")}
-        />
-
-        {babyLoading? <Loader/> : mode === "baby" ?
-          <BabyDevelopment data={babyData} />
-        : <div className={css.momBodyChange}>
-            <MomState data={momData} />
-            <TasksReminderCard />
-          </div>
-        }
-
-        {babyLoading || momLoading && <p className={css.loader}>Loading...</p>}
-      </section>
-    </main>
-  );
+			{babyLoading || momLoading && <p className={css.loader}>Loading...</p>}
+		</section>
+	);
 };
 
 export default JourneyDetails;

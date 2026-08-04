@@ -16,7 +16,7 @@ export default async function Page({
 }) {
   const { weekNumber: weekParam } = await params;
 
-  const weekNumber = Number(weekParam);
+	const weekNumber = Number(weekParam);
 
   const queryClient = new QueryClient();
 
@@ -32,8 +32,6 @@ export default async function Page({
       staleTime: 5 * 60 * 1000,
     }),
   ]);
-
-  console.log();
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
