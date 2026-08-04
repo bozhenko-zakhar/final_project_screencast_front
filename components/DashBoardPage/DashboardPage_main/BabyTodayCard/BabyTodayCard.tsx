@@ -15,20 +15,15 @@ type Props = {
 const BabyTodayCard = ({ token }: Props) => {
   const {user} = useAuthStore();
   
-  // console.log(user);
   console.log(token);
   const {
     data: babyData,
-    // isLoading: babyLoading,
-    // isError: babyError,
   } = useQuery({
     queryKey: ["baby"],
     queryFn: user ? fetchPrivateWeeks : fetchPublicWeeks,
-    // staleTime: 5 * 60 * 1000,
-    // placeholderData: keepPreviousData,
+    staleTime: 5 * 60 * 1000,
+    placeholderData: keepPreviousData,
   });
-
-  console.log(babyData);
 
   return (
     <div className={css.aboutBabyContainer}>
