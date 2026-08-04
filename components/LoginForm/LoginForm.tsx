@@ -14,6 +14,7 @@ import { useAuthStore } from "@/lib/store/authStore";
 import { isAxiosError } from "axios";
 import { type LoginRequest as LoginFormValues } from "@/types/auth";
 import { Button } from "../Button/Button";
+import { useQueryClient } from "@tanstack/react-query";
 
 const LoginFormSchema = Yup.object().shape({
   email: Yup.string().email("Некоректна пошта").required("Обовʼязкове поле"),
@@ -28,7 +29,9 @@ const initialValues: LoginFormValues = {
 export default function LoginForm() {
   const router = useRouter();
   const fieldId = useId();
-  const setUser = useAuthStore((state) => state.setUser);
+	const setUser = useAuthStore((state) => state.setUser);
+
+	const queryClient = useQueryClient();
 
   return (
     <div className={css.loginPage}>
@@ -55,7 +58,15 @@ export default function LoginForm() {
               const res = await login(data);
               if (res) {
                 const user = await getMe();
-                setUser(user);
+								setUser(user);
+
+								queryClient.invalidateQueries({
+									queryKey: ["baby"],
+								});
+
+								queryClient.invalidateQueries({
+									queryKey: ["tasks"],
+								});
 
                 setThemeByGender(user.gender);
 

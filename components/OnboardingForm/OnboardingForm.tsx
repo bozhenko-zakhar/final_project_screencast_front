@@ -13,10 +13,10 @@ import { FormValues, UpdateUserPayload, User } from '@/types/user';
 import * as Yup from "yup";
 
 import Select, {
-  components,
-  type SingleValue,
-  type DropdownIndicatorProps,
-  type ClassNamesConfig,
+	components,
+	type SingleValue,
+	type DropdownIndicatorProps,
+	type ClassNamesConfig,
 } from "react-select";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/lib/store/authStore';
@@ -34,9 +34,9 @@ const validationSchema = Yup.object({
 
 
 const genderOptions = [
-  { value: "", label: "Не вибрано" },
-  { value: "boy", label: "Хлопчик" },
-  { value: "girl", label: "Дівчинка" },
+	{ value: "", label: "Не вибрано" },
+	{ value: "boy", label: "Хлопчик" },
+	{ value: "girl", label: "Дівчинка" },
 ];
 
 type GenderOption = (typeof genderOptions)[number];
@@ -58,74 +58,74 @@ interface Props {
 
 
 const selectClassNames: ClassNamesConfig<GenderOption, false> = {
-  control: () => `${css.input} ${css.inputSelect} ${css.selectControl}`,
-  valueContainer: () => css.selectValue,
-  singleValue: () => css.selectText,
-  placeholder: () => css.selectText,
-  menu: () => css.selectMenu,
-  option: ({ isFocused }) =>
-    `${css.selectOption} ${isFocused ? css.selectOptionActive : ""}`,
-  dropdownIndicator: ({ selectProps }) =>
-    `${css.selectIndicator} ${
-      selectProps.menuIsOpen ? css.selectIndicatorOpen : ""
-    }`,
-  indicatorSeparator: () => css.selectSeparator,
+	control: () => `${css.input} ${css.inputSelect} ${css.selectControl}`,
+	valueContainer: () => css.selectValue,
+	singleValue: () => css.selectText,
+	placeholder: () => css.selectText,
+	menu: () => css.selectMenu,
+	option: ({ isFocused }) =>
+		`${css.selectOption} ${isFocused ? css.selectOptionActive : ""}`,
+	dropdownIndicator: ({ selectProps }) =>
+		`${css.selectIndicator} ${selectProps.menuIsOpen ? css.selectIndicatorOpen : ""
+		}`,
+	indicatorSeparator: () => css.selectSeparator,
 };
 
 export default function OnboardingForm({ user }: Props) {
 	const router = useRouter();
 	const setUser = useAuthStore((state) => state.setUser);
 	const inputRef = useRef<HTMLInputElement | null>(null);
-	
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: updateUserAvatar,
-    onSuccess: (updatedAvatar) => {
-      setUser({
-        ...user,
-        avatar: updatedAvatar.url,
-      });
+	const queryClient = useQueryClient();
 
-      toast.success("Фото профілю оновлено");
-      router.refresh();
-    },
-    onError: () => {
-      toast.error("Не вдалося завантажити фото");
-    },
-  });
+	const { mutate, isPending } = useMutation({
+		mutationFn: updateUserAvatar,
+		onSuccess: (updatedAvatar) => {
+			setUser({
+				...user,
+				avatar: updatedAvatar.url,
+			});
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+			toast.success("Фото профілю оновлено");
+			router.refresh();
+		},
+		onError: () => {
+			toast.error("Не вдалося завантажити фото");
+		},
+	});
 
-    // =========CHEK-TYPE-OF-FILE=========================
-    if (!file.type.startsWith("image/")) {
-      toast.error("Можна завантажити тільки зображення");
-      return;
-    }
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("Максимальний розмір — 5MB");
-      return;
-    }
-    // =========END-CHEK-TYPE-OF-FILE=========================
+		// =========CHEK-TYPE-OF-FILE=========================
+		if (!file.type.startsWith("image/")) {
+			toast.error("Можна завантажити тільки зображення");
+			return;
+		}
 
-    const formData = new FormData();
-    formData.append("avatar", file);
+		if (file.size > 5 * 1024 * 1024) {
+			toast.error("Максимальний розмір — 5MB");
+			return;
+		}
+		// =========END-CHEK-TYPE-OF-FILE=========================
 
-    mutate(formData);
-    e.target.value = "";
+		const formData = new FormData();
+		formData.append("avatar", file);
+
+		mutate(formData);
+		e.target.value = "";
 	};
 
-  useEffect(() => {
-    const gender = user?.gender;
+	useEffect(() => {
+		const gender = user?.gender;
 
-    document.body.dataset.theme =
-      gender === "girl" || gender === "boy" ? gender : "neutral";
-  }, [user?.gender]);
+		document.body.dataset.theme =
+			gender === "girl" || gender === "boy" ? gender : "neutral";
+	}, [user?.gender]);
 
-  const mutateUser = useMutation({
-    mutationFn: updateUser,
+	const mutateUser = useMutation({
+		mutationFn: updateUser,
 	});
 
 	return (
@@ -139,7 +139,7 @@ export default function OnboardingForm({ user }: Props) {
 			<div className={css.form_container}>
 
 				<h2 className={css.title}>Давайте познаймимось ближче</h2>
-				
+
 				<div className={css.image_container}>
 					<Image
 						className={css.image}
@@ -196,11 +196,19 @@ export default function OnboardingForm({ user }: Props) {
 							onSuccess: async (updatedUser) => {
 								setUser(updatedUser);
 
+								queryClient.invalidateQueries({
+									queryKey: ["baby"],
+								});
+
+								queryClient.invalidateQueries({
+									queryKey: ["tasks"],
+								});
+
 								document.body.dataset.theme =
 									updatedUser.gender === "girl" || updatedUser.gender === "boy" ?
 										updatedUser.gender
 										: "neutral";
-								
+
 								resetForm();
 
 								toast.success("Профіль збережено");
@@ -213,72 +221,72 @@ export default function OnboardingForm({ user }: Props) {
 						});
 					}}
 				>
-				{() => (
-					<Form className={css.form}>
-						<div className={css.fields}>
-							<label className={css.label}>
-								<span>Стать дитини</span>
-								<div className={css.inputWrapper}>
-									<Field name="gender">
-										{({ field, form }: FieldProps<string, FormValues>) => (
-										<Select<GenderOption, false>
-											unstyled
-											options={genderOptions}
-											value={genderOptions.find(
-												(option) => option.value === field.value,
+					{() => (
+						<Form className={css.form}>
+							<div className={css.fields}>
+								<label className={css.label}>
+									<span>Стать дитини</span>
+									<div className={css.inputWrapper}>
+										<Field name="gender">
+											{({ field, form }: FieldProps<string, FormValues>) => (
+												<Select<GenderOption, false>
+													unstyled
+													options={genderOptions}
+													value={genderOptions.find(
+														(option) => option.value === field.value,
+													)}
+													onChange={(option: SingleValue<GenderOption>) => {
+														const gender = option?.value || "";
+
+														form.setFieldValue("gender", gender);
+
+														document.body.dataset.theme =
+															gender === "girl" || gender === "boy" ?
+																gender
+																: "neutral";
+													}}
+													onBlur={() => form.setFieldTouched("gender", true)}
+													placeholder="Оберіть стать"
+													isSearchable={false}
+													classNames={selectClassNames}
+													components={{
+														DropdownIndicator,
+														IndicatorSeparator: () => null,
+													}}
+												/>
 											)}
-											onChange={(option: SingleValue<GenderOption>) => {
-												const gender = option?.value || "";
+										</Field>
+									</div>
+								</label>
 
-												form.setFieldValue("gender", gender);
+								<label className={css.label}>
+									<span>Планова дата пологів</span>
+									<div className={css.inputWrapper}>
+										<Field name="dueDate">
+											{({ field, form }: FieldProps<string, FormValues>) => (
+												<CalendarPicker
+													id="dueDate"
+													value={field.value}
+													placeholder="Оберіть дату"
+													disabled={mutateUser.isPending}
+													onChange={(date) => {
+														form.setFieldValue("dueDate", date);
+														form.setFieldTouched("dueDate", true, false);
+													}}
+												/>
+											)}
+										</Field>
+									</div>
+									<ErrorMessage
+										name="dueDate"
+										component="p"
+										className={css.error}
+									/>
+								</label>
+							</div>
 
-												document.body.dataset.theme =
-													gender === "girl" || gender === "boy" ?
-														gender
-													: "neutral";
-											}}
-											onBlur={() => form.setFieldTouched("gender", true)}
-											placeholder="Оберіть стать"
-											isSearchable={false}
-											classNames={selectClassNames}
-											components={{
-												DropdownIndicator,
-												IndicatorSeparator: () => null,
-											}}
-										/>
-										)}
-									</Field>
-								</div>
-							</label>
-
-							<label className={css.label}>
-								<span>Планова дата пологів</span>
-								<div className={css.inputWrapper}>
-									<Field name="dueDate">
-										{({ field, form }: FieldProps<string, FormValues>) => (
-										<CalendarPicker
-											id="dueDate"
-											value={field.value}
-											placeholder="Оберіть дату"
-											disabled={mutateUser.isPending}
-											onChange={(date) => {
-												form.setFieldValue("dueDate", date);
-												form.setFieldTouched("dueDate", true, false);
-											}}
-										/>
-										)}
-									</Field>
-								</div>
-								<ErrorMessage
-									name="dueDate"
-									component="p"
-									className={css.error}
-								/>
-							</label>
-						</div>
-						
-						<Button type='submit'>Зберегти</Button>
-					</Form>
+							<Button type='submit'>Зберегти</Button>
+						</Form>
 					)}
 				</Formik>
 			</div>
