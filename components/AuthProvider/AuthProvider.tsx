@@ -1,14 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-
-import { getMe } from "@/lib/api/clientApi/users";
-// import { fetchPrivateWeeks, fetchPublicWeeks } from "@/lib/api/clientApi/weeks";
+import { getMe } from "@/lib/api/clientApi/users"
 import { useAuthStore } from "@/lib/store/authStore";
-// import { useWeekStore } from "@/lib/store/babyDataStore";
 import { User } from "@/types/user";
 import { setThemeByGender } from "@/lib/theme/setThemeByGender";
-import { useDiaryStore } from "@/lib/store/diaryStore";
 import axios from "axios";
 
 type Props = {

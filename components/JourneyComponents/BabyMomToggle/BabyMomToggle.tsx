@@ -1,9 +1,6 @@
 import css from "./BabyMomToggle.module.css";
 
 type Props = {
-	// ось тут вони достаються із типом () => void,
-	// бо інакше там був би тип Dispatch<SetStateAction<"baby" | "mom">>,
-	// або ще якийсь не стандартний, а так зробив, як у конспекті
 	mode: "baby" | "mom",
 	setBabyMode: () => void; 
 	setMomMode: () => void;
