@@ -9,6 +9,8 @@
 	align-items: center;
 	background-color: rgba(0, 0, 0, 0.4);
 	z-index: 9999;
+	overflow-y: auto;
+	padding-block: 24px;
 }
 
 .modal {
@@ -17,8 +19,8 @@
 	border-radius: 40px;
 	padding: 48px 20px;
 	width: 335px;
-	height: auto;
 	max-width: 768px;
+	margin: auto 0;
 }
 
 .header {

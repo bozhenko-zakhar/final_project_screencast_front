@@ -1,39 +1,38 @@
-/* components/modals/Modal/Modal.module.css */
-
 .backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
+	position: fixed;
+	inset: 0;
+	z-index: 9999;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
-  padding: 16px;
+	padding: 16px;
 
-  background-color: rgba(0, 0, 0, 0.28);
+	background-color: rgba(0, 0, 0, 0.28);
 
-  overflow-y: auto;
+	overflow-y: auto;
 }
 
 .modal {
-  position: relative;
+	position: relative;
 
-  width: 100%;
-  max-width: 420px;
+	width: 100%;
+	max-width: 420px;
 
-  border-radius: 24px;
+	border-radius: 24px;
 
-  background-color: var(--color-white);
+	background-color: var(--color-white);
 
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.16);
+	box-shadow: 0 24px 80px rgba(0, 0, 0, 0.16);
 
-  overflow: visible;
+	overflow: visible;
+	margin: auto 0;
 }
 
 @media screen and (min-width: 768px) {
-  .modal {
-    max-width: 640px;
-    border-radius: 32px;
-  }
+	.modal {
+		max-width: 640px;
+		border-radius: 32px;
+	}
 }
